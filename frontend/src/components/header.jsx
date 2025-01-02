@@ -12,7 +12,7 @@ function Header() {
       <div className="w-full flex justify-center bg-custom-green">
         <div className="flex w-11/12 gap-8 items-center py-2">
           {/* Logo section */}
-          <a href='#' className="flex items-center gap-2">
+          <a href='/' className="flex items-center gap-2">
             <img src={logoKerisnel} alt="Logo" className="object-scale-down h-12 w-12" />
             <p className="text-3xl">Kerisnel</p>
           </a>

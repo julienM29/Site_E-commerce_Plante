@@ -9,6 +9,7 @@ import Test2 from './components/Test2.jsx';
 import UserForm from './components/UserForm.jsx';
 import Header from './components/header.jsx'
 import Footer from './components/Footer.jsx' 
+import Panier from './components/Panier.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/produit/:id" element={<Test />} /> {/* Page produit */}
         <Route path="/produit2/:id" element={<Test2 />} /> {/* Page produit */}
         <Route path="/login" element={<UserForm />} /> {/* Page login */}
+        <Route path="/panier" element={<Panier />} /> {/* Page du panier */}
       </Routes>
     </Router>  
     <Footer />

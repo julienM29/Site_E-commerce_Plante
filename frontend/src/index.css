@@ -88,3 +88,8 @@ justify-content: center;
   border-radius: 8px; /* Facultatif, pour arrondir les coins */
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
