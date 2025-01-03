@@ -113,7 +113,7 @@ function HomePage() {
   }
   return (
     <>
-      <div id="carrousel" className="carousel py-2 h-10 w-full bg-custom-pastel text-zinc-800"></div>
+      <div id="carrousel" className="carousel py-2 h-10 w-full bg-emerald-100 text-zinc-800"></div>
       <div className="bg-custom-light py-4 min-h-screen flex flex-col items-center gap-6">
         <TitreSection texte="Jardinerie en ligne Kerisnel - Vente de plantes et graines à cultiver" textColor="text-zinc-700" taillePolice="text-2xl" />
         <div className='w-9/12 max-xl:grid xl:flex gap-4 font-semibold max-xl: grid-cols-2'>
@@ -162,10 +162,10 @@ function HomePage() {
             <TitreSection texte="Vous souhaitez aménager" textColor="text-white" taillePolice="text-3xl" />
           </div>
           <div className='max-md:grid max-md:grid-cols-2 flex md:justify-center gap-4 w-5/6'>
-            <LienInspiration texte="Un jardin" image={"src/assets/images/plant2.jpeg"}></LienInspiration>
-            <LienInspiration texte="Un potager" image={"src/assets/images/plant2.jpeg"}></LienInspiration>
-            <LienInspiration texte="Une terrasse" image={"src/assets/images/plant2.jpeg"}></LienInspiration>
-            <LienInspiration texte="Un intérieur" image={"src/assets/images/plant2.jpeg"}></LienInspiration>
+            <LienInspiration texte="Un jardin" image={"src/assets/images/jardin.avif"}></LienInspiration>
+            <LienInspiration texte="Un potager" image={"src/assets/images/potager.jpg"}></LienInspiration>
+            <LienInspiration texte="Une terrasse" image={"src/assets/images/terrasse.jpg"}></LienInspiration>
+            <LienInspiration texte="Un intérieur" image={"src/assets/images/plant_interieur.jpg"}></LienInspiration>
           </div>
         </div>
         <div className='w-11/12 flex flex-col items-center gap-8 justify-center py-8'>
