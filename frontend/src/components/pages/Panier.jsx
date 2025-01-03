@@ -1,23 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import LogoPlant from '../assets/images/ACHICRIT1.jpg'
-import Garantie from '../assets/icones/garantie.png'
-import verifier from '../assets/icones/verifier.png'
-import LogoCB from '../assets/icones/logo_cb.jpeg'
-import LogoMasterCard from '../assets/icones/master_card.png'
-import LogoVisa from '../assets/icones/visa.png'
-import LogoPaypal from '../assets/icones/paypal.png'
-import logoQuality from '../assets/icones/quality.png'
-import logoAvisClients from '../assets/icones/avis_client.jpeg'
-import LogoCamionLivraison from '../assets/icones/camion_livraison.png'
-import ConteneurQuantity from './QuantityInput';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectFade } from 'swiper/modules';
+import { logoPlant } from '../../assets/images';
+import { logoCB, logoMasterCard, logoVisa, logoPaypal, logoQualite, logoAvisClient, logoCamionLivraison, logoVerifierBlanc, logoGarantie } from '../../assets/icones';
 
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-import "swiper/css/effect-fade";
-import Swiper3Plants from './Swiper3Plants';
+import ConteneurQuantity from '../shared/QuantityInput';
+
+import Swiper3Plants from '../shared/Swiper3Plants';
 function Panier() {
     const [quantityProduct, setQuantityProduct] = useState(0);
 
@@ -29,7 +16,7 @@ function Panier() {
                     <p className='w-1/3 text-6xl font-bold text-gray-700'>Panier</p>
                     <div className='flex flex-col gap-2'>
                         <div className='flex gap-4 items-center'>
-                            <img src={LogoCamionLivraison} alt="" className='w-12 object-contain'/>
+                            <img src={logoCamionLivraison} alt="" className='w-12 object-contain'/>
                             <p className='font-semibold text-lg'> Dépensez encore 41.30euros de plus e obtenez la livraison gratuite !</p>
                         </div>
                         <div className='w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-600'>
@@ -75,7 +62,7 @@ function Panier() {
                                         <td className="px-4 py-4">
                                             <div className="flex gap-4">
                                                 <img
-                                                    src={LogoPlant}
+                                                    src={logoPlant}
                                                     alt=""
                                                     className="w-20 h-20 rounded-md border"
                                                 />
@@ -87,7 +74,7 @@ function Panier() {
                                                         Les 2 pots / 9cm de diamètre
                                                     </p>
                                                     <div className="flex items-center gap-2 text-sm text-green-600">
-                                                        <img src={verifier} alt="" className="w-5 h-5" />
+                                                        <img src={logoVerifierBlanc} alt="" className="w-5 h-5" />
                                                         <span>En stock -</span>
                                                         <p className="text-gray-500">Expédition dès demain</p>
                                                     </div>
@@ -96,10 +83,8 @@ function Panier() {
                                         </td>
                                         <td className="px-4 py-4 text-xl font-medium text-gray-800">5.40 €</td>
                                         <td className="px-4 py-4 text-sm text-gray-600">
-                                            <ConteneurQuantity
-                                                quantityProduct={quantityProduct}
-                                                setQuantityProduct={setQuantityProduct}
-                                            />                </td>
+                                        <ConteneurQuantity quantityProduct={quantityProduct} heightInput='11' paddingButton='3' setQuantityProduct={setQuantityProduct} />
+                                        </td>
                                         <td className="px-4 py-4 text-xl font-medium text-gray-800">22 €</td>
                                     </tr>
                                 </tbody>
@@ -113,28 +98,28 @@ function Panier() {
                                 <div className="w-full h-full grid grid-cols-2 justify-center items-center gap-4">
                                     <div className="flex justify-center items-center">
                                         <img
-                                            src={LogoCB}
+                                            src={logoCB}
                                             alt="Logo CB"
                                             className="w-full h-20 object-contain border border-gray-200 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
                                         />
                                     </div>
                                     <div className="flex justify-center items-center">
                                         <img
-                                            src={LogoMasterCard}
+                                            src={logoMasterCard}
                                             alt="Logo MasterCard"
                                             className="w-full h-20 object-contain border border-gray-200 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
                                         />
                                     </div>
                                     <div className="flex justify-center items-center">
                                         <img
-                                            src={LogoVisa}
+                                            src={logoVisa}
                                             alt="Logo Visa"
                                             className="w-full h-20 object-contain border border-gray-200 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
                                         />
                                     </div>
                                     <div className="flex justify-center items-center">
                                         <img
-                                            src={LogoPaypal}
+                                            src={logoPaypal}
                                             alt="Logo Paypal"
                                             className="w-full h-20 object-contain border border-gray-200 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
                                         />
@@ -153,7 +138,7 @@ function Panier() {
 
 
                                     <img
-                                        src={logoQuality}
+                                        src={logoQualite}
                                         alt="Logo CB"
                                         className="w-1/2 object-contain "
                                     />
@@ -165,7 +150,7 @@ function Panier() {
                                 </h2>
                                 <div className="w-full flex justify-center items-center h-full">
                                     <img
-                                        src={logoAvisClients}
+                                        src={logoAvisClient}
                                         alt="Logo CB"
                                         className="w-1/2 object-contain "
                                     />
@@ -187,7 +172,7 @@ function Panier() {
                         </div>
                         <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg '>
                             <div className='flex gap-2 items-center'>
-                                <img src={Garantie} alt="" className='w-24 h-24 ' />
+                                <img src={logoGarantie} alt="" className='w-24 h-24 ' />
                                 <div className='flex flex-col gap-2'>
                                     <div className='flex justify-between'>
                                         <p className='text-xl font-semibold'>Garantie Plant Protect</p>

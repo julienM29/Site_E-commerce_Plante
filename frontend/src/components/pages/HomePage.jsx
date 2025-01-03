@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, A11y } from 'swiper/modules';
 import gsap from "gsap";
-import Swiper3Plants from './Swiper3Plants';
-import ConteneurPlant from './ConteneurPlant';
+import Swiper3Plants from '../shared/Swiper3Plants';
+import ConteneurPlant from '../shared/ConteneurPlant';
 import 'swiper/css';
 import 'swiper/css/navigation';
 

@@ -1,19 +1,8 @@
 import React, { useState, useRef } from 'react';
-import ConteneurQuantity from './QuantityInput';
-import ConteneurPlant from './ConteneurPlant';
-
-import logoVerifierBlanc from '../assets/icones/verifier_white.png';
-import logoPlant from '../assets/images/laf_111580_1_1000x.webp';
-import logoPlant2 from '../assets/images/ACHICRIT1.jpg';
-import logoDispo from '../assets/icones/verifier.png';
-import couleurLogo from '../assets/icones/couleur.png';
-import floraison from '../assets/icones/floraison.png';
-import hauteur from '../assets/icones/hauteur.png';
-import parfum from '../assets/icones/parfum.png';
-import soleil from '../assets/icones/soleil.png';
-import plantation from '../assets/icones/plantation.png';
-import ecart from '../assets/icones/ecart.png';
-import arrosage from '../assets/icones/arrosage.png';
+import ConteneurQuantity from '../shared/QuantityInput';
+import { logoPlant, logoPlant2, } from '../../assets/images';
+import { logoVerifierBlanc, logoDispo, logoCouleur, logoFloraison, logoHauteur, logoParfum, logoSoleil , logoPlantation, logoEcart, logoArrosage } from '../../assets/icones';
+import Swiper3Plants from '../shared/Swiper3Plants';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade } from 'swiper/modules';
 
@@ -21,9 +10,9 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import "swiper/css/effect-fade";
-import Swiper3Plants from './Swiper3Plants';
 
-function Test() {
+
+function ProductPage() {
   const [activeIndex, setActiveIndex] = useState(0); // Suivre l'index actif
   const [quantityProduct, setQuantityProduct] = useState(0);
 
@@ -132,28 +121,28 @@ function Test() {
               <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Esthétique</h2>
               <div className='flex flex-col gap-2'>
                 <div className='flex items-center gap-2'>
-                  <img src={couleurLogo} alt="" className='w-10 h-10' />
+                  <img src={logoCouleur} alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Couleur</p>
                     <p>{couleur}</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={floraison} alt="" className='w-10 h-10' />
+                  <img src={logoFloraison} alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Période de floraison</p>
                     <p>{debutFloraison} - {finFloraison}</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={hauteur} alt="" className='w-10 h-10' />
+                  <img src={logoHauteur} alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Hauteur à maturité</p>
                     <p>{hauteurMax} cm</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={parfum} alt="" className='w-10 h-10' />
+                  <img src={logoParfum} alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Parfumé</p>
                     <p>{Parfum}</p>
@@ -165,21 +154,21 @@ function Test() {
               <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Jardinage</h2>
               <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-2'>
-                  <img src={ecart} alt="" className='w-10 h-10' />
+                  <img src={logoEcart} alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Distance de plantation</p>
                     <p>{DistancePlantation} cm</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={plantation} alt="" className='w-10 h-10' />
+                  <img src={logoPlantation} alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Période de plantation</p>
                     <p>{PeriodePlantation} </p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={arrosage} alt="" className='w-10 h-10' />
+                  <img src={logoArrosage} alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Fréquence d'arrosage</p>
                     <p>{FrequenceArrosage} </p>
@@ -191,7 +180,7 @@ function Test() {
               <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Emplacement</h2>
               <div className='flex flex-col gap-2'>
                 <div className='flex items-center gap-2'>
-                  <img src={soleil} alt="" className='w-10 h-10' />
+                  <img src={logoSoleil} alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Exposition</p>
                     <p>{Exposition}</p>
@@ -271,4 +260,4 @@ function Test() {
   );
 }
 
-export default Test;
+export default ProductPage;

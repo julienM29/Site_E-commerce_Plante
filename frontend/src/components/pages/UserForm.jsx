@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import imgForm from '../assets/images/imgForm.jpeg';
+import {imgForm } from '../../assets/images';
+
 function UserForm() {
 
     return (

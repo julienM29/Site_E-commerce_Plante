@@ -4,8 +4,8 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import ConteneurPlant from './ConteneurPlant';
-import logoPlant from '../assets/images/laf_111580_1_1000x.webp';
-import logoPlant2 from '../assets/images/ACHICRIT1.jpg';
+
+import { logoPlant, logoPlant2 } from '../../assets/images';
 
 const Swiper3Plants = ({}) => {
     return (

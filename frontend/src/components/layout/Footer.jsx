@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import logoKerisnel from '../assets/images/plante.png';
+import { logoKerisnel } from '../../assets/images';
 
 function Footer() {
   const [screenSize, setScreenSize] = useState('');
