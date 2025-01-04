@@ -87,7 +87,7 @@ function Header() {
           </div>
         </div>
       </div>
-      <div className={`cursor-pointer fixed inset-0 z-10 bg-black/40 ${isSidebarOpen ? '' : 'hidden'}`} onClick={closeSidebar} />
+      <div className={`cursor-pointer fixed inset-0 z-10  transition-opacity duration-500 ${isSidebarOpen ? 'bg-black/40  opacity-100 pointer-events-auto' : 'pointer-events-none opacity-0'}`} onClick={closeSidebar} />
 
       {/* SideBar */}
       <div ref={sidebarRef} className="fixed flex flex-col items-center top-0 right-0 w-1/5 bg-white h-screen border-l shadow-lg transform translate-x-full z-20">
@@ -133,8 +133,8 @@ function Header() {
         </div>
         <div className='h-[15%] bg-custom-light w-full flex flex-col gap-4 justify-center items-center'>
           
-          <button type="submit" className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">
-            <a href="/panier">Commander</a>
+          <button type="submit" className="w-3/4 font-bold flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400  text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">
+            <a href="/panier">Aller au panier - 49euros</a>
           </button>
           <button onClick={closeSidebar} className="w-3/4 flex justify-center items-center font-semibold  text-md text-emerald-600 underline-offset-4 hover:underline">
             Continuer vos achats 

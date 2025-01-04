@@ -2,11 +2,11 @@ import React, { useState, useCallback } from 'react';
 import { logoDispo } from '../../assets/icones';
 
 
-const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock }) => {
+const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock, taille }) => {
 
 
   return (
-    <div className='bg-white rounded-3xl flex flex-col font-semibold w-[350px] border shadow-lg'>
+    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-[${taille}px] border shadow-lg`}>
       <a href='/produit/1' className='group relative w-full h-80'>
         <img
           src={primaryImage}
