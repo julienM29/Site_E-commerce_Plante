@@ -26,7 +26,7 @@ function Footer() {
   return (
     <>
     <div className='flex flex-col'>
-    <div className="w-full flex justify-center bg-emerald-100 py-8 px-4">
+    <div className="w-full flex justify-center bg-emerald-100 py-5 px-4">
   <div className="w-full max-w-4xl flex flex-col md:flex-row items-center gap-6">
     <p className="md:w-1/2 text-center md:text-left text-2xl font-semibold text-gray-800">
       Inscrivez-vous à notre newsletter et bénéficiez de remises exclusives

@@ -1,0 +1,11 @@
+{
+    "name": "site_web_kerisnel",
+    "version": "1.0.0",
+    "description": "Site e-commerce de plantes",
+    "scripts": {
+        "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2"
+    }
+}

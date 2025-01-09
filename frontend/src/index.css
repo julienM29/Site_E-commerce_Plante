@@ -102,3 +102,9 @@ input[type="number"]::-webkit-outer-spin-button {
 .scrollbar-none::-webkit-scrollbar {
   display: none; /* Safari et Chrome */
 }
+
+input:-webkit-autofill {
+  background-color: transparent !important; /* Rendre le fond transparent */
+  color: inherit !important; /* Garder la couleur du texte normale */
+  transition: background-color 5000s ease-in-out 0s; /* Éviter l'effet de transition */
+}

@@ -1,12 +1,13 @@
 // server.js
-const Fastify = require('fastify');
+import Fastify from 'fastify';
+import fastifyCors from '@fastify/cors';
+import { createAccount, connexionAccount } from './controllers/auth.js';
+
 const fastify = Fastify();
 
 // Ajouter le plugin CORS
-fastify.register(require('@fastify/cors'), {
-  origin: 'http://localhost:5174',  // Autoriser seulement l'origine de React
-  // ou utiliser '*' pour autoriser toutes les origines
-  // origin: '*',
+fastify.register(fastifyCors, {
+  origin: 'http://localhost:5174', // Autoriser seulement l'origine de React
 });
 
 // Définir une route basique
@@ -19,8 +20,20 @@ fastify.get('/api/data', async (request, reply) => {
   return { message: 'Hello from Fastify API' };
 });
 
-// Lancer le serveur avec un objet de configuration
-fastify.listen({ port: 3000, host: '127.0.0.1' }, (err, address) => { // Corrected listen syntax
+// API pour la création de compte
+fastify.post('/connexion', async (request, reply) => {
+  const { emailConnexion, motDePasseConnexion } = request.body;  // Accède aux données envoyées dans le corps de la requête
+ const { messageEmail, messageMDP } = await connexionAccount(emailConnexion, motDePasseConnexion);
+  reply.send({ messageEmail, messageMDP });
+});
+fastify.post('/creationCompte', async (request, reply) => {
+  const {  prenom, nom, email, motDePasse } = request.body;  // Accède aux données envoyées dans le corps de la requête
+  const message = await createAccount(prenom, nom, email, motDePasse);
+  reply.send({ message });
+});
+
+// Lancer le serveur
+fastify.listen({ port: 3000, host: '127.0.0.1' }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
