@@ -2,6 +2,7 @@
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import { createAccount, connexionAccount } from './controllers/auth.js';
+import { loadTypeDB } from './controllers/type.js';
 
 const fastify = Fastify();
 
@@ -31,7 +32,10 @@ fastify.post('/creationCompte', async (request, reply) => {
   const message = await createAccount(prenom, nom, email, motDePasse);
   reply.send({ message });
 });
-
+fastify.get('/loadType', async (request, reply) => {
+  const types = await loadTypeDB();
+  reply.send({ types });
+});
 // Lancer le serveur
 fastify.listen({ port: 3000, host: '127.0.0.1' }, (err, address) => {
   if (err) {

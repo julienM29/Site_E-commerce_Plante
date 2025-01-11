@@ -132,6 +132,9 @@ function UserForm() {
             <a href="#" onClick={() => setShowLogin(false)} className="text-emerald-600 underline underline-offset-4 font-semibold text-start hover:text-emerald-800">
               Pas de compte ? Cliquez ici pour vous inscrire !
             </a>
+            <a href="#" onClick={() => setShowLogin(false)} className="text-emerald-600 underline underline-offset-4 font-semibold text-start hover:text-emerald-800">
+              Mot de passe oublié ?
+            </a>
             <button
               type="submit"
               className="bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
@@ -183,6 +186,7 @@ function UserForm() {
             <a href="#" onClick={() => setShowLogin(true)} className="text-emerald-600 underline underline-offset-4 font-semibold text-start hover:text-emerald-800">
               Déjà inscrit ? Connectez-vous !
             </a>
+            
             <button
               type="submit"
               className="bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
