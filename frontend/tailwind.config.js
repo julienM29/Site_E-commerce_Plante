@@ -3,7 +3,8 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}", // Fichiers sources React
     "./index.html",               // Fichier HTML principal si nécessaire
-
+    "./node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@material-tailwind/react/theme/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {

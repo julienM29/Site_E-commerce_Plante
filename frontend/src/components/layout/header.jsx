@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { logoProfil, logoPanier } from '../../assets/icones';
-import { logoKerisnel, LogoProduit } from '../../assets/images';
-
 import BarreLivraisonGratuite from '../shared/BarreLivraisonGratuite';
 import ConteneurProduitPanier from '../shared/ConteneurProduitPanier';
 import { gsap } from "gsap";
@@ -52,7 +49,7 @@ function Header() {
         <div className="flex w-11/12 gap-8 items-center py-2">
           {/* Logo section */}
           <a href='/' className="flex items-center gap-2">
-            <img src={logoKerisnel} alt="Logo" className="object-scale-down h-12 w-12" />
+            <img src="images/plante.png" alt="Logo" className="object-scale-down h-12 w-12" />
             <p className="text-3xl">Kerisnel</p>
           </a>
 
@@ -79,10 +76,10 @@ function Header() {
           {/* Icon section */}
           <div className="flex gap-2">
             <a href="/login" className="rounded-full border-4 border-green-800 bg-white p-2">
-              <img src={logoProfil} alt="Agriculteur" className="object-scale-down h-10 w-10" />
+              <img src="icones/agriculteur.png" alt="Agriculteur" className="object-scale-down h-10 w-10" />
             </a>
             <button type="button" className="rounded-full border-4 border-green-800 bg-white p-2" onClick={openSidebar}>
-              <img src={logoPanier} alt="Brouette vide" className="object-scale-down h-10 w-10" />
+              <img src="icones/brouette_vide.png" alt="Brouette vide" className="object-scale-down h-10 w-10" />
             </button>
           </div>
         </div>
@@ -124,12 +121,12 @@ function Header() {
         {/* Contenu */}
         <div className="w-11/12 h-3/4 flex flex-col gap-2 py-4 overflow-y-auto overflow-x-hidden scrollbar-none ">
           <BarreLivraisonGratuite prixPanier='17'></BarreLivraisonGratuite>
-          <ConteneurProduitPanier imgProduit={LogoProduit} prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
-          <ConteneurProduitPanier imgProduit={LogoProduit} prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
-          <ConteneurProduitPanier imgProduit={LogoProduit} prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
-          <ConteneurProduitPanier imgProduit={LogoProduit} prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
-          <ConteneurProduitPanier imgProduit={LogoProduit} prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
-          <ConteneurProduitPanier imgProduit={LogoProduit} prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
+          <ConteneurProduitPanier imgProduit="jardin.avif" prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
+          <ConteneurProduitPanier imgProduit="jardin.avif" prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
+          <ConteneurProduitPanier imgProduit="jardin.avif" prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
+          <ConteneurProduitPanier imgProduit="jardin.avif" prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
+          <ConteneurProduitPanier imgProduit="jardin.avif" prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
+          <ConteneurProduitPanier imgProduit="jardin.avif" prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
         </div>
         <div className='h-[15%] bg-custom-light w-full flex flex-col gap-4 justify-center items-center'>
           

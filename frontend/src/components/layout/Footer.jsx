@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { logoKerisnel } from '../../assets/images';
 
 function Footer() {
   const [screenSize, setScreenSize] = useState('');
@@ -46,7 +45,7 @@ function Footer() {
 
       <div className="w-full py-2 flex flex-col items-center gap-6 text-white bg-custom-dark-green">
         <div className='flex gap-2 items-center'>
-          <img src={logoKerisnel} alt="Logo" className="object-scale-down h-12 w-12" />
+          <img src="/images/plante.png" alt="Logo" className="object-scale-down h-12 w-12" />
           <p className="text-3xl">Kerisnel</p>
         </div>
         <p className='w-3/4 text-sm text-center px-5'>Découvrez tout l'univers Willemse : Vente de plantes par correspondance, Plantes & fleurs d'ombre, Plantes & fleurs pas cher ou parcourez le plan du site Willemse. Découvrez la société Willemse SAS sur Wikipedia, la chaîne Youtube de Willemse, la page Pinterest de Willemse. Enfin suivez Willemse sur Facebook. Jardinerie Willemse : vente en ligne de plantes, graines et accessoires pour le jardin. La jardinerie par correspondance Willemse est leader de la vente de plantes et du jardinage. Les locaux de la société sont situés dans le Nord de la France mais nous assurons la livraison dans toute la France. Spécialiste de la vente de plante par correspondance, votre jardinerie discount Willemse vous propose la vente en ligne de plantes issues des meilleures pépinières, rigoureusement sélectionnées par nos équipes. De quoi contenter tous les jardiniers, des moins expérimentés (qui peuvent compter sur l'expertise de nos équipes pour obtenir des conseils en jardinage) aux plus exigeants. Nous vous proposons des fleurs, plantes vertes, plantes rares ou originales, en pot, sur pied ou tige, sous forme de graines ou de bulbes. Chaque sélection est adaptée aux saisons, que ce soit pour le jardin ou le potager. Vous découvrirez le détail et la richesse de notre gamme sur le plan du site.

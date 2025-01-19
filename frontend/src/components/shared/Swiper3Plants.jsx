@@ -5,8 +5,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import ConteneurPlant from './ConteneurPlant';
 
-import { logoPlant, logoPlant2 } from '../../assets/images';
-
 const Swiper3Plants = ({}) => {
     return (
         <div className='flex justify-center w-5/6'>
@@ -37,8 +35,8 @@ const Swiper3Plants = ({}) => {
               className="my-custom-swiper overflow-visible relative"
             >
               <SwiperSlide> <ConteneurPlant
-                primaryImage={logoPlant}
-                secondaryImage={logoPlant2}
+                primaryImage="images/plante.png"
+                secondaryImage="images/plant2.jpeg"
                 altPrimary="Plante verte"
                 altSecondary="Plante en floraison"
                 nom="étoiles bleues tapissantes"
@@ -49,8 +47,8 @@ const Swiper3Plants = ({}) => {
                 infoStock="disponible"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
-                primaryImage={logoPlant}
-                secondaryImage={logoPlant2}
+                primaryImage="images/plante.png"
+                secondaryImage="images/plant2.jpeg"
                 altPrimary="Plante verte"
                 altSecondary="Plante en floraison"
                 nom="étoiles bleues tapissantes"
@@ -61,8 +59,8 @@ const Swiper3Plants = ({}) => {
                 infoStock="disponible"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
-                primaryImage={logoPlant}
-                secondaryImage={logoPlant2}
+                primaryImage="images/plante.png"
+                secondaryImage="images/plant2.jpeg"
                 altPrimary="Plante verte"
                 altSecondary="Plante en floraison"
                 nom="étoiles bleues tapissantes"
@@ -73,8 +71,8 @@ const Swiper3Plants = ({}) => {
                 infoStock="disponible"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
-                primaryImage={logoPlant}
-                secondaryImage={logoPlant2}
+                primaryImage="images/plante.png"
+                secondaryImage="images/plant2.jpeg"
                 altPrimary="Plante verte"
                 altSecondary="Plante en floraison"
                 nom="étoiles bleues tapissantes"
@@ -85,8 +83,8 @@ const Swiper3Plants = ({}) => {
                 infoStock="disponible"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
-                primaryImage={logoPlant}
-                secondaryImage={logoPlant2}
+                primaryImage="images/plante.png"
+                secondaryImage="images/plant2.jpeg"
                 altPrimary="Plante verte"
                 altSecondary="Plante en floraison"
                 nom="étoiles bleues tapissantes"
@@ -97,8 +95,8 @@ const Swiper3Plants = ({}) => {
                 infoStock="disponible"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
-                primaryImage={logoPlant}
-                secondaryImage={logoPlant2}
+                primaryImage="images/plante.png"
+                secondaryImage="images/plant2.jpeg"
                 altPrimary="Plante verte"
                 altSecondary="Plante en floraison"
                 nom="étoiles bleues tapissantes"

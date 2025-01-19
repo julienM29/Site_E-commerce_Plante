@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { logoDispo } from '../../assets/icones';
+import { logoDispo } from '../../../public/icones';
 
 
 const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock, taille }) => {

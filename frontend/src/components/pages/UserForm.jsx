@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gsap } from 'gsap';
-import { imgForm } from '../../assets/images';
 import InputFormField from '../shared/inputForm';
 
 function UserForm() {
@@ -195,7 +194,7 @@ function UserForm() {
             </button>
           </form>
         </div>
-        <img src={imgForm} alt="" className="w-1/2 rounded-r-3xl h-full max-xl:hidden" />
+        <img src="images/imgForm.jpeg" alt="" className="w-1/2 rounded-r-3xl h-full max-xl:hidden" />
       </div>
     </div>
   );

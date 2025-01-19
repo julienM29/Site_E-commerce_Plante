@@ -8,7 +8,7 @@ const ConteneurProduitPanier = ({ imgProduit, prixTotalProduit, nomProduit, quan
     <div className="flex flex-col gap-4 border-b-2 pt-2 pb-4">
       <div className="flex items-center gap-3">
         {/* Image */}
-        <img src={imgProduit} alt={nomProduit} className="w-20 h-20 object-cover rounded-lg border shadow-lg" />
+        <img src={`/images/${imgProduit}`} alt={nomProduit} className="w-20 h-20 object-cover rounded-lg border shadow-lg" />
 
         {/* Contenu produit */}
         <div className="flex-1 flex flex-col gap-4">

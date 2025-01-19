@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ConteneurQuantity from '../shared/QuantityInput';
-import { logoPlant, logoPlant2, } from '../../assets/images';
-import { logoVerifierBlanc, logoDispo, logoCouleur, logoFloraison, logoHauteur, logoParfum, logoSoleil , logoPlantation, logoEcart, logoArrosage } from '../../assets/icones';
+
 import Swiper3Plants from '../shared/Swiper3Plants';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade } from 'swiper/modules';
@@ -26,9 +25,7 @@ function ProductPage() {
   };
 
   const images = [
-    logoPlant,
-    logoPlant2,
-    logoPlant,
+    "images/plante.png","images/plant2.jpeg","images/plante.png",
   ];
   const ImgPlants = ({ imgSrc, isActive, onClick }) => {
     return (
@@ -76,7 +73,7 @@ function ProductPage() {
             </div>
             <div className='flex flex-col gap-'>
               <p className='flex gap-2'>
-                <img src={logoDispo} alt="" className='w-6 h-6' />
+                <img src="icones/verifier.png" alt="" className='w-6 h-6' />
                 <span>En stock</span>
               </p>
               <p>Expédition dès demain !</p>
@@ -91,20 +88,20 @@ function ProductPage() {
 
         <div className='p-2 bg-white rounded-lg border shadow-lg flex flex-col gap-2'>
           <div className='flex gap-2'>
-            <img src={logoVerifierBlanc} alt="" className='w-6 h-6' />
+            <img src="icones/verifier_white.png" alt="" className='w-6 h-6' />
             <p><span className='font-semibold'>Avis client </span>- *****</p>
 
           </div>
           <div className='flex gap-2'>
-            <img src={logoVerifierBlanc} alt="" className='w-6 h-6' />
+            <img src="icones/verifier_white.png" alt="" className='w-6 h-6' />
             <p><span className='font-semibold'>Payement sécurisé </span></p>
           </div>
           <div className='flex gap-2'>
-            <img src={logoVerifierBlanc} alt="" className='w-6 h-6' />
+            <img src="icones/verifier_white.png" alt="" className='w-6 h-6' />
             <p><span className='font-semibold'>Livraison gratuite </span>dès 59 € d'achats</p>
           </div>
           <div className='flex gap-2'>
-            <img src={logoVerifierBlanc} alt="" className='w-6 h-6' />
+            <img src="icones/verifier_white.png" alt="" className='w-6 h-6' />
             <p>Payement <span className='font-semibold'>en 3x  sans frais</span> dès 60 €</p>
           </div>
         </div>
@@ -121,28 +118,28 @@ function ProductPage() {
               <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Esthétique</h2>
               <div className='flex flex-col gap-2'>
                 <div className='flex items-center gap-2'>
-                  <img src={logoCouleur} alt="" className='w-10 h-10' />
+                  <img src="icones/couleur.png" alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Couleur</p>
                     <p>{couleur}</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={logoFloraison} alt="" className='w-10 h-10' />
+                  <img src="icones/floraison.png" alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Période de floraison</p>
                     <p>{debutFloraison} - {finFloraison}</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={logoHauteur} alt="" className='w-10 h-10' />
+                  <img src="icones/hauteur.png" alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Hauteur à maturité</p>
                     <p>{hauteurMax} cm</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={logoParfum} alt="" className='w-10 h-10' />
+                  <img src="icones/parfum.png" alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Parfumé</p>
                     <p>{Parfum}</p>
@@ -154,21 +151,21 @@ function ProductPage() {
               <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Jardinage</h2>
               <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-2'>
-                  <img src={logoEcart} alt="" className='w-10 h-10' />
+                  <img src="icones/ecart.png" alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Distance de plantation</p>
                     <p>{DistancePlantation} cm</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={logoPlantation} alt="" className='w-10 h-10' />
+                  <img src="icones/plantation.png" alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Période de plantation</p>
                     <p>{PeriodePlantation} </p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <img src={logoArrosage} alt="" className='w-10 h-10' />
+                  <img src="icones/arrosage.png" alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Fréquence d'arrosage</p>
                     <p>{FrequenceArrosage} </p>
@@ -180,7 +177,7 @@ function ProductPage() {
               <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Emplacement</h2>
               <div className='flex flex-col gap-2'>
                 <div className='flex items-center gap-2'>
-                  <img src={logoSoleil} alt="" className='w-10 h-10' />
+                  <img src="icones/soleil.png" alt="" className='w-10 h-10' />
                   <div className='flex flex-col gap-1'>
                     <p className='font-bold'>Exposition</p>
                     <p>{Exposition}</p>

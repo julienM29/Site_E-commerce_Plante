@@ -10,6 +10,7 @@ import Footer from './components/layout/Footer.jsx'
 import Panier from './components/pages/Panier.jsx';
 import ProductPage from './components/pages/ProductPage.jsx';
 import Search from './components/pages/Search.jsx';
+import Dashboard from './components/Test.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<UserForm />} /> {/* Page login */}
         <Route path="/panier" element={<Panier />} /> {/* Page du panier */}
         <Route path="/collections/plantes" element={<Search />} /> {/* Page du panier */}
+        <Route path="/admin" element={<Dashboard />} /> {/* Page du panier */}
       </Routes>
     </Router>  
     <Footer />

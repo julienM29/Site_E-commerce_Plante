@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import ConteneurPlant from "./ConteneurPlant";
-import { logoPlant, logoPlant2 } from '../../assets/images';
 
 // Simule une liste de produits pour tester
 const generateProducts = (count) => {
@@ -47,8 +46,8 @@ const generateProducts = (count) => {
             className="bg-white rounded-3xl flex flex-col font-semibold w-[300px] border shadow-lg"
           >
             <ConteneurPlant
-                primaryImage={logoPlant}
-                secondaryImage={logoPlant2}
+                primaryImage="images/plante.png"
+                secondaryImage="images/plant2.jpeg"
                 altPrimary="Plante verte"
                 altSecondary="Plante en floraison"
                 nom="étoiles bleues tapissantes"
