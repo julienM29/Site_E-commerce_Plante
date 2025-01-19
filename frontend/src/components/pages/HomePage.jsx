@@ -154,10 +154,10 @@ function HomePage() {
             <TitreSection texte="Vous souhaitez aménager" textColor="text-white" taillePolice="text-3xl" />
           </div>
           <div className='max-md:grid max-md:grid-cols-2 flex md:justify-center gap-4 w-5/6'>
-            <LienInspiration texte="Un jardin" image={"src/assets/images/jardin.avif"}></LienInspiration>
-            <LienInspiration texte="Un potager" image={"src/assets/images/potager.jpg"}></LienInspiration>
-            <LienInspiration texte="Une terrasse" image={"src/assets/images/terrasse.jpg"}></LienInspiration>
-            <LienInspiration texte="Un intérieur" image={"src/assets/images/plant_interieur.jpg"}></LienInspiration>
+            <LienInspiration texte="Un jardin" image={"/images/jardin.avif"}></LienInspiration>
+            <LienInspiration texte="Un potager" image={"images/potager.jpg"}></LienInspiration>
+            <LienInspiration texte="Une terrasse" image={"images/terrasse.jpg"}></LienInspiration>
+            <LienInspiration texte="Un intérieur" image={"images/plant_interieur.jpg"}></LienInspiration>
           </div>
         </div>
         <div className='w-11/12 flex flex-col items-center gap-8 justify-center py-8'>

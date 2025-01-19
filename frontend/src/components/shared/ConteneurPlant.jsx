@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { logoDispo } from '../../../public/icones';
 
 
 const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock, taille }) => {
@@ -42,7 +41,7 @@ const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary
         </div>
         <div className='w-full flex max-xl:flex-col xl:justify-around gap-2'>
         <p className='flex gap-2 justify-center items-center'>
-          <img src={logoDispo} alt="" className='w-6 h-6' />
+          <img src="icones/verifier.png" alt="" className='w-6 h-6' />
           <span>{infoStock}</span>
         </p>
         <button className='rounded-3xl flex justify-center w-1/2 px-3 py-2 bg-lime-700 text-white font-semibold'>

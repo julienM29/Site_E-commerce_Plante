@@ -49,7 +49,7 @@ function Header() {
         <div className="flex w-11/12 gap-8 items-center py-2">
           {/* Logo section */}
           <a href='/' className="flex items-center gap-2">
-            <img src="images/plante.png" alt="Logo" className="object-scale-down h-12 w-12" />
+            <img src="/images/plante.png" alt="Logo" className="object-scale-down h-12 w-12" />
             <p className="text-3xl">Kerisnel</p>
           </a>
 
@@ -76,10 +76,10 @@ function Header() {
           {/* Icon section */}
           <div className="flex gap-2">
             <a href="/login" className="rounded-full border-4 border-green-800 bg-white p-2">
-              <img src="icones/agriculteur.png" alt="Agriculteur" className="object-scale-down h-10 w-10" />
+              <img src="/icones/agriculteur.png" alt="Agriculteur" className="object-scale-down h-10 w-10" />
             </a>
             <button type="button" className="rounded-full border-4 border-green-800 bg-white p-2" onClick={openSidebar}>
-              <img src="icones/brouette_vide.png" alt="Brouette vide" className="object-scale-down h-10 w-10" />
+              <img src="/icones/brouette_vide.png" alt="Brouette vide" className="object-scale-down h-10 w-10" />
             </button>
           </div>
         </div>
