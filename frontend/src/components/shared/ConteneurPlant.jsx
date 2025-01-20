@@ -1,21 +1,21 @@
 import React, { useState, useCallback } from 'react';
 
 
-const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock, taille }) => {
+const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock }) => {
 
 
   return (
-    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-[${taille}px] border shadow-lg`}>
+    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-full border shadow-lg`}>
       <a href='/produit/1' className='group relative w-full h-80'>
         <img
           src={primaryImage}
           alt={altPrimary}
-          className="rounded-t-3xl object-cover w-full h-full absolute top-0 left-0 transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0"
+          className="rounded-t-3xl object-cover w-full h-full absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0"
         />
         <img
           src={secondaryImage}
           alt={altSecondary}
-          className="rounded-t-xl object-cover w-full h-full absolute top-0 left-0 transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100"
+          className="rounded-t-xl object-cover w-full h-full absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100"
         />
       </a>
 
@@ -41,7 +41,7 @@ const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary
         </div>
         <div className='w-full flex max-xl:flex-col xl:justify-around gap-2'>
         <p className='flex gap-2 justify-center items-center'>
-          <img src="icones/verifier.png" alt="" className='w-6 h-6' />
+          <img src="/icones/verifier.png" alt="" className='w-6 h-6' />
           <span>{infoStock}</span>
         </p>
         <button className='rounded-3xl flex justify-center w-1/2 px-3 py-2 bg-lime-700 text-white font-semibold'>

@@ -35,7 +35,7 @@ const SwiperTest = ({ nbSlides, types }) => {
                 {types && types.length > 0 ? (
                     types.map((type, index) => (
                         <SwiperSlide key={index}>
-                            <div className="relative flex justify-center border rounded-3xl overflow-hidden shadow-lg">
+                            <div className="relative flex justify-center border rounded-3xl overflow-hidden ">
                                 {/* <img src={getImage(type.image)} alt="" className='rounded-2xl h-30 w-30' /> */}
                                 <img src={`/images/${type.image}`} alt="test" className='object-cover rounded-3xl h-30 w-30' />
                                 <h3 className='absolute bottom-0 text-center text-white text-lg font-extrabold bg-gradient-to-t from-black to-transparent w-full px-3 py-2 rounded-b-3xl'>
@@ -44,9 +44,7 @@ const SwiperTest = ({ nbSlides, types }) => {
                             </div>
                         </SwiperSlide>
                     ))
-                ) : (
-                    <p>Aucun type disponible</p>
-                )}
+                ) : ( <p>Aucun type disponible</p> )}
             </Swiper>
         </div>
     );

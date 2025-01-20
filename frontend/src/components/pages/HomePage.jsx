@@ -138,10 +138,10 @@ function HomePage() {
           <div className='flex flex-col gap-2 text-center'>
             <TitreSection texte="Promotions" textColor="text-lime-500" taillePolice="text-3xl" />
             <div className='flex items-center gap-8'>
-              <img src="src/assets/icones/etiquette.png" alt="" className='w-16'/>
+              <img src="/icones/etiquette.png" alt="" className='w-16'/>
             
             <TitreSection texte="Les promotions jusqu'à -40% !" textColor="text-rose-500" taillePolice="text-5xl" />
-            <img src="src/assets/icones/etiquette.png" alt="" className='w-16'/></div>
+            <img src="/icones/etiquette.png" alt="" className='w-16'/></div>
           </div>
           <div className='w-5/6 flex justify-center'>
             <Swiper3Plants></Swiper3Plants>
