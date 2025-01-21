@@ -4,7 +4,7 @@ import ConteneurQuantity from '../shared/QuantityInput';
 import Swiper3Plants from '../shared/Swiper3Plants';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade } from 'swiper/modules';
-
+import CaracteristiqueProduit from '../shared/CaracteristiqueProduit';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -108,93 +108,12 @@ function ProductPage() {
       </div>
     )
   }
-  const CaracProduct = ({ couleur, debutFloraison, finFloraison, hauteurMax, Parfum, DistancePlantation, PeriodePlantation, FrequenceArrosage, Exposition }) => {
-    return (
-      <div className='bg-white py-2 flex flex-col w-full items-center gap-4 '>
-        <div className='flex w-[60%] flex-col gap-8 '>
-          <h2 className='w-full text-start text-4xl font-semibold text-green-800'>Caractéristiques</h2>
-          <div className='w-full flex divide-x-2'>
-            <div className='flex w-1/3 items-center flex-col gap-4'>
-              <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Esthétique</h2>
-              <div className='flex flex-col gap-2'>
-                <div className='flex items-center gap-2'>
-                  <img src="/icones/couleur.png" alt="" className='w-10 h-10' />
-                  <div className='flex flex-col gap-1'>
-                    <p className='font-bold'>Couleur</p>
-                    <p>{couleur}</p>
-                  </div>
-                </div>
-                <div className='flex items-center gap-2'>
-                  <img src="/icones/floraison.png" alt="" className='w-10 h-10' />
-                  <div className='flex flex-col gap-1'>
-                    <p className='font-bold'>Période de floraison</p>
-                    <p>{debutFloraison} - {finFloraison}</p>
-                  </div>
-                </div>
-                <div className='flex items-center gap-2'>
-                  <img src="/icones/hauteur.png" alt="" className='w-10 h-10' />
-                  <div className='flex flex-col gap-1'>
-                    <p className='font-bold'>Hauteur à maturité</p>
-                    <p>{hauteurMax} cm</p>
-                  </div>
-                </div>
-                <div className='flex items-center gap-2'>
-                  <img src="/icones/parfum.png" alt="" className='w-10 h-10' />
-                  <div className='flex flex-col gap-1'>
-                    <p className='font-bold'>Parfumé</p>
-                    <p>{Parfum}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='flex w-1/3 items-center flex-col gap-4'>
-              <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Jardinage</h2>
-              <div className='flex flex-col gap-4'>
-                <div className='flex items-center gap-2'>
-                  <img src="/icones/ecart.png" alt="" className='w-10 h-10' />
-                  <div className='flex flex-col gap-1'>
-                    <p className='font-bold'>Distance de plantation</p>
-                    <p>{DistancePlantation} cm</p>
-                  </div>
-                </div>
-                <div className='flex items-center gap-2'>
-                  <img src="/icones/plantation.png" alt="" className='w-10 h-10' />
-                  <div className='flex flex-col gap-1'>
-                    <p className='font-bold'>Période de plantation</p>
-                    <p>{PeriodePlantation} </p>
-                  </div>
-                </div>
-                <div className='flex items-center gap-2'>
-                  <img src="/icones/arrosage.png" alt="" className='w-10 h-10' />
-                  <div className='flex flex-col gap-1'>
-                    <p className='font-bold'>Fréquence d'arrosage</p>
-                    <p>{FrequenceArrosage} </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='flex w-1/3 items-center flex-col gap-4'>
-              <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Emplacement</h2>
-              <div className='flex flex-col gap-2'>
-                <div className='flex items-center gap-2'>
-                  <img src="/icones/soleil.png" alt="" className='w-10 h-10' />
-                  <div className='flex flex-col gap-1'>
-                    <p className='font-bold'>Exposition</p>
-                    <p>{Exposition}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  
   const PlantSuggestions = ({ }) => {
     return (
       <div className="w-full flex flex-col items-center gap-6">
         <h2 className="text-3xl font-semibold">Vous pourriez aussi aimer ceci...</h2>
-        <div className='w-3/4 flex justify-center'>
+        <div className='w-4/5 flex justify-center'>
           <Swiper3Plants></Swiper3Plants>
         </div>
 
@@ -227,7 +146,7 @@ function ProductPage() {
                 >
                   {images.map((imgSrc, index) => (
                     <SwiperSlide key={index}>
-                      <img src={imgSrc} alt={`Slide ${index + 1}`} className="w-full h-auto object-cover rounded-md" />
+                      <img src={imgSrc} alt={`Slide ${index + 1}`} className="w-full h-[75vh] object-cover rounded-md" />
                     </SwiperSlide>
                   ))}
                 </Swiper>
@@ -250,7 +169,7 @@ function ProductPage() {
             <DetailProduct nom='Oenothères roses Siskiyou' nomLatin="'Oenothères roses Siskiyou'" reduction='50%' prixInitial='11.99' prixReduit='5.99' typePlant='Couvre-sol rose délicat' litrageDisponible='2L'></DetailProduct>
           </div>
         </div>
-        <CaracProduct couleur='Rose' debutFloraison='Juin' finFloraison='Août' hauteurMax='35' Parfum='Parfumé' DistancePlantation='25 - 30' PeriodePlantation='Février - Mai , Septembre - Décembre' FrequenceArrosage='Modéré' Exposition="Lieu ensoleillé"></CaracProduct>
+        <CaracteristiqueProduit couleur='Rose' debutFloraison='Juin' finFloraison='Août' hauteurMax='35' Parfum='Parfumé' DistancePlantation='25 - 30' PeriodePlantation='Février - Mai , Septembre - Décembre' FrequenceArrosage='Modéré' Exposition="Lieu ensoleillé" />
         <PlantSuggestions></PlantSuggestions>
       </div>
     </>
