@@ -99,7 +99,7 @@ function UserForm() {
   }
   
   return (
-    <div className="bg-custom-light w-full flex items-center justify-center h-[75vh]">
+    <div className="bg-custom-light w-full flex items-center justify-center h-[78vh]">
       <div className="bg-white flex items-center rounded-3xl border-2 shadow-lg max-md:w-3/4 w-1/2 max-md:h-3/5 h-3/4">
         <div ref={loginRef} className={`max-xl:rounded-3xl  rounded-l-3xl bg-white w-full xl:w-1/2 flex flex-col gap-8 justify-center ${!showLogin ? 'hidden' : ''}`}>
           <h2 className="text-center max-sm:text-2xl text-4xl text-gray-600 font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-800 from-emerald-500">

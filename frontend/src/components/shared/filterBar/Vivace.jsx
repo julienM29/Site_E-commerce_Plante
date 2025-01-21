@@ -8,7 +8,7 @@ function Vivace() {
     };
 
     return (
-        <div className="border-t-4 px-1 py-2">
+        <div className="border-t-4 px-1 py-4">
             <div className="flex items-center w-full">
                 <span className="flex-grow text-left text-lg font-medium">
                     Vivace

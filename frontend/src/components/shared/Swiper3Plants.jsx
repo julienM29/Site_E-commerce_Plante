@@ -11,13 +11,13 @@ const Swiper3Plants = ({}) => {
             <Swiper
               modules={[Navigation]}
               spaceBetween={0}
-              slidesPerView={3}
+              slidesPerView={4}
               navigation
               onSlideChange={(swiper) => {
                 const slides = swiper.slides;
                 requestAnimationFrame(() => {
                   slides.forEach((slide, index) => {
-                    if (index >= swiper.activeIndex && index < swiper.activeIndex + 3) {
+                    if (index >= swiper.activeIndex && index < swiper.activeIndex + 4) {
                       slide.classList.add('slide-visible'); // Ajouter une classe pour les slides visibles
                     } else {
                       slide.classList.remove('slide-visible'); // Optionnel : retirer la classe des slides non visibles
@@ -44,7 +44,7 @@ const Swiper3Plants = ({}) => {
                 prixInitial="12.50" 
                 prixReduit="0" 
                 reduction="0" 
-                infoStock="disponible"
+                infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
                 primaryImage="/images/plante.png"
@@ -56,7 +56,7 @@ const Swiper3Plants = ({}) => {
                 prixInitial="12.50" 
                 prixReduit="0" 
                 reduction="0" 
-                infoStock="disponible"
+                infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
                 primaryImage="/images/plante.png"
@@ -68,7 +68,7 @@ const Swiper3Plants = ({}) => {
                 prixInitial="12.50" 
                 prixReduit="0" 
                 reduction="0" 
-                infoStock="disponible"
+                infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
                 primaryImage="/images/plante.png"
@@ -80,7 +80,7 @@ const Swiper3Plants = ({}) => {
                 prixInitial="12.50" 
                 prixReduit="0" 
                 reduction="0" 
-                infoStock="disponible"
+                infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
                 primaryImage="/images/plante.png"
@@ -92,7 +92,7 @@ const Swiper3Plants = ({}) => {
                 prixInitial="12.50" 
                 prixReduit="0" 
                 reduction="0" 
-                infoStock="disponible"
+                infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
                 primaryImage="/images/plante.png"
@@ -104,7 +104,7 @@ const Swiper3Plants = ({}) => {
                 prixInitial="12.50" 
                 prixReduit="0" 
                 reduction="0" 
-                infoStock="disponible"
+                infoStock="En stock"
               /> </SwiperSlide>
             </Swiper>
           </div>

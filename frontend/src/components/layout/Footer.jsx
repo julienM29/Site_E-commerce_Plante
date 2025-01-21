@@ -25,25 +25,25 @@ function Footer() {
   return (
     <>
     <div className='flex flex-col'>
-    <div className="w-full flex justify-center bg-emerald-100 py-5 px-4">
+    <div className="w-full flex justify-center bg-slider-text py-5 px-4">
   <div className="w-full max-w-4xl flex flex-col md:flex-row items-center gap-6">
-    <p className="md:w-1/2 text-center md:text-left text-2xl font-semibold text-gray-800">
+    <p className="md:w-1/2 text-center md:text-left text-2xl font-semibold text-white">
       Inscrivez-vous à notre newsletter et bénéficiez de remises exclusives
     </p>
     <div className="md:w-1/2 flex flex-col sm:flex-row  items-center">
       <input
         type="email"
         placeholder="Entrez votre email"
-        className="flex-1 px-4 py-3 rounded-s-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+        className="flex-1 px-4 py-3 rounded-s-lg border-e-2 border-gray-400 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
       />
-      <button className="px-6 py-3  font-bold rounded-e-lg bg-gradient-to-r from-emerald-300 to-emerald-600 hover:bg-gradient-to-l hover:from-emerald-300 hover:to-emerald-600 focus:ring-4 focus:outline-none focus:ring-emerald-400 text-white text-md text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out border-e">
+      <button className="px-6 py-3  font-bold rounded-e-lg bg-emerald-400 hover:bg-emerald-500 focus:ring-4 focus:outline-none focus:ring-emerald-200 text-white text-md text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out ">
         S'ABONNER
       </button>
     </div>
   </div>
 </div>
 
-      <div className="w-full py-2 flex flex-col items-center gap-6 text-white bg-custom-dark-green">
+      <div className="w-full py-6 flex flex-col items-center gap-6 text-gray-800 bg-custom-light">
         <div className='flex gap-2 items-center'>
           <img src="/images/plante.png" alt="Logo" className="object-scale-down h-12 w-12" />
           <p className="text-3xl">Kerisnel</p>

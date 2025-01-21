@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import BarreLivraisonGratuite from '../shared/BarreLivraisonGratuite';
 import ConteneurProduitPanier from '../shared/ConteneurProduitPanier';
 import { gsap } from "gsap";
-
+import Carroussel from '../shared/Carrousel';
 function Header() {
   const [message, setMessage] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -45,8 +45,9 @@ function Header() {
   return (
     <>
       {/* Header */}
-      <div className="w-full flex justify-center bg-custom-green">
-        <div className="flex w-11/12 gap-8 items-center py-2">
+      < Carroussel />
+      <div className="w-full flex justify-center bg-white border-b shadow-md">
+        <div className="flex w-11/12 gap-8 items-center py-3">
           {/* Logo section */}
           <a href='/' className="flex items-center gap-2">
             <img src="/images/plante.png" alt="Logo" className="object-scale-down h-12 w-12" />
@@ -66,8 +67,8 @@ function Header() {
               <input
                 type="search"
                 name="q"
-                className="py-2 text-lg text-white bg-gray-900 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900 w-full"
-                placeholder="Search..."
+                className="py-2 text-lg text-white bg-gray-900 rounded-xl pl-10 focus:outline-none focus:bg-white focus:text-gray-900 w-full"
+                placeholder="Rechercher un plant..."
                 autoComplete="off"
               />
             </div>

@@ -163,3 +163,11 @@ input:-webkit-autofill {
   pointer-events: all;
   position: relative;
 }
+
+.bg-slider-text{
+  background-color: #577E63;
+}
+.bg-bande-description{
+  background-color: #6AAB2F
+  ;
+}

@@ -34,7 +34,7 @@ function Floraison() {
             <button
                 onClick={toggleAccordion}
                 aria-expanded={isOpen}
-                className="flex justify-between items-center w-full px-1 py-2 text-left"
+                className="flex justify-between items-center w-full px-1 py-4 text-left"
             >
                 <span className="text-lg font-medium">Floraison</span>
                 <svg

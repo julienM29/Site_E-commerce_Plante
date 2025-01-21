@@ -5,8 +5,8 @@ const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary
 
 
   return (
-    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-full border shadow-lg`}>
-      <a href='/produit/1' className='group relative w-full h-80'>
+    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-11/12 border shadow-lg`}>
+      <a href='/produit/1' className='group relative w-full h-96'>
         <img
           src={primaryImage}
           alt={altPrimary}
@@ -19,9 +19,9 @@ const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary
         />
       </a>
 
-      <div className='flex flex-col items-center gap-4 pb-3'>
-        <p className='bg-lime-500 text-white w-full text-center'>{descriptionRapide}</p>
-        <a href='/plant/1' className='flex justify-start w-full px-2 font-semibold'>{nom}</a>
+      <div className='flex flex-col items-center gap-4 pb-4'>
+        <p className='bg-bande-description text-white w-full text-center'>{descriptionRapide}</p>
+        <a href='/plant/1' className='flex justify-start w-full text-lg px-2 font-semibold text-emerald-950'>{nom}</a>
         <div className='flex justify-between w-full px-2'>
           {reduction !== 0 || reduction !== '0' && (
             <p className='flex items-center'>- {reduction} %</p>
@@ -31,22 +31,23 @@ const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary
             <p className='flex items-center'> </p>
           )
           }
-          <div className='flex flex-col gap-1'>
+          <div className='flex flex-col gap-1 text-pink-600 font-bold text-2xl'>
             {prixReduit !== 0 || prixReduit !== '0' && (
-              <p className='text-rose-600 font-semibold'>{prixReduit} </p>
+              <p className=''>{prixReduit} € </p>
             )
             }
-            <p className='text-rose-600 font-semibold'>{prixInitial}</p>
+            <p className=''>{prixInitial} € </p>
           </div>
         </div>
         <div className='w-full flex max-xl:flex-col xl:justify-around gap-2'>
         <p className='flex gap-2 justify-center items-center'>
           <img src="/icones/verifier.png" alt="" className='w-6 h-6' />
-          <span>{infoStock}</span>
+          <span className=''>{infoStock}</span>
         </p>
-        <button className='rounded-3xl flex justify-center w-1/2 px-3 py-2 bg-lime-700 text-white font-semibold'>
-          Ajouter au panier
-        </button>
+        <button className="rounded-3xl flex justify-center px-5 py-2 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300">
+    Ajouter au panier
+</button>
+
       </div>
       </div>
     </div>
