@@ -21,7 +21,7 @@ function Search() {
     };
     const loadPlants = async () => {
         try {
-            const response = await fetch('https://perenual.com/api/species-list?key=sk-Vqvf678e6476b2c2d8310', {
+            const response = await fetch('http://127.0.0.1:3000/loadProduct', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

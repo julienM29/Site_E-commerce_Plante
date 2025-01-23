@@ -3,7 +3,7 @@ import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import { createAccount, connexionAccount } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
-
+import { loadAProductDB } from './controllers/product.js';
 const fastify = Fastify();
 
 // Ajouter le plugin CORS
@@ -61,6 +61,10 @@ fastify.post('/creationCompte', async (request, reply) => {
 fastify.get('/loadType', async (request, reply) => {
   const types = await loadTypeDB();
   reply.send({ types });
+});
+fastify.get('/loadProduct', async (request, reply) => {
+  const product = await loadAProductDB();
+  reply.send({ product });
 });
 // Lancer le serveur
 fastify.listen({ port: 3000, host: '127.0.0.1' }, (err, address) => {
