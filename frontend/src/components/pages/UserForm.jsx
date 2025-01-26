@@ -44,28 +44,73 @@ function UserForm() {
     }
   }, [showLogin]);
 
-  const submitConexionForm = async (event) => {
-    event.preventDefault(); // Empêche le rechargement de la page
+  const submitConnexionForm = async (event) => {
+    event.preventDefault();
+  
     const formDataCreation = {
       emailConnexion,
       motDePasseConnexion,
     };
-    const response = await fetch('http://127.0.0.1:3000/connexion', {
+  
+    console.log("📤 Envoi des données :", formDataCreation);
+  
+    const response =  await fetch('http://localhost:3000/connexion', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json', // Spécifie que les données sont en JSON
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formDataCreation), // Envoie les données sous forme de JSON
+      body: JSON.stringify(formDataCreation),
+      credentials: 'include',  // Important pour récupérer les cookies !
     });
+  
+    console.log("📥 Réponse brute du serveur :", response);
+  
     const result = await response.json();
-    if (result.messageEmail !== '') {
+    console.log("📥 Résultat JSON du serveur :", result);
+  
+    if (result.token) {
+      console.log("✅ Token reçu :", result.token);
+    }
+  
+    if (result.messageEmail ) {
+      console.log("❌ Erreur email :", result.messageEmail);
       setErrorMessageEmailIncorrect(result.messageEmail);
     }
   
-    if (result.messageMDP !== '') {
+    if (result.messageMDP ) {
+      console.log("❌ Erreur mot de passe :", result.messageMDP);
       setErrorMessageMDPIncorrect(result.messageMDP);
     }
-  }
+  
+    if (result.success) {
+      console.log("✅ Connexion réussie !");
+      console.log("🔑 Token reçu :", result.token);
+  
+      // Vérification de la route protégée avant redirection  
+      // Redirection seulement après vérification
+      // window.location.href = '/';
+    }
+  };
+  const checkUserInfo = async () => {
+    console.log('check user : !')
+    fetch('http://127.0.0.1:3000/userInfo', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',  // Cela permet d'envoyer les cookies avec la requête
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Données utilisateur : ', data);
+    })
+    .catch(error => console.error('Erreur lors de la récupération des informations utilisateur : ', error));
+    
+  };
+  
+  
+
+
   const submitCreationForm = async (event) => {
     event.preventDefault(); // Empêche le rechargement de la page
     const formDataCreation = {
@@ -105,7 +150,7 @@ function UserForm() {
           <h2 className="text-center max-sm:text-2xl text-4xl text-gray-600 font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-800 from-emerald-500">
             Connectez-vous !
           </h2>
-          <form className="w-full max-sm:px-6 px-8 gap-7 flex flex-col items-center" id="loginForm" onSubmit={submitConexionForm}>
+          <form className="w-full max-sm:px-6 px-8 gap-7 flex flex-col items-center" id="loginForm" onSubmit={submitConnexionForm}>
             <InputFormField
               type="email"
               name="floating_email"

@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
-
+import ProfilInformationForm from './ProfilInformationForm';
 const ProfilContent = ({  ongletActif }) => {
 
     return (
         <div className='flex-1 bg-white rounded-3xl p-2'>
             {ongletActif === "profil" && (
-                <div>
-                    <h2 className="text-2xl font-bold mb-4">Profil</h2>
-                    <p>Bienvenue dans votre espace Profil. Vous pouvez ici modifier vos informations personnelles.</p>
-                </div>
+                <ProfilInformationForm />
             )}
             {ongletActif === "adresse" && (
                 <div>

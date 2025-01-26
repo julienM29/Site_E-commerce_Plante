@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
-
+import LogoutButton from './LogoutButton';
 const ProfilMenu = ({ setOngletActif, ongletActif }) => {
+
+
+
     const ButtonMenu = ({ image, titre, titreOngletActif }) => {
         return (
             <div
@@ -53,7 +56,7 @@ const ProfilMenu = ({ setOngletActif, ongletActif }) => {
 
             <div className="flex flex-col justify-between gap-2 py-2 pb-5 border-b">
                 <ButtonMenu image="profil_password.png" titre="Changer le mot de passe" titreOngletActif="motDePasse" />
-                <ButtonMenu image="se-deconnecter.png" titre="Déconnexion" titreOngletActif="deconnexion" />
+                <LogoutButton />
             </div>
         </div>
     );
