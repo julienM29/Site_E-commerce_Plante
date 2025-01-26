@@ -11,7 +11,7 @@ import Panier from './components/pages/Panier.jsx';
 import ProductPage from './components/pages/ProductPage.jsx';
 import Search from './components/pages/Search.jsx';
 import Dashboard from './components/Test.jsx';
-import Profil from './components/pages/Profil.jsx'
+import Profil from './components/pages/Profil.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Header />

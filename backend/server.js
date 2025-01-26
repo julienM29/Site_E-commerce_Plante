@@ -34,24 +34,24 @@ fastify.post('/connexion', async (request, reply) => {
   }
 
   try {
-    const { messageEmail, messageMDP, token } = await connexionAccount(fastify, emailConnexion, motDePasseConnexion); 
-    
+    const { messageEmail, messageMDP, token } = await connexionAccount(fastify, emailConnexion, motDePasseConnexion);
+
     if (messageEmail || messageMDP) {
       return reply.status(400).send({ messageEmail, messageMDP });
     }
 
     // Connexion réussie, renvoyer le token JWT dans un cookie HttpOnly
     reply
-  .setCookie('token', token, {
-    httpOnly: true,
-    secure: true, // Utilise true si tu es en HTTPS, sinon false pour HTTP
-    sameSite: 'None',
-    path: '/',
-    maxAge: 60 * 60 * 24 * 7,
-    domain: 'localhost',  // 🔧 Ajoute cette ligne pour forcer 'localhost' comme domaine
-  })
-  .status(200)
-  .send({ success: true, message: 'Utilisateur connecté', token });
+      .setCookie('token', token, {
+        httpOnly: true,
+        secure: true, // Utilise true si tu es en HTTPS, sinon false pour HTTP
+        sameSite: 'None',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
+        domain: 'localhost',  // 🔧 Ajoute cette ligne pour forcer 'localhost' comme domaine
+      })
+      .status(200)
+      .send({ success: true, message: 'Utilisateur connecté', token });
     console.log("✅ Token envoyé au client :", token);
 
   } catch (err) {
@@ -61,20 +61,28 @@ fastify.post('/connexion', async (request, reply) => {
 // Route pour obtenir les informations de l'utilisateur (protégée par JWT)
 fastify.get('/userInfo', async (request, reply) => {
   try {
-    console.log('Cookies dans la requête : ', request.cookies);  // Vérifie que le cookie est bien envoyé
-    
-    const token = request.cookies.token;
+    // Vérification si le cookie 'token' existe
+    const token = request.cookies?.token;
     if (!token) {
-      return reply.status(401).send({ error: 'Utilisateur non authentifié' });
+      console.log("🔐 Token manquant dans les cookies");
+      return reply.send({ error: 'Utilisateur non authentifié', success: false });
     }
 
+    // Vérification du token JWT
     const user = fastify.jwt.verify(token);
-    reply.status(200).send(user);
+    console.log("🔍 Token validé, infos utilisateur :", user); // Affichage des infos utilisateur
+
+    // Réponse avec les infos utilisateur et success
+    reply.status(200).send({ user, success: true });
   } catch (err) {
-    console.error('Erreur lors de la vérification du token : ', err);
-    reply.status(401).send({ error: 'Token invalide ou expiré', details: err.message });
+    console.error('❌ Erreur lors de la vérification du token : ', err);
+
+    // Si une autre erreur se produit
+    return reply.status(500).send({ error: 'Erreur serveur lors de la vérification du token', details: err.message, success: false });
   }
 });
+
+
 
 
 
@@ -84,7 +92,7 @@ fastify.post('/logout', async (request, reply) => {
   try {
     // Supprimer le cookie du token JWT
     reply.clearCookie('token');
-    reply.status(200).send({ messageLogout: 'Utilisateur déconnecté' });
+    reply.status(200).send({ messageLogout: 'Utilisateur déconnecté', success: true });
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue pendant la déconnexion', details: err.message });
   }

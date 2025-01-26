@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 function LogoutButton() {
     const logoutUser = async () => {
+        console.log('logoutUser dans LogoutButton.jsx')
         const response = await fetch('http://localhost:3000/logout', {
             method: 'POST',
             headers: {

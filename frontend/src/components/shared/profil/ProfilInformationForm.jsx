@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from './DatePicker';
-
+import { checkUserConnect } from '../CheckUserInformation';
 const ProfilInformationForm = () => {
     const [userInfo, setUserInfo] = useState({
         prenom: '',
@@ -33,25 +33,16 @@ const ProfilInformationForm = () => {
     };
 
     // Fonction pour récupérer les informations de la session
-    const checkUserInfo = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/userInfo', {
-                method: 'GET',
-                credentials: 'include', // Important pour envoyer les cookies
-            });
+    const getUserInfo = async () => {
+            const result = await checkUserConnect();
 
-            const result = await response.json();
             console.log("🔍 Infos utilisateur récupérées :", result);
             setUserInfo({
-                prenom: result.prenom,
-                nom: result.nom,
-                email: result.email,
+                prenom: result.user.prenom,
+                nom: result.user.nom,
+                email: result.user.email,
                 telephone: '',
             })
-        } catch (err) {
-            console.error("❌ Erreur lors de la récupération des infos utilisateur :", err);
-        }
-
     };
 
 
@@ -60,7 +51,7 @@ const ProfilInformationForm = () => {
 
     // Appeler la fonction pour récupérer les informations au montage du composant
     useEffect(() => {
-        checkUserInfo();
+        getUserInfo();
     }, []);
 
     // Gérer les changements dans les champs du formulaire

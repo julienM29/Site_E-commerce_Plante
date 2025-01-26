@@ -86,30 +86,10 @@ function UserForm() {
       console.log("✅ Connexion réussie !");
       console.log("🔑 Token reçu :", result.token);
   
-      // Vérification de la route protégée avant redirection  
       // Redirection seulement après vérification
-      // window.location.href = '/';
+      window.location.href = '/';
     }
   };
-  const checkUserInfo = async () => {
-    console.log('check user : !')
-    fetch('http://127.0.0.1:3000/userInfo', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',  // Cela permet d'envoyer les cookies avec la requête
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Données utilisateur : ', data);
-    })
-    .catch(error => console.error('Erreur lors de la récupération des informations utilisateur : ', error));
-    
-  };
-  
-  
-
 
   const submitCreationForm = async (event) => {
     event.preventDefault(); // Empêche le rechargement de la page
