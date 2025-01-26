@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ProfilMenu from '../shared/profil/ProfilMenu';
-import ProfilContent from '../shared/profil/ProfilContent';
+import ProfilContent from '../shared/profil/content/ProfilContent';
 import UserForm from './UserForm';
 import { checkUserConnect } from '../shared/CheckUserInformation';
 

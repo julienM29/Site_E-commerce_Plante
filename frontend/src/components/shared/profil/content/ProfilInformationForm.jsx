@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import DatePicker from './DatePicker';
-import { checkUserConnect } from '../CheckUserInformation';
+import CustomDatePicker from '../DatePicker';
+import { checkUserConnect } from '../../CheckUserInformation';
 const ProfilInformationForm = () => {
     const [userInfo, setUserInfo] = useState({
         prenom: '',
@@ -121,7 +121,7 @@ const ProfilInformationForm = () => {
 
                 <div className="flex flex-col gap-2 w-1/2">
                     <label htmlFor="prenom">Date de naissance</label>
-                    <DatePicker />
+                    <CustomDatePicker />
                 </div>
                 <div className="flex flex-col gap-2 w-1/2">
                     <label htmlFor="genre">Genre</label>
