@@ -18,7 +18,7 @@ const ProfilInformationForm = () => {
     const getUserInfo = async () => {
         const result = await checkUserConnect();
 
-        console.log("🔍 Infos utilisateur récupérées :", result);
+        // console.log("🔍 Infos utilisateur récupérées :", result);
         setUserInfo({
             prenom: result.user.prenom,
             nom: result.user.nom,

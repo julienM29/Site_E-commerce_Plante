@@ -42,7 +42,7 @@ const submitAdressForm = async (event) => {
 };
     return (
         <form
-            className="w-full  gap-7 flex flex-col items-center"
+            className="w-full  gap-7 flex flex-col items-center px-6 py-8"
             id="loginForm"
             onSubmit={submitAdressForm}
         >
