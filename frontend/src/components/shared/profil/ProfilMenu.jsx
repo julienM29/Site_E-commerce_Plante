@@ -29,7 +29,7 @@ const ProfilMenu = ({ setOngletActif, ongletActif }) => {
         )
     }
     return (
-        <div className="w-[280px] rounded-3xl bg-white border shadow-lg flex flex-col gap-4 h-auto">
+        <div className="w-[280px] rounded-3xl bg-white border shadow-lg flex flex-col gap-4 self-start">
             <div className="flex gap-6 items-center rounded-2xl border-b p-5 shadow-lg">
                 <p className="rounded-full bg-zinc-400 p-2 text-2xl">MJ</p>
                 <div className="flex flex-col">

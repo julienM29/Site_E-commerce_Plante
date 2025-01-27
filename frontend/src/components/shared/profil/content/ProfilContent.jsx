@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 
 import ProfilInformationForm from './ProfilInformationForm';
 import Adresse from './Adresse';
-
+import Commande from './Commande';
 const ProfilContent = ({ ongletActif }) => {
   const profilRef = useRef(null);
   const adresseRef = useRef(null);
@@ -49,7 +49,7 @@ const ProfilContent = ({ ongletActif }) => {
   }, [ongletActif]); // Exécute cette logique chaque fois que `ongletActif` change
 
   return (
-    <div className="flex-1 bg-white rounded-3xl p-2">
+    <div className="flex-1 bg-white rounded-3xl self-start">
       <div ref={profilRef}>
         {ongletActif === "profil" && <ProfilInformationForm />}
       </div>
@@ -58,10 +58,7 @@ const ProfilContent = ({ ongletActif }) => {
       </div>
       <div ref={commandeRef}>
         {ongletActif === "commande" && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Commande</h2>
-            <p>Consultez l'historique de vos commandes.</p>
-          </div>
+          <Commande />
         )}
       </div>
       <div ref={listeEnvieRef}>

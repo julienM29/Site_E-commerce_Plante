@@ -36,7 +36,7 @@ function Profil() {
     // Si l'utilisateur est connecté, afficher le profil
     return (
         <div className="bg-custom-light py-16 min-h-[78vh] w-full flex justify-center">
-            <div className='w-1/2 flex gap-6 h-3/4'>
+            <div className='w-1/2 flex gap-6'>
                 <ProfilMenu setOngletActif={setOngletActif} ongletActif={ongletActif} />
                 <ProfilContent ongletActif={ongletActif} />
             </div>
