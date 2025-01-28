@@ -4,6 +4,9 @@ import { gsap } from 'gsap';
 import ProfilInformationForm from './ProfilInformationForm';
 import Adresse from './Adresse';
 import Commande from './Commande';
+import ListeEnvie from './ListeEnvie';
+import ModifyMDP from './ModifyPassword';
+import ConsulteRecemment from './ConsulteRecemment';
 const ProfilContent = ({ ongletActif }) => {
   const profilRef = useRef(null);
   const adresseRef = useRef(null);
@@ -63,26 +66,17 @@ const ProfilContent = ({ ongletActif }) => {
       </div>
       <div ref={listeEnvieRef}>
         {ongletActif === "listeEnvie" && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Liste d'envies</h2>
-            <p>Consultez l'historique de vos commandes.</p>
-          </div>
+          <ListeEnvie />
         )}
       </div>
       <div ref={consulteRecemmentRef}>
         {ongletActif === "consulteRecemment" && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Consultés récemment</h2>
-            <p>Consultez l'historique de vos commandes.</p>
-          </div>
+          < ConsulteRecemment/>
         )}
       </div>
       <div ref={motDePasseRef}>
         {ongletActif === "motDePasse" && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Changer de mot de passe</h2>
-            <p>Consultez l'historique de vos commandes.</p>
-          </div>
+          <ModifyMDP />
         )}
       </div>
     </div>
