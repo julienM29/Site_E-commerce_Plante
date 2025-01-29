@@ -100,24 +100,135 @@ const ProductGrid = ({ data }) => {
 
   const offset = currentPage * itemsPerPage;
   const currentItems = data.slice(offset, offset + itemsPerPage);
-
+console.log('data :',data)
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {currentItems.map((plant, index) => (
           <div
             key={index}
-            className="bg-white rounded-3xl flex flex-col font-semibold w-full border shadow-lg"
+            className=" w-full "
           >
             {/* Utilise les données de l'API pour afficher chaque plante */}
-                       <ConteneurPlant
-              primaryImage={plant.default_image.original_url}
-              secondaryImage="/images/plant2.jpeg"
-              altPrimary="Plante verte"
-              altSecondary="Plante en floraison"
-              nom={plant.common_name}
-              descriptionRapide="couvre-sol efficace"
-              prixInitial="12.50"
+              <ConteneurPlant
+              id={plant.id}
+              primaryImage={`/images/${plant.images[0]}`}
+              secondaryImage={`/images/${plant.images[1]}`}
+              altPrimary="photo 1 de la plante"
+              altSecondary="photo 2 de la plante"
+              nom={plant.nom}
+              descriptionRapide={plant.famille}
+              prixInitial={plant.prix}
+              prixReduit="0"
+               reduction="0"
+               infoStock="disponible"
+             />
+          </div>
+          
+        ))}
+        {currentItems.map((plant, index) => (
+          <div
+            key={index}
+            className=" w-full "
+          >
+            {/* Utilise les données de l'API pour afficher chaque plante */}
+              <ConteneurPlant
+              id={plant.id}
+              primaryImage={`/images/${plant.images[0]}`}
+              secondaryImage={`/images/${plant.images[1]}`}
+              altPrimary="photo 1 de la plante"
+              altSecondary="photo 2 de la plante"
+              nom={plant.nom}
+              descriptionRapide={plant.famille}
+              prixInitial={plant.prix}
+              prixReduit="0"
+               reduction="0"
+               infoStock="disponible"
+             />
+          </div>
+          
+        ))}
+        {currentItems.map((plant, index) => (
+          <div
+            key={index}
+            className=" w-full "
+          >
+            {/* Utilise les données de l'API pour afficher chaque plante */}
+              <ConteneurPlant
+              id={plant.id}
+              primaryImage={`/images/${plant.images[0]}`}
+              secondaryImage={`/images/${plant.images[1]}`}
+              altPrimary="photo 1 de la plante"
+              altSecondary="photo 2 de la plante"
+              nom={plant.nom}
+              descriptionRapide={plant.famille}
+              prixInitial={plant.prix}
+              prixReduit="0"
+               reduction="0"
+               infoStock="disponible"
+             />
+          </div>
+          
+        ))}
+        {currentItems.map((plant, index) => (
+          <div
+            key={index}
+            className=" w-full "
+          >
+            {/* Utilise les données de l'API pour afficher chaque plante */}
+              <ConteneurPlant
+              id={plant.id}
+              primaryImage={`/images/${plant.images[0]}`}
+              secondaryImage={`/images/${plant.images[1]}`}
+              altPrimary="photo 1 de la plante"
+              altSecondary="photo 2 de la plante"
+              nom={plant.nom}
+              descriptionRapide={plant.famille}
+              prixInitial={plant.prix}
+              prixReduit="0"
+               reduction="0"
+               infoStock="disponible"
+             />
+          </div>
+          
+        ))}
+        {currentItems.map((plant, index) => (
+          <div
+            key={index}
+            className=" w-full "
+          >
+            {/* Utilise les données de l'API pour afficher chaque plante */}
+              <ConteneurPlant
+              id={plant.id}
+              primaryImage={`/images/${plant.images[0]}`}
+              secondaryImage={`/images/${plant.images[1]}`}
+              altPrimary="photo 1 de la plante"
+              altSecondary="photo 2 de la plante"
+              nom={plant.nom}
+              descriptionRapide={plant.famille}
+              prixInitial={plant.prix}
+              prixReduit="0"
+               reduction="0"
+               infoStock="disponible"
+             />
+          </div>
+          
+        ))}
+        {currentItems.map((plant, index) => (
+          <div
+            key={index}
+            className=" w-full "
+          >
+            {/* Utilise les données de l'API pour afficher chaque plante */}
+              <ConteneurPlant
+              id={plant.id}
+              primaryImage={`/images/${plant.images[0]}`}
+              secondaryImage={`/images/${plant.images[1]}`}
+              altPrimary="photo 1 de la plante"
+              altSecondary="photo 2 de la plante"
+              nom={plant.nom}
+              descriptionRapide={plant.famille}
+              prixInitial={plant.prix}
               prixReduit="0"
                reduction="0"
                infoStock="disponible"

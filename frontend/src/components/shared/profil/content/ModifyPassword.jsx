@@ -77,7 +77,7 @@ const ModifyMDP = () => {
                     <div className="flex flex-col gap-2 ">
                         <label htmlFor="newMDP">Nouveau mot de passe</label>
                         <input
-                            type="text"
+                            type="password"
                             name="newMDP"
                             id="newMDP"
                             className="h-10 border mt-1 rounded px-4 w-full bg-gray-100"
@@ -89,7 +89,7 @@ const ModifyMDP = () => {
                     <div className="flex flex-col gap-2">
                         <label htmlFor="confirmationMDP">Confirmez le nouveau mot de passe</label>
                         <input
-                            type="text"
+                            type="password"
                             name="confirmationMDP"
                             id="confirmationMDP"
                             className="h-10 border mt-1 rounded px-4 w-full bg-gray-100"

@@ -4,6 +4,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade } from 'swiper/modules';
 import CaracteristiqueProduit from '../shared/CaracteristiqueProduit';
 import DetailProduit from '../shared/DetailProduit';
+import { useParams } from 'react-router-dom';
+
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -14,6 +16,7 @@ const ProductPage = () => {
   const swiperRef = useRef(null);
   const [dataPlants, setDataPlants] = useState({});
   const [tabImages, setTabImages] = useState([]);  // Utilisation de useState pour tabImages
+  const { id } = useParams();
 
   const handleSlideChange = (index) => {
     if (swiperRef.current) {
@@ -24,7 +27,7 @@ const ProductPage = () => {
 
   const loadPlants = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:3000/loadProduct', {
+      const response = await fetch(`http://127.0.0.1:3000/loadProduct/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

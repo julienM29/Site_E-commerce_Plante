@@ -7,7 +7,7 @@ import fastifyCookie from 'fastify-cookie';
 import fastifyJWT from '@fastify/jwt';
 import { createAccount, connexionAccount } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
-import { loadAProductDB } from './controllers/product.js';
+import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
@@ -127,15 +127,28 @@ fastify.get('/loadType', async (request, reply) => {
 });
 
 // Route pour charger un produit
-fastify.get('/loadProduct', async (request, reply) => {
+fastify.get('/loadProduct/:id', async (request, reply) => {
   try {
-    const product = await loadAProductDB();
+    const { id } = request.params;  // Récupère l'ID depuis les paramètres de l'URL
+    const product = await loadAProductDB(id);  // Appel de ta fonction avec l'ID récupéré
+    reply.status(200).send({ product });
+  } catch (err) {
+    reply.status(500).send({
+      error: 'Une erreur est survenue lors du chargement du produit',
+      details: err.message
+    });
+  }
+});
+
+// Route pour charger un produit
+fastify.get('/loadAllProduct', async (request, reply) => {
+  try {
+    const product = await loadAllProduct();
     reply.status(200).send({ product });
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit', details: err.message });
   }
 });
-
 
 
 // Lancer le serveur

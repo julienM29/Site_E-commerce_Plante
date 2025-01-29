@@ -51,9 +51,9 @@ const ProfilInformationForm = () => {
     return (
         <div>
             {modifyInformation ? (
-                <Information userInfo={userInfo} handleChange={handleChange} changeContent={changeContent}/>
-            ) : (
                 <InformationForm userInfo={userInfo} handleChange={handleChange} changeContent={changeContent} />
+            ) : (
+                <Information userInfo={userInfo} handleChange={handleChange} changeContent={changeContent}/>
             )}
         </div>
     );

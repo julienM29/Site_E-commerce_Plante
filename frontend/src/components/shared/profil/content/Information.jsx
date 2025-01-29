@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import CustomDatePicker from '../DatePicker';
 
-function Information({userInfo, changeContent, handleChange }) {
+function Information({ userInfo, changeContent, handleChange }) {
 
     return (
         <div className="relative w-full flex justify-center px-6 py-8">
 
             <img
-                src="./icones/out_form_information.png"
+                src="./icones/modifyInformation.png"
                 alt="Quitter la modification"
                 className="absolute top-3 right-2 w-7 h-7 cursor-pointer"
                 onClick={changeContent}

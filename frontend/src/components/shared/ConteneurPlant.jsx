@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react';
 
 
-const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock }) => {
+const ConteneurPlant = ({ id, primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock }) => {
 
 
   return (
-    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-11/12 border shadow-lg`}>
-      <a href='/produit/1' className='group relative w-full h-96'>
+    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-full border shadow-lg`}>
+      <a href={`/produit/${id}`} className='group relative w-full h-96'>
         <img
           src={primaryImage}
           alt={altPrimary}
@@ -40,15 +40,15 @@ const ConteneurPlant = ({ primaryImage, secondaryImage, altPrimary, altSecondary
           </div>
         </div>
         <div className='w-full flex max-xl:flex-col xl:justify-around gap-2'>
-        <p className='flex gap-2 justify-center items-center'>
-          <img src="/icones/verifier.png" alt="" className='w-6 h-6' />
-          <span className=''>{infoStock}</span>
-        </p>
-        <button className="rounded-3xl flex justify-center px-5 py-2 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300">
-    Ajouter au panier
-</button>
+          <p className='flex gap-2 justify-center items-center'>
+            <img src="/icones/verifier.png" alt="" className='w-6 h-6' />
+            <span className=''>{infoStock}</span>
+          </p>
+          <button className="rounded-3xl flex justify-center px-5 py-2 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300">
+            Ajouter au panier
+          </button>
 
-      </div>
+        </div>
       </div>
     </div>
   );
