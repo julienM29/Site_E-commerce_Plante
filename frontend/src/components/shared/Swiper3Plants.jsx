@@ -35,6 +35,7 @@ const Swiper3Plants = ({}) => {
               className="my-custom-swiper overflow-visible relative"
             >
               <SwiperSlide> <ConteneurPlant
+                taille={'11/12'}
                 primaryImage="/images/plante.png"
                 secondaryImage="/images/plant2.jpeg"
                 altPrimary="Plante verte"
@@ -47,6 +48,7 @@ const Swiper3Plants = ({}) => {
                 infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
+                taille={'11/12'}
                 primaryImage="/images/plante.png"
                 secondaryImage="/images/plant2.jpeg"
                 altPrimary="Plante verte"
@@ -59,6 +61,7 @@ const Swiper3Plants = ({}) => {
                 infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
+                taille={'11/12'}
                 primaryImage="/images/plante.png"
                 secondaryImage="/images/plant2.jpeg"
                 altPrimary="Plante verte"
@@ -71,6 +74,7 @@ const Swiper3Plants = ({}) => {
                 infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
+                taille={'11/12'}
                 primaryImage="/images/plante.png"
                 secondaryImage="/images/plant2.jpeg"
                 altPrimary="Plante verte"
@@ -83,6 +87,7 @@ const Swiper3Plants = ({}) => {
                 infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
+                taille={'11/12'}
                 primaryImage="/images/plante.png"
                 secondaryImage="/images/plant2.jpeg"
                 altPrimary="Plante verte"
@@ -95,6 +100,7 @@ const Swiper3Plants = ({}) => {
                 infoStock="En stock"
               /> </SwiperSlide>
               <SwiperSlide> <ConteneurPlant
+                taille={'11/12'}
                 primaryImage="/images/plante.png"
                 secondaryImage="/images/plant2.jpeg"
                 altPrimary="Plante verte"

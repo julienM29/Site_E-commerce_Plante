@@ -111,6 +111,7 @@ console.log('data :',data)
           >
             {/* Utilise les données de l'API pour afficher chaque plante */}
               <ConteneurPlant
+              taille={'full'}
               id={plant.id}
               primaryImage={`/images/${plant.images[0]}`}
               secondaryImage={`/images/${plant.images[1]}`}

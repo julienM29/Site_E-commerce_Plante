@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react';
 
 
-const ConteneurPlant = ({ id, primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock }) => {
+const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock }) => {
 
 
   return (
-    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-full border shadow-lg`}>
+    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-${taille} border shadow-lg`}>
       <a href={`/produit/${id}`} className='group relative w-full h-96'>
         <img
           src={primaryImage}
