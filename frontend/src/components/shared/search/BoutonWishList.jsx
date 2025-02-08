@@ -10,11 +10,8 @@ const WishlistButton = ({userId, isWishlisted, plantId }) => {
     try {
       if (isWishlisted) {
         setInWishlist(false); // 🔥 Optimisation UI rapide
-
         await fetch(`http://localhost:3000/deleteWishList/${userId}/${plantId}`, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ plantId }),
+          method: "POST",
           credentials: "include",
         });
       } else {
@@ -22,8 +19,6 @@ const WishlistButton = ({userId, isWishlisted, plantId }) => {
 
         await fetch(`http://localhost:3000/addWishList/${userId}/${plantId}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ plantId }),
           credentials: "include",
         });
       }

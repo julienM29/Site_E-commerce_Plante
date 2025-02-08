@@ -157,19 +157,20 @@ fastify.get('/checkWishList', async (request, reply) => {
 });
 
 
-fastify.get('/addWishList/:id_user/:id_plante', async (request, reply) => {
+fastify.post('/addWishList/:id_user/:id_plante', async (request, reply) => {
   const { id_user, id_plante } = request.params; 
   try {
-    const product = await addWishList(id_user, id_plante);
+    await addWishList(id_user, id_plante);
     reply.status(200);
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }
 });
-fastify.get('/deleteWishList/:id_user/:id_plante', async (request, reply) => {
+fastify.post('/deleteWishList/:id_user/:id_plante', async (request, reply) => {
   const { id_user, id_plante } = request.params; 
+
   try {
-    const product = await deleteWishList(id_user, id_plante);
+     await deleteWishList(id_user, id_plante);
     reply.status(200);
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
