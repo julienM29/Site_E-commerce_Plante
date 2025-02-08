@@ -8,7 +8,7 @@ import fastifyJWT from '@fastify/jwt';
 import { createAccount, connexionAccount } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
-
+import { addWishList, deleteWishList, checkWishList } from './controllers/wishList.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -34,25 +34,14 @@ fastify.post('/connexion', async (request, reply) => {
   }
 
   try {
-    const { messageEmail, messageMDP, token } = await connexionAccount(fastify, emailConnexion, motDePasseConnexion);
+    const { messageEmail, messageMDP, token } = await connexionAccount(fastify, emailConnexion, motDePasseConnexion, reply);
 
     if (messageEmail || messageMDP) {
       return reply.status(400).send({ messageEmail, messageMDP });
     }
-
-    // Connexion réussie, renvoyer le token JWT dans un cookie HttpOnly
-    reply
-      .setCookie('token', token, {
-        httpOnly: true,
-        secure: true, // Utilise true si tu es en HTTPS, sinon false pour HTTP
-        sameSite: 'None',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7,
-        domain: 'localhost',  // 🔧 Ajoute cette ligne pour forcer 'localhost' comme domaine
-      })
-      .status(200)
-      .send({ success: true, message: 'Utilisateur connecté', token });
-    console.log("✅ Token envoyé au client :", token);
+    
+    reply.send({ success: true, message: 'Utilisateur connecté' });
+    // console.log("✅ Token envoyé au client :", token);
 
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue pendant la connexion', details: err.message });
@@ -92,6 +81,7 @@ fastify.post('/logout', async (request, reply) => {
   try {
     // Supprimer le cookie du token JWT
     reply.clearCookie('token');
+    reply.clearCookie('wishList');
     reply.status(200).send({ messageLogout: 'Utilisateur déconnecté', success: true });
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue pendant la déconnexion', details: err.message });
@@ -149,8 +139,42 @@ fastify.get('/loadAllProduct', async (request, reply) => {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit', details: err.message });
   }
 });
+fastify.get('/checkWishList', async (request, reply) => {
+  try {
+    const cookie = request.cookies?.wishList;  // Accéder au cookie 'wishList'
+    if (!cookie) {
+      return reply.status(200).send({ wishList: [] });  // Si le cookie est vide, renvoyer un tableau vide
+    }
+
+    // Si le cookie est une chaîne séparée par des virgules
+    const decodedCookie = decodeURIComponent(cookie);  // Décoder le cookie si nécessaire
+    const wishList = decodedCookie.split(',').map(Number);  // Séparer par des virgules et convertir chaque valeur en nombre
+    reply.status(200).send({ wishList });  // Renvoyer la wishlist sous forme de tableau
+  } catch (err) {
+    console.error('Erreur lors de la récupération du cookie:', err);
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement de la wishlist' });
+  }
+});
 
 
+fastify.get('/addWishList/:id_user/:id_plante', async (request, reply) => {
+  const { id_user, id_plante } = request.params; 
+  try {
+    const product = await addWishList(id_user, id_plante);
+    reply.status(200);
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
+  }
+});
+fastify.get('/deleteWishList/:id_user/:id_plante', async (request, reply) => {
+  const { id_user, id_plante } = request.params; 
+  try {
+    const product = await deleteWishList(id_user, id_plante);
+    reply.status(200);
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
+  }
+});
 // Lancer le serveur
 fastify.listen({ port: 3000, host: 'localhost' }, (err, address) => {
   if (err) {

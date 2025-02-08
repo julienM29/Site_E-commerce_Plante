@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
+import WishlistButton from './search/BoutonWishList';
 
-
-const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock }) => {
+const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock,idUser, isWishlisted }) => {
 
 
   return (
-    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-${taille} border shadow-lg`}>
+    <div className={`bg-white rounded-3xl flex flex-col font-semibold w-${taille} border shadow-lg relative`}>
+      <WishlistButton plantId={id} userId={idUser} isWishlisted={isWishlisted}/>
       <a href={`/produit/${id}`} className='group relative w-full h-96'>
         <img
           src={primaryImage}
@@ -18,7 +19,6 @@ const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, 
           className="rounded-t-xl object-cover w-full h-full absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100"
         />
       </a>
-
       <div className='flex flex-col items-center gap-4 pb-4'>
         <p className='bg-bande-description text-white w-full text-center'>{descriptionRapide}</p>
         <a href='/plant/1' className='flex justify-start w-full text-lg px-2 font-semibold text-emerald-950'>{nom}</a>

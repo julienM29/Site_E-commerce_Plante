@@ -6,7 +6,7 @@ function Search() {
 
     const [types, setTypes] = useState([]);
     const [dataPlants, setDataPlants] = useState([]); // Toujours initialiser en tableau
-
+    
     const loadTypesPlant = async () => {
         try {
             const response = await fetch('http://127.0.0.1:3000/loadType', {
