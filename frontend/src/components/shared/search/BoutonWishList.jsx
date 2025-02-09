@@ -4,29 +4,28 @@ import { Heart } from "lucide-react";
 const WishlistButton = ({userId, isWishlisted, plantId }) => {
     const [inWishlist, setInWishlist] = useState(isWishlisted);
 
-  const toggleWishlist = async () => {
-    if (!userId) return; // Éviter les requêtes inutiles si l'utilisateur n'est pas connecté
-
-    try {
-      if (isWishlisted) {
-        setInWishlist(false); // 🔥 Optimisation UI rapide
-        await fetch(`http://localhost:3000/deleteWishList/${userId}/${plantId}`, {
-          method: "POST",
-          credentials: "include",
-        });
-      } else {
-        setInWishlist(true);
-
-        await fetch(`http://localhost:3000/addWishList/${userId}/${plantId}`, {
-          method: "POST",
-          credentials: "include",
-        });
+    const toggleWishlist = async () => {
+      if (!userId) return; // 🔹 Vérifier si l'utilisateur est connecté
+    
+      try {
+        setInWishlist(prevState => !prevState); // 🔥 UI instantanée basée sur l'état précédent
+    
+        if (inWishlist) {
+          await fetch(`http://localhost:3000/deleteWishList/${userId}/${plantId}`, {
+            method: "POST",
+            credentials: "include",
+          });
+        } else {
+          await fetch(`http://localhost:3000/addWishList/${userId}/${plantId}`, {
+            method: "POST",
+            credentials: "include",
+          });
+        }
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour de la wishlist:", error);
+        setInWishlist(prevState => !prevState); // ⚠️ Revenir à l’état précédent en cas d'erreur
       }
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour de la wishlist:", error);
-      setInWishlist(!inWishlist); // ⚠️ Revenir à l’état précédent si la requête échoue
-    }
-  };
+    };
 
   return (
     <button
