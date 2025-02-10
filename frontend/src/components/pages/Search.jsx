@@ -73,7 +73,7 @@ function Search() {
     };
 
 
-      const searchByText = async () => {
+    const searchByText = async () => {
         try {
             const response = await fetch(`http://localhost:3000/searchByText/${searchQuery}`, {
                 method: "POST",
@@ -81,7 +81,7 @@ function Search() {
             });
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
-            console.log("search by texte, products : " , data.products)
+            console.log("search by texte, products : ", data.products)
             setDataPlants(data.products);
 
         } catch (error) {
@@ -91,17 +91,17 @@ function Search() {
     }
     useEffect(() => {
         loadTypesPlant();
-        
+
         if (!searchQuery) {
             loadPlants();
         }
-    }, []); 
+    }, []);
     useEffect(() => {
         if (searchQuery) {
             searchByText(); // ✅ Maintenant, la fonction est bien exécutée
         }
     }, [searchQuery]);
-    
+
     return (
 
         <div className="bg-custom-light py-6 min-h-screen flex flex-col items-center gap-6">
@@ -109,14 +109,13 @@ function Search() {
                 <FilterBar />
                 <div className='w-4/5 flex flex-col gap-4 flex-grow'>
                     {selectType ? <div className='flex justify-between w-full'>
-                        <div className="relative flex justify-center border rounded-3xl overflow-hidden ">
-                            {/* <img src={getImage(type.image)} alt="" className='rounded-2xl h-30 w-30' /> */}
+                        {/* <div className="relative flex justify-center border rounded-3xl overflow-hidden ">
                             <img src={`/images/${typeChoice.image}`} alt="test" className='object-cover rounded-3xl h-48 w-48' />
                             <h3 className='absolute bottom-0 text-center text-white text-lg font-extrabold bg-gradient-to-t from-black to-transparent w-full px-3 py-2 rounded-b-3xl'>
                                 {typeChoice.nom}
                             </h3>
-                        </div>
-
+                        </div> */}
+                        <SwiperTest nbSlides={7} types={types} searchByType={searchByType} typeChoice={typeChoice}></SwiperTest>
                     </div>
                         : <SwiperTest nbSlides={7} types={types} searchByType={searchByType}></SwiperTest>}
                     {selectType ? <div className='flex justify-between items-center w-full'>
