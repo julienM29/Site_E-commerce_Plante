@@ -3,9 +3,12 @@ import BarreLivraisonGratuite from '../shared/BarreLivraisonGratuite';
 import ConteneurProduitPanier from '../shared/ConteneurProduitPanier';
 import { gsap } from "gsap";
 import Carroussel from '../shared/Carrousel';
+import { useNavigate } from "react-router-dom";
+
 function Header() {
-  const [message, setMessage] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();  // Hook pour changer de page
 
   const sidebarRef = useRef(null);
 
@@ -41,7 +44,13 @@ function Header() {
     });
     setIsSidebarOpen(false);
   };
-
+  const submitSearch = async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+    console.log("Recherche soumise :", searchQuery);
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`); // Met à jour l'URL
+    }
+};
   return (
     <>
       {/* Header */}
@@ -54,25 +63,41 @@ function Header() {
             <p className="text-3xl">Kerisnel</p>
           </a>
 
-          {/* Form section with search bar */}
-          <form method="GET" className="flex-1">
-            <div className="relative text-gray-600 focus-within:text-gray-400 w-full">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-                <button type="submit" className="p-1 focus:outline-none focus:shadow-outline">
-                  <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" className="w-6 h-6">
-                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
-                </button>
-              </span>
-              <input
-                type="search"
-                name="q"
-                className="py-2 text-lg text-white bg-gray-900 rounded-xl pl-10 focus:outline-none focus:bg-white focus:text-gray-900 w-full"
-                placeholder="Rechercher un plant..."
-                autoComplete="off"
-              />
-            </div>
-          </form>
+          <div className="flex-1 relative text-gray-600 focus-within:text-gray-400 w-full">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+              <button
+                type="submit"
+                className="p-1 focus:outline-none focus:shadow-outline"
+                onClick={submitSearch}
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  className="w-6 h-6"
+                >
+                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </span>
+            <input
+              type="search"
+              name="q"
+              className="py-2 text-lg text-white bg-gray-900 rounded-xl pl-10  focus:bg-white focus:text-gray-900 w-full"
+              placeholder="Rechercher un plant..."
+              autoComplete="off"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  submitSearch(e);
+                }
+              }}
+            />
+          </div>
 
           {/* Icon section */}
           <div className="flex gap-2">
@@ -130,13 +155,13 @@ function Header() {
           <ConteneurProduitPanier imgProduit="jardin.avif" prixTotalProduit='20' nomProduit='Arbre à papillions' quantiteProduit='2'></ConteneurProduitPanier>
         </div>
         <div className='h-[15%] bg-custom-light w-full flex flex-col gap-4 justify-center items-center'>
-          
+
           <button type="submit" className="w-3/4 font-bold flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400  text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">
             <a href="/panier">Aller au panier - 49euros</a>
           </button>
           <button onClick={closeSidebar} className="w-3/4 flex justify-center items-center font-semibold  text-md text-emerald-600 underline-offset-4 hover:underline">
-            Continuer vos achats 
-            
+            Continuer vos achats
+
           </button>
         </div>
       </div>

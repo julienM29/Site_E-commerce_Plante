@@ -8,7 +8,8 @@ import fastifyJWT from '@fastify/jwt';
 import { createAccount, connexionAccount } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
-import { addWishList, deleteWishList, checkWishList } from './controllers/wishList.js';
+import { addWishList, deleteWishList } from './controllers/wishList.js';
+import { loadProductByType, searchByText } from './controllers/search.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -59,7 +60,6 @@ fastify.get('/userInfo', async (request, reply) => {
 
     // Vérification du token JWT
     const user = fastify.jwt.verify(token);
-    console.log("🔍 Token validé, infos utilisateur :", user); // Affichage des infos utilisateur
 
     // Réponse avec les infos utilisateur et success
     reply.status(200).send({ user, success: true });
@@ -172,6 +172,27 @@ fastify.post('/deleteWishList/:id_user/:id_plante', async (request, reply) => {
   try {
      await deleteWishList(id_user, id_plante,request, reply);
     reply.status(200);
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
+  }
+});
+
+fastify.post('/productByType/:id_type', async (request, reply) => {
+  const { id_type } = request.params; 
+
+  try {
+     const products = await loadProductByType(id_type);
+    reply.status(200).send({ products });;
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
+  }
+});
+fastify.post('/searchByText/:text', async (request, reply) => {
+  const { text } = request.params; 
+
+  try {
+     const products = await searchByText(text);
+    reply.status(200).send({ products });;
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }

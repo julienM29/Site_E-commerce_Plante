@@ -12,7 +12,7 @@ import Floraison from './filterBar/Floraison';
 import Recolte from './filterBar/Recolte';
 const FilterBar = () => {
     return (
-<div className="w-1/5 flex flex-col py-5 px-4 rounded-2xl border shadow-2xl bg-white self-start">
+<div className="w-1/5 flex flex-col py-5 px-4 rounded-2xl border shadow-2xl bg-white self-start max-w-[313px]">
 
             <p className='text-rose-700 text-3xl font-semibold pb-4 '>Filtre</p>
             <ul>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Heart } from "lucide-react";
 
 const WishlistButton = ({userId, isWishlisted, plantId }) => {

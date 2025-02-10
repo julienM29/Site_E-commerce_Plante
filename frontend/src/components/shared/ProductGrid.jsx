@@ -11,8 +11,8 @@ const ProductGrid = ({ data }) => {
       const response = await fetch(`http://localhost:3000/checkWishList`, {
         credentials: "include",
       });
-      const data = await response.json();
-      setDataCookie(data.wishList);
+      const dataWishList = await response.json();
+      setDataCookie(dataWishList.wishList);
     } catch (error) {
       console.error("Erreur lors de la vérification de la wishlist:", error);
     } 
@@ -42,7 +42,7 @@ const ProductGrid = ({ data }) => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
         {currentItems.map((plant, index) => (
           <div
             key={index}
