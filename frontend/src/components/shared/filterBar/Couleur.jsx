@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-const ColorFilter = () => {
+const ColorFilter = ({selectedColor , setSelectedColor, setFilters, filters}) => {
   // Valeur de la couleur sélectionnée, initialement "aucune couleur"
-  const [selectedColor, setSelectedColor] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -13,7 +12,7 @@ const ColorFilter = () => {
     ['Blanc', 'bg-white'],
     ['Bleu', 'bg-blue-500'],
     ['Jaune', 'bg-yellow-500'],
-    ['Multi-couleur', 'bg-[url("/icones/multicolore.png")] bg-cover'],
+    ['Multicolor', 'bg-[url("/icones/multicolore.png")] bg-cover'],
     ['Noir', 'bg-black'],
     ['Orange', 'bg-orange-500'],
     ['Rose', 'bg-pink-500'],
@@ -24,8 +23,12 @@ const ColorFilter = () => {
   ];
 
   // Fonction pour changer la couleur sélectionnée
-  const handleColorChange = (color) => {
-    setSelectedColor(color);
+  const handleColorChange = (colorButton) => {
+    setSelectedColor(colorButton);
+    setFilters((prevState) => ({
+      ...prevState,
+      color: colorButton,
+  }));
   };
 
   return (
@@ -56,11 +59,11 @@ const ColorFilter = () => {
         className={`grid grid-cols-4 gap-2 transition-all duration-500 ease-in-out overflow-hidden px-2 ${isOpen ? 'max-h-screen opacity-100 py-2' : 'max-h-0 opacity-0 py-0'}`}
       >
         {/* Bouton pour chaque couleur */}
-        {colors.map((color) => (
+        {colors.map((colorButton) => (
           <button
-            key={color[0]}
-            onClick={() => handleColorChange(color[0])}
-            className={`border rounded-full w-9 h-9 transition-all duration-300 ${selectedColor === color[0] ? 'border-2 border-black' : ''} ${color[1]} `}
+            key={colorButton[0]}
+            onClick={() => handleColorChange(colorButton[0])}
+            className={`border rounded-full w-9 h-9 transition-all duration-300 ${selectedColor === colorButton[0] ? 'border-2 border-black' : ''} ${colorButton[1]} `}
             style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
           ></button>
         ))}

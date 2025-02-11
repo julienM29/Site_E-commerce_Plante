@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 function Feuillage() {
-    const [togglePersistantIsChecked, setTogglePersistantIsChecked] = useState(true);
+    const [togglePersistantIsChecked, setTogglePersistantIsChecked] = useState(false);
 
     const handleChange = () => {
         setTogglePersistantIsChecked((prev) => !prev);

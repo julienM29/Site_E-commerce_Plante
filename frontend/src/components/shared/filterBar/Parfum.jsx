@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 function Parfum() {
-    const [toggleParfumIsChecked, setToggleParfumIsChecked] = useState(true);
+    const [toggleParfumIsChecked, setToggleParfumIsChecked] = useState(false);
 
     const handleChange = () => {
         setToggleParfumIsChecked((prev) => !prev);

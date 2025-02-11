@@ -9,7 +9,7 @@ import { createAccount, connexionAccount } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList } from './controllers/wishList.js';
-import { loadProductByType, searchByText } from './controllers/search.js';
+import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -197,6 +197,17 @@ fastify.post('/searchByText/:text', async (request, reply) => {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }
 });
+fastify.post('/searchByParams', async (request, reply) => {
+  try {
+    const products = await searchByParams(request.body); // ✅ Passe le body à la fonction
+
+    reply.status(200).send({ products });
+  } catch (err) {
+    console.error('Erreur API :', err); // 🔥 Log l'erreur pour le debug
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
+  }
+});
+
 // Lancer le serveur
 fastify.listen({ port: 3000, host: 'localhost' }, (err, address) => {
   if (err) {

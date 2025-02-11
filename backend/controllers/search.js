@@ -71,7 +71,47 @@ export const searchByText = async (text) => {
                 ...product,
                 images: product.images ? product.images.split(', ') : [] // Convertit en tableau
             }));
-console.log('product length : ', formattedProducts.length)
+            console.log('product length : ', formattedProducts.length)
+            return formattedProducts;
+        } else {
+            return [];
+        }
+    } catch (err) {
+        console.error('Erreur lors de la récupération des plantes:', err);
+        throw new Error('Erreur lors de la récupération des plantes');
+    }
+};
+export const searchByParams = async (params) => {
+    try {
+        console.log('Params :', params);
+        let colorRequest = params.color || null;
+        let text = params.text || null;
+        console.log('recup color :', colorRequest);
+        let newRequest
+        let paramsRequest = [];
+
+        if (params) {
+            newRequest = requete + ' WHERE '
+        }
+        if (colorRequest) {
+            newRequest = newRequest + 'e2.couleur LIKE ? ';
+            paramsRequest.push(`%${colorRequest}%`)
+        }
+        if (text) {
+            newRequest = newRequest + ` AND p.nom LIKE ?`;
+            paramsRequest.push(`%${text}%`)
+        }
+
+        let finalRequest = newRequest + ' GROUP BY p.id;'
+        const [products] = await connection.promise().query(finalRequest, paramsRequest);
+
+        if (products.length > 0) {
+            // Transformer la colonne `images` en tableau
+            const formattedProducts = products.map(product => ({
+                ...product,
+                images: product.images ? product.images.split(', ') : [] // Convertit en tableau
+            }));
+            console.log('product length : ', formattedProducts.length)
             return formattedProducts;
         } else {
             return [];

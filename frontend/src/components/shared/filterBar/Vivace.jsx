@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 function Vivace() {
-    const [toggleVivaceIsChecked, setToggleVivaceIsChecked] = useState(true);
+    const [toggleVivaceIsChecked, setToggleVivaceIsChecked] = useState(false);
 
     const handleChange = () => {
         setToggleVivaceIsChecked((prev) => !prev);

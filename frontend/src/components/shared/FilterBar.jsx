@@ -10,14 +10,18 @@ import Arrosage from './filterBar/Arrosage';
 import Emplacement from './filterBar/Emplacement';
 import Floraison from './filterBar/Floraison';
 import Recolte from './filterBar/Recolte';
-const FilterBar = () => {
+import { useSearchParams } from "react-router-dom";
+
+const FilterBar = ({setFilters, filters}) => {
+      const [selectedColor, setSelectedColor] = useState(null);
+      
     return (
 <div className="w-1/5 flex flex-col py-5 px-4 rounded-2xl border shadow-2xl bg-white self-start max-w-[313px]">
 
             <p className='text-rose-700 text-3xl font-semibold pb-4 '>Filtre</p>
             <ul>
                 < Accordeon />
-                < ColorFilter />
+                < ColorFilter selectedColor={selectedColor} setSelectedColor={setSelectedColor} setFilters={setFilters} filters={filters}/>
                 < Exposition />
                 < Feuillage />
                 < Parfum />

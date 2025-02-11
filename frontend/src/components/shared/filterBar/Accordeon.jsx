@@ -53,7 +53,7 @@ function Accordeon() {
                 aria-expanded={isOpen}
                 className="flex justify-between items-center w-full px-1 py-4 text-left"
             >
-                <span className="text-lg font-medium">Menu</span>
+                <span className="text-lg font-medium">Prix</span>
                 <svg
                     className={`w-5 h-5 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     fill="none"

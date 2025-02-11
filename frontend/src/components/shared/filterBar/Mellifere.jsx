@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 function Mellifere() {
-    const [toggleMellifereIsChecked, setToggleMellifereIsChecked] = useState(true);
+    const [toggleMellifereIsChecked, setToggleMellifereIsChecked] = useState(false);
 
     const handleChange = () => {
         setToggleMellifereIsChecked((prev) => !prev);
