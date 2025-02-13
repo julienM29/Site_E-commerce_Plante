@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
-const ColorFilter = ({selectedColor , setSelectedColor, setFilters, filters}) => {
+const ColorFilter = ({ setFilters, filters}) => {
   // Valeur de la couleur sélectionnée, initialement "aucune couleur"
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };

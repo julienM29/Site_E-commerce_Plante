@@ -76,7 +76,7 @@ const ProductGrid = ({ data }) => {
         pageCount={pageCount}
         onPageChange={handlePageClick}
         containerClassName={"flex justify-center items-center mt-6"}
-        pageClassName={"items-center px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-white rounded-md border-2 border-gray-500 hover:bg-emerald-600 hover:text-white"}
+        pageClassName={"items-center px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform rounded-md border-2 border-gray-500 hover:bg-emerald-600 hover:text-white"}
         activeClassName={"bg-emerald-600 text-white font-bold"}
         disabledClassName={"opacity-50 cursor-not-allowed"}
       />

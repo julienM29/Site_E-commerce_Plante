@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function Exposition() {
+function Exposition({ setFilters, filters }) {
     const [isOpen, setIsOpen] = useState(false);
     const [exposition, setExposition] = useState({
         ensoleille: false,
@@ -18,8 +18,17 @@ function Exposition() {
             ...prevState,
             [name]: checked,
         }));
-    };
 
+    };
+    const changeExpositionCheckbox = () => {
+        setFilters((prevState) => ({
+            ...prevState,
+            exposition: exposition,
+        }));
+    }
+    useEffect(() => {
+        changeExpositionCheckbox();
+    }, [exposition]);
     return (
         <div className="border-t-4">
             <button

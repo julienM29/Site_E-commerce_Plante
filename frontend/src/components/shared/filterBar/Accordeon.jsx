@@ -1,49 +1,9 @@
 import { useState, useEffect } from 'react';
 import MultiRangeSlider from './MultiRangeSlider';
-function Accordeon() {
+function Accordeon({setFilters, filters}) {
     const [isOpen, setIsOpen] = useState(false);
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
-    };
-
-    const [minPrice, setMinPrice] = useState(1000);
-    const [maxPrice, setMaxPrice] = useState(7000);
-    const min = 100;
-    const max = 10000;
-
-    const [minThumb, setMinThumb] = useState(0);
-    const [maxThumb, setMaxThumb] = useState(100);
-
-    useEffect(() => {
-        setMinThumb(((minPrice - min) / (max - min)) * 100);
-    }, [minPrice]);
-
-    useEffect(() => {
-        setMaxThumb(100 - ((maxPrice - min) / (max - min)) * 100);
-    }, [maxPrice]);
-
-    const handleMinChange = (event) => {
-        const value = Math.min(Number(event.target.value), maxPrice - 500);
-        setMinPrice(value);
-    };
-
-    const handleMaxChange = (event) => {
-        const value = Math.max(Number(event.target.value), minPrice + 500);
-        setMaxPrice(value);
-    };
-
-    const handleMinInput = (event) => {
-        let value = Number(event.target.value);
-        if (value >= min && value <= maxPrice - 500) {
-            setMinPrice(value);
-        }
-    };
-
-    const handleMaxInput = (event) => {
-        let value = Number(event.target.value);
-        if (value <= max && value >= minPrice + 500) {
-            setMaxPrice(value);
-        }
     };
 
     return (
@@ -73,7 +33,7 @@ function Accordeon() {
                 className={`transition-all duration-500 ease-in-out overflow-hidden px-2 ${isOpen ? 'max-h-screen opacity-100 py-2' : 'max-h-0 opacity-0 py-0'
                     }`}
             >
-                    <MultiRangeSlider />
+                    <MultiRangeSlider setFilters={setFilters} filters={filters}/>
             </div>
         </div>
     );
