@@ -1,6 +1,6 @@
 import connection from "../config/database.js";
 
-const requete = `
+let requete = `
             SELECT 
     p.nom, 
     p.nom_latin, 
@@ -39,7 +39,7 @@ INNER JOIN
     emplacement_exposition ee ON ee.emplacement_id = e.id -- Jointure avec la table de relation
 INNER JOIN 
     type_exposition te ON te.id = ee.exposition_id
-            
+          
         `;
 export const loadProductByType = async (id_type) => {
     try {
@@ -96,8 +96,13 @@ export const searchByParams = async (params) => {
         let minPrice = params.minPrice || null;
         let maxPrice = params.maxPrice || null;
         let exposition = params.exposition || null;
+        let arrosage = params.arrosage || null;
+        let emplacement = params.emplacement || null;
+        let floraison = params.floraison || null;
+        let recolte = params.recolte || null;
 
         let paramsExpo = [];  // Initialisation comme tableau vide
+        let paramsEmplacement = [];  // Initialisation comme tableau vide
         // Construction de la requête SQL de base
         let newRequest = requete;
         let paramsRequest = [];  // Tableau pour stocker les valeurs à lier à la requête
@@ -126,31 +131,27 @@ export const searchByParams = async (params) => {
             paramsRequest.push(`${maxPrice}`);
         }
         if (exposition) {
-        
-            // Dictionnaire de correspondance
-            const expositionLabels = {
-                ensoleille: "Lieu ensoleillé",
-                miOmbrage: "Mi-ombragé",
-                ombrage: "Ombragé"
-            };
-        
-            // Parcourir les expositions et ajouter les labels dans le tableau
-            Object.entries(exposition).forEach(([key, value]) => {
-                if (value) { // On ne prend que les valeurs à true
-                    const label = expositionLabels[key] || key;  
-                    paramsExpo.push(label);  
-                }
-            });
-        
-            // Si des expositions ont été sélectionnées, on construit la condition
-            if (paramsExpo.length > 0) {
-                conditions.push(`te.nom IN (${paramsExpo.map(() => '?').join(', ')})`);
-                
-                // ✅ Ajouter les valeurs séparément dans paramsRequest
-                paramsRequest.push(...paramsExpo);
-            }
+            expositionCondition(exposition, paramsExpo, conditions, paramsRequest)
         }
+        if (arrosage) {
+            arrosageCondition(arrosage, conditions, paramsRequest)
+
+        }
+        if (emplacement && Object.values(emplacement).some(value => value)) {
+            // ✅ Ajout de la jointure uniquement si un emplacement est sélectionné
+            newRequest += ` INNER JOIN 
+                            emplacement_utilisation eu ON eu.emplacement_id = e.id 
+                        INNER JOIN 
+                            type_utilisation tu ON tu.id = eu.utilisation_id `;
         
+            emplacementCondition(emplacement, conditions, paramsRequest);
+        }
+        if(floraison){
+            floraisonCondition(floraison, conditions, paramsRequest)
+        }
+        if(recolte){
+            recolteCondition(recolte, conditions, paramsRequest)
+        }
         // Si des conditions ont été ajoutées, on ajoute la clause WHERE à la requête
         if (conditions.length > 0) {
             newRequest += ' WHERE ' + conditions.join(' AND ');
@@ -161,9 +162,8 @@ export const searchByParams = async (params) => {
         if (paramsExpo.length > 0) {
             newRequest += ` HAVING COUNT(DISTINCT te.id) = ${paramsExpo.length}`
         }
-        // console.log('newRequest fin de logique : ', newRequest)
-        console.log('param fin de logique : ', paramsRequest)
-
+        console.log('newRequest fin de logique : ', newRequest)
+        console.log('params fin de logique : ', paramsRequest)
         // Exécution de la requête SQL sécurisée avec les paramètres liés
         const [products] = await connection.promise().query(newRequest, paramsRequest);
 
@@ -186,3 +186,118 @@ export const searchByParams = async (params) => {
     }
 };
 
+export const arrosageCondition = async (arrosage, conditions, paramsRequest) => {
+    let paramsArrosage = [];
+
+    // Parcourir l'objet arrosage et ajouter les labels sélectionnés
+    Object.entries(arrosage).forEach(([key, value]) => {
+        if (value) { // Ne prend que les valeurs à true
+            paramsArrosage.push(key);
+        }
+    });
+
+    // Construire la condition SQL seulement si des valeurs sont sélectionnées
+    if (paramsArrosage.length > 0) {
+        let placeholders = paramsArrosage.map(() => '?').join(' OR j.frequence_arrosage = ');
+
+        conditions.push(`j.frequence_arrosage = ${placeholders}`);
+
+        // ✅ Ajouter les valeurs sélectionnées dans paramsRequest
+        paramsRequest.push(...paramsArrosage);
+    }
+}
+
+export const expositionCondition = async (exposition, paramsExpo, conditions, paramsRequest) => {
+    // Dictionnaire de correspondance
+    const expositionLabels = {
+        ensoleille: "Lieu ensoleillé",
+        miOmbrage: "Mi-ombragé",
+        ombrage: "Ombragé"
+    };
+
+    // Parcourir les expositions et ajouter les labels dans le tableau
+    Object.entries(exposition).forEach(([key, value]) => {
+        if (value) { // On ne prend que les valeurs à true
+            const label = expositionLabels[key] || key;
+            paramsExpo.push(label);
+        }
+    });
+    // Si des expositions ont été sélectionnées, on construit la condition
+    if (paramsExpo.length > 0) {
+        conditions.push(`te.nom IN (${paramsExpo.map(() => '?').join(', ')})`);
+
+        // ✅ Ajouter les valeurs séparément dans paramsRequest
+        paramsRequest.push(...paramsExpo);
+    }
+}
+export const emplacementCondition = async (emplacement, conditions, paramsRequest) => {
+    let paramsEmplacement = [];
+
+    Object.entries(emplacement).forEach(([key, value]) => {
+        if (value) { // Ne prend que les valeurs à true
+            if (key === 'PotOuBac') {
+                paramsEmplacement.push('Pot ou bac');
+            } else if (key === 'CouvreSol') {
+                paramsEmplacement.push('Couvre-sol');
+            } else {
+                paramsEmplacement.push(key);
+            }
+        }
+    });
+
+    if (paramsEmplacement.length > 0) {
+        // ✅ On ne modifie pas `requete` global ici
+        conditions.push(
+            `(${paramsEmplacement.map(() => `e.utilisation LIKE ?`).join(' OR ')})`
+        );
+        paramsRequest.push(...paramsEmplacement.map(value => `%${value}%`));
+    }
+};
+export const floraisonCondition = async (floraison, conditions, paramsRequest) => {
+    let paramsFloraison = [];
+
+    // Collecte les mois ou périodes sélectionnées
+    Object.entries(floraison).forEach(([key, value]) => {
+        if (value) {
+            paramsFloraison.push(key);  // On ajoute la période si elle est vraie
+        }
+    });
+
+    if (paramsFloraison.length > 0) {
+        // Si il n'y a qu'un seul mois sélectionné, on utilise juste un LIKE
+        if (paramsFloraison.length === 1) {
+            conditions.push(`e2.periode_floraison LIKE ?`);
+            paramsRequest.push(`%${paramsFloraison[0]}%`);
+        } else {
+            // Si plusieurs mois sont sélectionnés, on les combine avec `OR`
+            conditions.push(
+                `(${paramsFloraison.map(() => `e2.periode_floraison LIKE ?`).join(' OR ')})`
+            );
+            paramsRequest.push(...paramsFloraison.map(value => `%${value}%`));
+        }
+    }
+};
+export const recolteCondition = async (recolte, conditions, paramsRequest) => {
+    let paramsRecolte = [];
+
+    // Collecte les mois ou périodes sélectionnées
+    Object.entries(recolte).forEach(([key, value]) => {
+        if (value) {
+            paramsRecolte.push(key);  // On ajoute la période si elle est vraie
+        }
+    });
+
+    if (paramsRecolte.length > 0) {
+        // Si il n'y a qu'un seul mois sélectionné, on utilise juste un LIKE
+        if (paramsRecolte.length === 1) {
+            conditions.push(`j.periode_recolte LIKE ?`);
+            paramsRequest.push(`%${paramsRecolte[0]}%`);
+        } else {
+            // Si plusieurs mois sont sélectionnés, on les combine avec `OR`
+            conditions.push(
+                `(${paramsRecolte.map(() => `j.periode_recolte LIKE ?`).join(' OR ')})`
+            );
+            paramsRequest.push(...paramsRecolte.map(value => `%${value}%`));
+        }
+    }
+};

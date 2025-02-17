@@ -1,17 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 
-function Arrosage() {
+function Arrosage({ setFilters }) {
     const [isOpen, setIsOpen] = useState(false);
     const [arrosage, setArrosage] = useState({
         elevé: false,
-        faible: false,
         modéré: false,
+        faible: false,
     });
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
     };
 
+    
     const handleArrosageChange = (event) => {
         const { name, checked } = event.target;
         setArrosage((prevState) => ({
@@ -19,7 +20,15 @@ function Arrosage() {
             [name]: checked,
         }));
     };
-
+    const changeArrosageCheckbox = () => {
+        setFilters((prevState) => ({
+            ...prevState,
+            arrosage: arrosage,
+        }));
+    }
+    useEffect(() => {
+        changeArrosageCheckbox();
+    }, [arrosage]);
     return (
         <div className="border-t-4">
             <button
@@ -29,7 +38,9 @@ function Arrosage() {
             >
                 <span className="text-lg font-medium">Arrosage</span>
                 <svg
-                    className={`w-5 h-5 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 transform transition-transform ${
+                        isOpen ? "rotate-180" : ""
+                    }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -44,44 +55,46 @@ function Arrosage() {
                 </svg>
             </button>
             <div
-                className={`transition-all duration-500 ease-in-out overflow-hidden px-2 flex flex-col gap-2 ${isOpen ? 'max-h-screen opacity-100 py-2' : 'max-h-0 opacity-0 py-0'}`}
+                className={`transition-all duration-500 ease-in-out overflow-hidden px-2 flex flex-col gap-2 ${
+                    isOpen ? "max-h-screen opacity-100 py-2" : "max-h-0 opacity-0 py-0"
+                }`}
             >
                 <div className="flex items-center">
                     <input
-                        id="ensoleille-checkbox"
+                        id="elevé-checkbox"
                         type="checkbox"
-                        name="ensoleille"
+                        name="elevé"
                         checked={arrosage.elevé}
                         onChange={handleArrosageChange}
                         className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-600 checked:bg-emerald-600 checked:border-emerald-600 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
-                    <label htmlFor="ensoleille-checkbox" className="ms-2 text-sm font-medium text-gray-900">
-                        élevé
+                    <label htmlFor="elevé-checkbox" className="ms-2 text-sm font-medium text-gray-900">
+                        Élevé
                     </label>
                 </div>
                 <div className="flex items-center">
                     <input
-                        id="miOmbrage-checkbox"
+                        id="modéré-checkbox"
                         type="checkbox"
-                        name="miOmbrage"
+                        name="modéré"
                         checked={arrosage.modéré}
                         onChange={handleArrosageChange}
                         className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-600 checked:bg-emerald-600 checked:border-emerald-600 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
-                    <label htmlFor="miOmbrage-checkbox" className="ms-2 text-sm font-medium text-gray-900">
+                    <label htmlFor="modéré-checkbox" className="ms-2 text-sm font-medium text-gray-900">
                         Modéré
                     </label>
                 </div>
                 <div className="flex items-center">
                     <input
-                        id="ombrage-checkbox"
+                        id="faible-checkbox"
                         type="checkbox"
-                        name="ombrage"
+                        name="faible"
                         checked={arrosage.faible}
                         onChange={handleArrosageChange}
                         className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-600 checked:bg-emerald-600 checked:border-emerald-600 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
-                    <label htmlFor="ombrage-checkbox" className="ms-2 text-sm font-medium text-gray-900">
+                    <label htmlFor="faible-checkbox" className="ms-2 text-sm font-medium text-gray-900">
                         Faible
                     </label>
                 </div>

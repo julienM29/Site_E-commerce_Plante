@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function Recolte() {
+function Recolte({setFilters, filters}) {
     const [isOpen, setIsOpen] = useState(false);
     const [recolte, setRecolte] = useState({
         janvier: false,
@@ -28,7 +28,15 @@ function Recolte() {
             [name]: checked,
         }));
     };
-
+const changeRecolteCheckbox = () => {
+        setFilters((prevState) => ({
+            ...prevState,
+            recolte: recolte,
+        }));
+    }
+    useEffect(() => {
+        changeRecolteCheckbox();
+    }, [recolte]);
     return (
         <div className="border-t-4">
             <button
@@ -36,7 +44,7 @@ function Recolte() {
                 aria-expanded={isOpen}
                 className="flex justify-between items-center w-full px-1 py-4 text-left"
             >
-                <span className="text-lg font-medium">Récolte</span>
+                <span className="text-lg font-medium">Mois de récolte</span>
                 <svg
                     className={`w-5 h-5 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     fill="none"

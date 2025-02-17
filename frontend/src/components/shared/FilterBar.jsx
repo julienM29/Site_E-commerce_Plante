@@ -22,14 +22,14 @@ const FilterBar = ({setFilters, filters}) => {
                 < Accordeon setFilters={setFilters} filters={filters}/>
                 < ColorFilter setFilters={setFilters} filters={filters}/>
                 < Exposition setFilters={setFilters} filters={filters}/>
-                < Feuillage />
+                < Feuillage setFilters={setFilters} filters={filters}/>
                 < Parfum />
                 < Mellifere />
                 < Vivace />
-                < Arrosage />
-                < Emplacement />
-                < Floraison />
-                < Recolte />
+                < Arrosage setFilters={setFilters} filters={filters}/>
+                < Emplacement setFilters={setFilters} filters={filters}/>
+                < Floraison setFilters={setFilters} filters={filters}/>
+                < Recolte setFilters={setFilters} filters={filters}/>
             </ul>
         </div>
     )

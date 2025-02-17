@@ -1,20 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function Floraison() {
+function Floraison({setFilters,filters}) {
     const [isOpen, setIsOpen] = useState(false);
     const [floraison, setFloraison] = useState({
-        janvier: false,
-        février: false,
-        mars: false,
-        avril: false,
-        mai: false,
-        juin: false,
-        juillet: false,
-        aout: false,
-        septembre: false,
-        octobre: false,
-        novembre: false,
-        décembre: false,
+        Janvier: false,
+        Février: false,
+        Mars: false,
+        Avril: false,
+        Mai: false,
+        Juin: false,
+        Juillet: false,
+        Août: false,
+        Septembre: false,
+        Octobre: false,
+        Novembre: false,
+        Décembre: false,
     });
 
     const toggleAccordion = () => {
@@ -28,7 +28,15 @@ function Floraison() {
             [name]: checked,
         }));
     };
-
+    const changeFloraisonCheckbox = () => {
+        setFilters((prevState) => ({
+            ...prevState,
+            floraison: floraison,
+        }));
+    }
+    useEffect(() => {
+        changeFloraisonCheckbox();
+    }, [floraison]);
     return (
         <div className="border-t-4">
             <button
@@ -36,7 +44,7 @@ function Floraison() {
                 aria-expanded={isOpen}
                 className="flex justify-between items-center w-full px-1 py-4 text-left"
             >
-                <span className="text-lg font-medium">Floraison</span>
+                <span className="text-lg font-medium">Mois de floraison</span>
                 <svg
                     className={`w-5 h-5 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     fill="none"

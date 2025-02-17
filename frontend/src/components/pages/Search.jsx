@@ -18,7 +18,11 @@ function Search() {
         color: null,
         minPrice: null,
         maxPrice: null,
-        exposition: null
+        exposition: null,
+        arrosage: null,
+        emplacement: null,
+        floraison: null,
+        recolte: null,
     });
     const [initialized, setInitialized] = useState(false); // Nouveau état pour vérifier l'initialisation
     const [productFound, setProductFound] = useState(false); // Nouveau état pour vérifier l'initialisation
@@ -91,14 +95,16 @@ function Search() {
     };
 
     useEffect(() => {
-        searchByText();
-
+        if (searchQuery) { // Vérifie que searchQuery n'est pas vide ou null
+            searchByText();
+        }
     }, [searchQuery]);
+    
 
     useEffect(() => {
         loadTypesPlant();
         // Si on arrive ici, cela signifie que les `filters` ont changé
-        console.log('Les filters :', filters);
+        // console.log('Les filters :', filters);
         searchByParams(filters); // Appel de la fonction de recherche avec les filtres mis à jour
     }, [filters]);
     return (

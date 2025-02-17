@@ -26,12 +26,21 @@ const ColorFilter = ({ setFilters, filters}) => {
 
   // Fonction pour changer la couleur sélectionnée
   const handleColorChange = (colorButton) => {
-    setSelectedColor(colorButton);
-    setFilters((prevState) => ({
-      ...prevState,
-      color: colorButton,
-  }));
-  };
+    if(selectedColor === colorButton){
+      setSelectedColor(null)
+      setFilters((prevState) => ({
+        ...prevState,
+        color: '',
+    }));
+      
+    } else {
+      setSelectedColor(colorButton);
+      setFilters((prevState) => ({
+        ...prevState,
+        color: colorButton,
+    }));
+    }
+    }
 
   return (
     <div className="border-t-4">
