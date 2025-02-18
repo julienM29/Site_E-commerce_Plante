@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function Parfum() {
+function Parfum({setFilters, filters}) {
     const [toggleParfumIsChecked, setToggleParfumIsChecked] = useState(false);
 
     const handleChange = () => {
         setToggleParfumIsChecked((prev) => !prev);
     };
-
+    const changeParfumCheckbox = () => {
+        setFilters((prevState) => ({
+            ...prevState,
+            parfum: toggleParfumIsChecked,
+        }));
+    }
+    useEffect(() => {
+        changeParfumCheckbox();
+    }, [toggleParfumIsChecked]);
     return (
-        <div className="border-t-4 px-1 py-4">
+        <div className="border-t-4 px-1 py-5">
             <div className="flex items-center w-full">
                 <span className="flex-grow text-left text-lg font-medium">
                     Plante parfumée

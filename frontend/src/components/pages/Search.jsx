@@ -23,6 +23,8 @@ function Search() {
         emplacement: null,
         floraison: null,
         recolte: null,
+        persistant: null,
+        type: null,
     });
     const [initialized, setInitialized] = useState(false); // Nouveau état pour vérifier l'initialisation
     const [productFound, setProductFound] = useState(false); // Nouveau état pour vérifier l'initialisation
@@ -40,12 +42,28 @@ function Search() {
     const searchByType = async (id, nom, image) => {
         try {
             setLoading(true);
-            const response = await fetch(`http://localhost:3000/productByType/${id}`, { method: "POST", credentials: "include" });
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            const data = await response.json();
-            setSelectType(true);
-            setTypeChoice({ nom, id, image });
-            setDataPlants(Array.isArray(data.products) ? data.products : []);
+            // const response = await fetch(`http://localhost:3000/productByType/${id}`, { method: "POST", credentials: "include" });
+            // if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            // const data = await response.json();
+            if (selectType) {
+                if( typeChoice.id === id){
+                setSelectType(false);
+                setTypeChoice();
+                setFilters((prevState) => ({
+                    ...prevState,
+                    type: null,
+                }));
+            }} else {
+
+
+                setSelectType(true);
+                setTypeChoice({ nom, id, image });
+                setFilters((prevState) => ({
+                    ...prevState,
+                    type: id,
+                }));
+            }
+            // setDataPlants(Array.isArray(data.products) ? data.products : []);
         } catch (error) {
             console.error('Erreur lors du chargement des plantes:', error);
             setDataPlants([]);
@@ -99,7 +117,7 @@ function Search() {
             searchByText();
         }
     }, [searchQuery]);
-    
+
 
     useEffect(() => {
         loadTypesPlant();
@@ -120,22 +138,22 @@ function Search() {
                         <>
                             {!productFound ? (
                                 <div className="h-3/4 flex justify-center items-center animate-fadeIn">
-                                <div className="flex flex-col items-center text-center gap-4">
-                                    {/* Icône illustrative */}
-                                    <img  className="w-28 h-28 text-gray-400" src="/icones/product_not_found.png" alt="" />
-                                    
-                                    {/* Message principal */}
-                                    <p className="text-3xl font-semibold text-gray-800">Aucun produit trouvé</p>
-                                    <p className="text-gray-600 text-xl">Désolé, nous n'avons trouvé aucun résultat. Essayez avec d'autres filtres !</p>
-                            
-                                    {/* Bouton avec effet d'ombre */}
-                                    <button className="mt-4 rounded-3xl text-2xl px-6 py-3 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300 shadow-lg hover:shadow-xl">
-                                        Réinitialiser les filtres
-                                    </button>
+                                    <div className="flex flex-col items-center text-center gap-4">
+                                        {/* Icône illustrative */}
+                                        <img className="w-28 h-28 text-gray-400" src="/icones/product_not_found.png" alt="" />
+
+                                        {/* Message principal */}
+                                        <p className="text-3xl font-semibold text-gray-800">Aucun produit trouvé</p>
+                                        <p className="text-gray-600 text-xl">Désolé, nous n'avons trouvé aucun résultat. Essayez avec d'autres filtres !</p>
+
+                                        {/* Bouton avec effet d'ombre */}
+                                        <button className="mt-4 rounded-3xl text-2xl px-6 py-3 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300 shadow-lg hover:shadow-xl">
+                                            Réinitialiser les filtres
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            
+
+
                             ) : (
                                 <>
                                     {selectType ? (

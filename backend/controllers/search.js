@@ -88,7 +88,7 @@ export const searchByText = async (text) => {
 };
 export const searchByParams = async (params) => {
     try {
-        console.log('Params  :', params);
+        // console.log('Params  :', params);
 
         // Extraction des valeurs des filtres
         let colorRequest = params.color || null;
@@ -100,9 +100,12 @@ export const searchByParams = async (params) => {
         let emplacement = params.emplacement || null;
         let floraison = params.floraison || null;
         let recolte = params.recolte || null;
+        let persistant = params.persistant || null;
+        let mellifere = params.mellifere || null;
+        let parfum = params.parfum || null;
+        let type = params.type || null;
 
         let paramsExpo = [];  // Initialisation comme tableau vide
-        let paramsEmplacement = [];  // Initialisation comme tableau vide
         // Construction de la requête SQL de base
         let newRequest = requete;
         let paramsRequest = [];  // Tableau pour stocker les valeurs à lier à la requête
@@ -152,6 +155,19 @@ export const searchByParams = async (params) => {
         if(recolte){
             recolteCondition(recolte, conditions, paramsRequest)
         }
+        if(persistant){
+           persistantCondition(persistant, conditions)
+        }
+        if(mellifere){
+            mellifereCondition(mellifere,conditions)
+        }
+        if(parfum){
+            parfumCondition(parfum,conditions)
+        }
+        if(type){
+            conditions.push(`p.id_type = ? `);
+            paramsRequest.push(`${type}`);
+        }
         // Si des conditions ont été ajoutées, on ajoute la clause WHERE à la requête
         if (conditions.length > 0) {
             newRequest += ' WHERE ' + conditions.join(' AND ');
@@ -162,8 +178,9 @@ export const searchByParams = async (params) => {
         if (paramsExpo.length > 0) {
             newRequest += ` HAVING COUNT(DISTINCT te.id) = ${paramsExpo.length}`
         }
-        console.log('newRequest fin de logique : ', newRequest)
-        console.log('params fin de logique : ', paramsRequest)
+        // console.log('newRequest fin de logique : ', newRequest)
+        // console.log('params fin de logique : ', paramsRequest)
+
         // Exécution de la requête SQL sécurisée avec les paramètres liés
         const [products] = await connection.promise().query(newRequest, paramsRequest);
 
@@ -174,7 +191,7 @@ export const searchByParams = async (params) => {
                 images: product.images ? product.images.split(', ') : []  // Transformer en tableau
             }));
 
-            console.log('Produit(s) trouvé(s) :', formattedProducts.length);
+            // console.log('Produit(s) trouvé(s) :', formattedProducts.length);
             return formattedProducts;
         } else {
             return [];
@@ -299,5 +316,26 @@ export const recolteCondition = async (recolte, conditions, paramsRequest) => {
             );
             paramsRequest.push(...paramsRecolte.map(value => `%${value}%`));
         }
+    }
+};
+export const persistantCondition = async (persistant, conditions) => {
+    if(persistant){
+        conditions.push(`e2.persistant_feuillage = 1 `);
+    } else {
+        conditions.push(`e2.persistant_feuillage = 0 `);
+    }
+};
+export const parfumCondition = async (parfum, conditions) => {
+    if(parfum){
+        conditions.push(`e2.parfum = 1 `);
+    } else {
+        conditions.push(`e2.parfum = 0 `);
+    }
+};
+export const mellifereCondition = async (mellifere, conditions) => {
+    if(mellifere){
+        conditions.push(`j.mellifere = 1 `);
+    } else {
+        conditions.push(`j.mellifere = 0 `);
     }
 };

@@ -23,9 +23,8 @@ const FilterBar = ({setFilters, filters}) => {
                 < ColorFilter setFilters={setFilters} filters={filters}/>
                 < Exposition setFilters={setFilters} filters={filters}/>
                 < Feuillage setFilters={setFilters} filters={filters}/>
-                < Parfum />
-                < Mellifere />
-                < Vivace />
+                < Parfum setFilters={setFilters} filters={filters}/>
+                < Mellifere setFilters={setFilters} filters={filters}/>
                 < Arrosage setFilters={setFilters} filters={filters}/>
                 < Emplacement setFilters={setFilters} filters={filters}/>
                 < Floraison setFilters={setFilters} filters={filters}/>

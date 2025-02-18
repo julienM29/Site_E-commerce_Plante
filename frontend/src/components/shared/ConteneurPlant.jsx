@@ -7,7 +7,7 @@ const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, 
   return (
     <div className={`bg-white rounded-3xl flex flex-col font-semibold w-${taille} border shadow-lg relative`}>
       <WishlistButton plantId={id} userId={idUser} isWishlisted={isWishlisted}/>
-      <a href={`/produit/${id}`} className='group relative w-full h-96'>
+      <a href={`/produit/${id}`} className='group relative w-full h-[23rem]'>
         <img
           src={primaryImage}
           alt={altPrimary}

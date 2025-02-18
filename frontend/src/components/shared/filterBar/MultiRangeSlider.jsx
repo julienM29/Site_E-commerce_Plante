@@ -12,7 +12,6 @@ const MultiRangeSlider = ({ setFilters }) => {
   // Fonction exécutée après le debounce
   const onFinalChange = useCallback(
     debounce((newValues) => {
-      console.log("Valeurs finales appliquées :", newValues);
       setFilters((prevState) => ({
         ...prevState,
         minPrice: newValues[0],

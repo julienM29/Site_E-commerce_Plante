@@ -54,9 +54,8 @@ function Header() {
   return (
     <>
       {/* Header */}
-      < Carroussel />
-      <div className="w-full flex justify-center bg-white border-b shadow-md">
-        <div className="flex w-11/12 gap-8 items-center py-3">
+      <div className="w-full flex justify-center bg-custom-light border-b shadow-md">
+        <div className="flex w-10/12 gap-8 items-center py-3">
           {/* Logo section */}
           <a href='/' className="flex items-center gap-2">
             <img src="/images/plante.png" alt="Logo" className="object-scale-down h-12 w-12" />
@@ -110,6 +109,8 @@ function Header() {
           </div>
         </div>
       </div>
+      < Carroussel />
+
       <div className={`cursor-pointer fixed inset-0 z-10  transition-opacity duration-500 ${isSidebarOpen ? 'bg-black/40  opacity-100 pointer-events-auto' : 'pointer-events-none opacity-0'}`} onClick={closeSidebar} />
 
       {/* SideBar */}

@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function Feuillage() {
+function Feuillage({setFilters ,filters}) {
     const [togglePersistantIsChecked, setTogglePersistantIsChecked] = useState(false);
 
     const handleChange = () => {
         setTogglePersistantIsChecked((prev) => !prev);
     };
-
+    const changePersistantCheckbox = () => {
+        setFilters((prevState) => ({
+            ...prevState,
+            persistant: togglePersistantIsChecked,
+        }));
+    }
+    useEffect(() => {
+        changePersistantCheckbox();
+    }, [togglePersistantIsChecked]);
     return (
-        <div className="border-t-4 px-1 py-4">
+        <div className="border-t-4 px-1 py-5">
             <div className="flex items-center w-full">
                 <span className="flex-grow text-left text-lg font-medium">
                     Feuillage persistant

@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function Mellifere() {
+function Mellifere({setFilters, filters}) {
     const [toggleMellifereIsChecked, setToggleMellifereIsChecked] = useState(false);
 
     const handleChange = () => {
         setToggleMellifereIsChecked((prev) => !prev);
     };
-
+    const changeMellifereCheckbox = () => {
+        setFilters((prevState) => ({
+            ...prevState,
+            mellifere: toggleMellifereIsChecked,
+        }));
+    }
+    useEffect(() => {
+        changeMellifereCheckbox();
+    }, [toggleMellifereIsChecked]);
     return (
-        <div className="border-t-4 px-1 py-4">
+        <div className="border-t-4 px-1 py-5">
             <div className="flex items-center w-full">
                 <span className="flex-grow text-left text-lg font-medium">
                 Mellifere

@@ -30,11 +30,11 @@ function Exposition({ setFilters, filters }) {
         changeExpositionCheckbox();
     }, [exposition]);
     return (
-        <div className="border-t-4">
+        <div className="border-t-4  py-5">
             <button
                 onClick={toggleAccordion}
                 aria-expanded={isOpen}
-                className="flex justify-between items-center w-full px-1 py-4 text-left"
+                className="flex justify-between items-center w-full px-1  text-left"
             >
                 <span className="text-lg font-medium">Exposition</span>
                 <svg
@@ -53,7 +53,7 @@ function Exposition({ setFilters, filters }) {
                 </svg>
             </button>
             <div
-                className={`transition-all duration-500 ease-in-out overflow-hidden px-2 flex flex-col gap-2 ${isOpen ? 'max-h-screen opacity-100 py-2' : 'max-h-0 opacity-0 py-0'}`}
+                className={`transition-all duration-500 ease-in-out overflow-hidden px-2 flex flex-col gap-2 ${isOpen ? 'max-h-screen opacity-100 py-2 pt-4' : 'max-h-0 opacity-0 py-0'}`}
             >
                 <div className="flex items-center">
                     <input
