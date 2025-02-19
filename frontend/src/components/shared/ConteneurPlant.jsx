@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import WishlistButton from './search/BoutonWishList';
-
+import { Alert } from './panier/Alert';
 const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock,idUser, isWishlisted }) => {
-
 
   return (
     <div className={`bg-white rounded-3xl flex flex-col font-semibold w-${taille} border shadow-lg relative`}>
@@ -44,7 +43,8 @@ const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, 
             <img src="/icones/verifier.png" alt="" className='w-6 h-6' />
             <span className=''>{infoStock}</span>
           </p>
-          <button className="rounded-3xl flex justify-center px-5 py-2 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300">
+          <button  className="rounded-3xl flex justify-center px-5 py-2 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300"
+          onClick={() => Alert(nom)}>
             Ajouter au panier
           </button>
 

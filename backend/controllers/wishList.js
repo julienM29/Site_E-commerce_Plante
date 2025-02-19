@@ -14,9 +14,10 @@ export const addWishList = async (id_user, id_plante, request, reply) => {
         let wishList = decodedCookie.split(',').map(Number);  // Séparer par des virgules et convertir chaque valeur en nombre
         console.log('Ancient wishList : ', wishList)
 
-        if (!wishList.includes(id_plante)) {
-            wishList.push(id_plante); // Ajouter l’ID de la plante
+        if (!wishList.includes(Number(id_plante))) {  // 🔹 Comparaison correcte avec Number
+            wishList.push(Number(id_plante));  // 🔹 Toujours ajouter en tant que Number
         }
+        
         console.log('new wishList : ', wishList)
         await connection.promise().query(
             'INSERT INTO site_kerisnel.liste_envie (id_user, id_plante, date_ajout) VALUES (?, ?, ?)',

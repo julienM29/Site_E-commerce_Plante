@@ -39,7 +39,6 @@ const ProductGrid = ({ data }) => {
     getUserInfo();
     wishList();
   }, []);
-
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
@@ -62,8 +61,8 @@ const ProductGrid = ({ data }) => {
               reduction="0"
               infoStock="disponible"
               idUser={userID}
-              isWishlisted={dataCookie?.includes(plant.id)}
-            />
+              isWishlisted={dataCookie?.includes(plant.id)}  // Utilise l'opérateur + pour convertir plant.id en nombre
+              />
           </div>
 
         ))}

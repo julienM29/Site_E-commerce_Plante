@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, A11y } from 'swiper/modules';
 import gsap from "gsap";
 import Swiper3Plants from '../shared/Swiper3Plants';
 import ConteneurPlant from '../shared/ConteneurPlant';
 import 'swiper/css';
 import 'swiper/css/navigation';
-
 function HomePage() {
 
 
@@ -62,7 +59,8 @@ function HomePage() {
             type="submit"
             className="bg-emerald-700 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-lg text-2xl px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
           >
-            Je découvre
+            <a href="/search">Je découvre</a>
+            
           </button>
         </div>
       </div>

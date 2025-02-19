@@ -4,6 +4,7 @@ import ConteneurProduitPanier from '../shared/ConteneurProduitPanier';
 import { gsap } from "gsap";
 import Carroussel from '../shared/Carrousel';
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -50,56 +51,71 @@ function Header() {
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`); // Met à jour l'URL
     }
-};
+  };
   return (
     <>
       {/* Header */}
+      <ToastContainer />
       <div className="w-full flex justify-center bg-custom-light border-b shadow-md">
-        <div className="flex w-10/12 gap-8 items-center py-3">
+        <div className="flex w-10/12 justify-around items-center py-3">
           {/* Logo section */}
+          <div className='w-1/6 flex justify-center'>
           <a href='/' className="flex items-center gap-2">
             <img src="/images/plante.png" alt="Logo" className="object-scale-down h-12 w-12" />
             <p className="text-3xl">Kerisnel</p>
           </a>
-
-          <div className="flex-1 relative text-gray-600 focus-within:text-gray-400 w-full">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+          </div>
+          <div className='flex gap-6 flex-1'>
+            <div className="w-2/12 items-center justify-center flex gap-2">
               <button
                 type="submit"
-                className="p-1 focus:outline-none focus:shadow-outline"
-                onClick={submitSearch}
+                className=" bg-emerald-700 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-lg  px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
               >
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  className="w-6 h-6"
-                >
-                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+                <a href="/search" className='flex gap-2'>
+                <span> Les plantes</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg></a>
               </button>
-            </span>
-            <input
-              type="search"
-              name="q"
-              className="py-2 text-lg text-white bg-gray-900 rounded-xl pl-10  focus:bg-white focus:text-gray-900 w-full"
-              placeholder="Rechercher un plant..."
-              autoComplete="off"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  submitSearch(e);
-                }
-              }}
-            />
+            </div>
+            <div className=" relative text-gray-600 focus-within:text-gray-400 w-10/12">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                <button
+                  type="submit"
+                  className="p-1 focus:outline-none focus:shadow-outline"
+                  onClick={submitSearch}
+                >
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                  >
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </button>
+              </span>
+              <input
+                type="search"
+                name="q"
+                className="py-2 text-lg text-white bg-gray-900 rounded-2xl pl-10  focus:bg-white focus:text-gray-900 w-full"
+                placeholder="Rechercher un plant..."
+                autoComplete="off"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    submitSearch(e);
+                  }
+                }}
+              />
+            </div>
           </div>
-
           {/* Icon section */}
-          <div className="flex gap-2">
+          <div className="w-1/6 flex justify-evenly">
             <a href="/account" className="rounded-full border-4 border-green-800 bg-white p-2">
               <img src="/icones/agriculteur.png" alt="Agriculteur" className="object-scale-down h-10 w-10" />
             </a>
