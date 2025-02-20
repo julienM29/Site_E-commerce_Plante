@@ -10,6 +10,7 @@ import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList } from './controllers/wishList.js';
 import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
+import { panierExistant } from './controllers/panier.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -40,7 +41,7 @@ fastify.post('/connexion', async (request, reply) => {
     if (messageEmail || messageMDP) {
       return reply.status(400).send({ messageEmail, messageMDP });
     }
-    
+
     reply.send({ success: true, message: 'Utilisateur connecté' });
     // console.log("✅ Token envoyé au client :", token);
 
@@ -158,19 +159,19 @@ fastify.get('/checkWishList', async (request, reply) => {
 
 
 fastify.post('/addWishList/:id_user/:id_plante', async (request, reply) => {
-  const { id_user, id_plante } = request.params; 
+  const { id_user, id_plante } = request.params;
   try {
-    await addWishList(id_user, id_plante,request, reply);
+    await addWishList(id_user, id_plante, request, reply);
     reply.status(200);
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }
 });
 fastify.post('/deleteWishList/:id_user/:id_plante', async (request, reply) => {
-  const { id_user, id_plante } = request.params; 
+  const { id_user, id_plante } = request.params;
 
   try {
-     await deleteWishList(id_user, id_plante,request, reply);
+    await deleteWishList(id_user, id_plante, request, reply);
     reply.status(200);
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
@@ -178,20 +179,20 @@ fastify.post('/deleteWishList/:id_user/:id_plante', async (request, reply) => {
 });
 
 fastify.post('/productByType/:id_type', async (request, reply) => {
-  const { id_type } = request.params; 
+  const { id_type } = request.params;
 
   try {
-     const products = await loadProductByType(id_type);
+    const products = await loadProductByType(id_type);
     reply.status(200).send({ products });;
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }
 });
 fastify.post('/searchByText/:text', async (request, reply) => {
-  const { text } = request.params; 
+  const { text } = request.params;
 
   try {
-     const products = await searchByText(text);
+    const products = await searchByText(text);
     reply.status(200).send({ products });;
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
@@ -208,7 +209,26 @@ fastify.post('/searchByParams', async (request, reply) => {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }
 });
+// Route pour charger un produit
+fastify.post('/ajoutPanier/:user_id/:produit_id', async (request, reply) => {
+  try {
+    const { user_id, produit_id } = request.params;  // Récupère l'ID depuis les paramètres de l'URL
+    console.log('server.js ajout panier : user id et produit id :', user_id, produit_id)
+    const success = await panierExistant(user_id, produit_id);  // Appel de ta fonction pour ajouter le produit au panier
 
+    // Si la fonction renvoie true, cela signifie que l'ajout a réussi
+    if (success) {
+      reply.send({ success: true});
+    } else {
+      reply.send({ success: false});
+    }
+  } catch (err) {
+    reply.status(500).send({
+      error: 'Une erreur est survenue lors du chargement du produit',
+      details: err.message
+    });
+  }
+});
 // Lancer le serveur
 fastify.listen({ port: 3000, host: 'localhost' }, (err, address) => {
   if (err) {

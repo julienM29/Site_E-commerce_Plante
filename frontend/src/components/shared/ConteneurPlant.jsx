@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import WishlistButton from './search/BoutonWishList';
-import { Alert } from './panier/Alert';
+import { AjoutPanier } from './panier/Alert';
 const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, altSecondary, nom, descriptionRapide, prixInitial, prixReduit, reduction, infoStock,idUser, isWishlisted }) => {
 
   return (
@@ -44,7 +44,7 @@ const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, 
             <span className=''>{infoStock}</span>
           </p>
           <button  className="rounded-3xl flex justify-center px-5 py-2 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300"
-          onClick={() => Alert(nom)}>
+          onClick={() => AjoutPanier(id,nom)}>
             Ajouter au panier
           </button>
 
