@@ -5,7 +5,6 @@ import ConteneurQuantity from '../shared/QuantityInput';
 import Swiper3Plants from '../shared/Swiper3Plants';
 function Panier() {
     const [quantityProduct, setQuantityProduct] = useState(0);
-
     return (
         <>
             <div className="bg-custom-light py-16 min-h-screen w-full flex flex-col items-center gap-10">
@@ -14,12 +13,12 @@ function Panier() {
                     <p className='w-1/3 text-6xl font-bold text-gray-700'>Panier</p>
                     <div className='flex flex-col gap-2'>
                         <div className='flex gap-4 items-center'>
-                            <img src="icones/camion_livraison.png" alt="" className='w-12 object-contain'/>
+                            <img src="icones/camion_livraison.png" alt="" className='w-12 object-contain' />
                             <p className='font-semibold text-lg'> Dépensez encore 41.30euros de plus e obtenez la livraison gratuite !</p>
                         </div>
                         <div className='w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-600'>
                             <div className='bg-emerald-500 h-2.5 rounded-full w-[45%]' ></div>
-                             </div>
+                        </div>
                     </div>
                 </div>
                 {/* Les 2 blocs à gauche tableau à droite recap prix etc */}
@@ -81,7 +80,7 @@ function Panier() {
                                         </td>
                                         <td className="px-4 py-4 text-xl font-medium text-gray-800">5.40 €</td>
                                         <td className="px-4 py-4 text-sm text-gray-600">
-                                        <ConteneurQuantity quantityProduct={quantityProduct} heightInput='11' paddingButton='3' setQuantityProduct={setQuantityProduct} />
+                                            <ConteneurQuantity quantityProduct={quantityProduct} heightInput='11' paddingButton='3' setQuantityProduct={setQuantityProduct} />
                                         </td>
                                         <td className="px-4 py-4 text-xl font-medium text-gray-800">22 €</td>
                                     </tr>
@@ -191,9 +190,9 @@ function Panier() {
                                 </div>
 
                             </div>
-                                <button type="submit" className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">
-                                    Ajouter
-                                </button>                            
+                            <button type="submit" className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">
+                                Ajouter
+                            </button>
                         </div>
                     </div>
                 </div>

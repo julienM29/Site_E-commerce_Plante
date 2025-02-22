@@ -10,7 +10,7 @@ import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList } from './controllers/wishList.js';
 import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
-import { panierExistant } from './controllers/panier.js';
+import { getPanier, panierExistant } from './controllers/panier.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -83,6 +83,7 @@ fastify.post('/logout', async (request, reply) => {
     // Supprimer le cookie du token JWT
     reply.clearCookie('token');
     reply.clearCookie('wishList');
+    reply.clearCookie('panier');
     reply.status(200).send({ messageLogout: 'Utilisateur déconnecté', success: true });
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue pendant la déconnexion', details: err.message });
@@ -206,6 +207,17 @@ fastify.post('/searchByParams', async (request, reply) => {
     reply.status(200).send({ products });
   } catch (err) {
     console.error('Erreur API :', err); // 🔥 Log l'erreur pour le debug
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
+  }
+});
+fastify.post('/getPanier/:user_id', async (request, reply) => {
+  const { user_id } = request.params;
+  console.log('coucou le server js de get Panier, voici user id : ' , user_id)
+  try {
+    const panier = await getPanier(user_id);
+    console.log('panier dans le server js : ', panier)
+    reply.status(200).send({ panier });;
+  } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }
 });

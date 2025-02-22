@@ -3,18 +3,7 @@ import connection from "../config/database.js";
 export const panierExistant = async (user_id, produit_id) => {
     try {
         // Requête pour compter le nombre de paniers actifs de l'utilisateur
-        const [panierExistant] = await connection.promise().query(
-            `SELECT 
-                p.*, 
-                GROUP_CONCAT(DISTINCT d.plante_id SEPARATOR ', ') AS produits_id,
-                GROUP_CONCAT(DISTINCT d.id SEPARATOR ', ') AS detail_panier_id,  
-                GROUP_CONCAT( d.prix_total SEPARATOR ', ') AS detail_panier_prix_total,
-                GROUP_CONCAT( d.quantite SEPARATOR ', ') AS detail_panier_quantite  
-             FROM site_kerisnel.panier p
-             INNER JOIN detail_panier d ON d.panier_id = p.id  
-             WHERE user_id = ? AND actif = 1 GROUP BY p.id;`,
-            [user_id]
-        );
+        let panierExistant = getPanier();
         console.log('panierExisant du panier Existant : ', panierExistant[0].produits_id)
         // Si un panier actif existe, on va essayer d'ajouter ou modifier le produit
         if (panierExistant.length === 1) {
@@ -170,6 +159,122 @@ export const deleteProductPanier = async (user_id) => {
     }
 };
 
-const getAProduct = async () => {
+export const addOrModifyProductPanier2 = async (request, reply, user_id, produit_id) => {
+    try {
+        const cookie = request.cookies.panier;  // Accéder aux cookies de la requête
+        const decodedCookiePanier = cookie ? JSON.parse(decodeURIComponent(cookie)) : {};
 
-}
+        // Gestion des valeurs nulles et transformation en tableau de nombres
+        const toNumberArray = (arr) => Array.isArray(arr) ? arr.map(Number) : [];
+
+        let tabProduitPanierId = toNumberArray(decodedCookiePanier.produit_id);
+        let tabDetailPanierId = toNumberArray(decodedCookiePanier.detail_panier_id);
+        let tabDetailPanierPrix = toNumberArray(decodedCookiePanier.detail_panier_prix);
+        let tabDetailPanierQuantite = toNumberArray(decodedCookiePanier.detail_panier_quantite);
+
+        const produitIdNumber = Number(produit_id);
+
+        if (tabProduitPanierId.includes(produitIdNumber)) {
+            // Produit déjà dans le panier
+            const index = tabProduitPanierId.indexOf(produitIdNumber);
+
+            if (index === -1 || index >= tabDetailPanierId.length) {
+                throw new Error('Incohérence des données dans le panier.');
+            }
+
+            const indexDetailPanier = tabDetailPanierId[index];
+            const prixDetailPanier = tabDetailPanierPrix[index];
+            const quantiteDetailPanier = tabDetailPanierQuantite[index] || 1; // Évite division par zéro
+
+            const prixUnitaire = prixDetailPanier / quantiteDetailPanier;
+            const newQuantite = quantiteDetailPanier + 1;
+            const newPrixTotal = prixUnitaire * newQuantite;
+
+            console.log(`Produit déjà dans le panier : ID ${produitIdNumber}`);
+            console.log(`Ancien prix total: ${prixDetailPanier}, Nouvelle quantité: ${newQuantite}, Nouveau prix total: ${newPrixTotal}`);
+
+            // Mise à jour en BDD
+            const requete = `UPDATE site_kerisnel.detail_panier SET quantite = ?, prix_total = ? WHERE id = ?;`;
+            await connection.promise().query(requete, [newQuantite, newPrixTotal, indexDetailPanier]);
+
+            // Mise à jour du cookie
+            tabDetailPanierPrix[index] = newPrixTotal;
+            tabDetailPanierQuantite[index] = newQuantite;
+        } else {
+            console.log(`Produit non présent dans le panier, ajout du produit ID ${produitIdNumber}.`);
+            // Récupération des infos du produit
+            const requeteProduit = `SELECT id, prix FROM site_kerisnel.plantes WHERE id = ?;`;
+            const [produit] = await connection.promise().query(requeteProduit, [produitIdNumber]);
+
+            if (!produit || produit.length === 0) {
+                throw new Error(`Produit ID ${produitIdNumber} introuvable.`);
+            }
+
+            // Ajout en BDD
+            const requeteInsert = `INSERT INTO site_kerisnel.detail_panier (panier_id, plante_id, quantite, prix_total) VALUES (?, ?, 1, ?);`;
+            const insertResult = await connection.promise().query(requeteInsert, [panierExistant[0].id, produit[0].id, produit[0].prix]);
+            const insertId = insertResult[0].insertId;
+
+            // Mise à jour des tableaux
+            tabProduitPanierId.push(produit[0].id);
+            tabDetailPanierId.push(insertId);
+            tabDetailPanierPrix.push(produit[0].prix);
+            tabDetailPanierQuantite.push(1);
+        }
+
+        // Mise à jour du cookie (une seule fois)
+        const newPanierCookie = {
+            produit_id: tabProduitPanierId,
+            detail_panier_id: tabDetailPanierId,
+            detail_panier_prix: tabDetailPanierPrix,
+            detail_panier_quantite: tabDetailPanierQuantite
+        };
+
+        reply.setCookie('panier', JSON.stringify(newPanierCookie), {
+            httpOnly: true,
+            secure: true, // true si HTTPS, sinon false en local
+            sameSite: 'None',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7 // 1 semaine
+        });
+
+        return true;
+    } catch (err) {
+        console.error('Erreur lors du traitement du panier:', err.message);
+        throw new Error('Erreur lors du traitement du panier.');
+    }
+};
+export const getPanier = async (user_id) => {
+    const [panierExistant] = await connection.promise().query(
+        `SELECT 
+            p.*, 
+            GROUP_CONCAT(DISTINCT d.plante_id SEPARATOR ', ') AS produits_id,
+            GROUP_CONCAT(DISTINCT d.id SEPARATOR ', ') AS detail_panier_id,  
+            GROUP_CONCAT(d.prix_total SEPARATOR ', ') AS detail_panier_prix_total,
+            GROUP_CONCAT(d.quantite SEPARATOR ', ') AS detail_panier_quantite,
+            GROUP_CONCAT(
+                -- Sous-requête pour obtenir la première image pour chaque produit
+                (SELECT i.url_image 
+                FROM images i 
+                WHERE i.id_plante = d.plante_id 
+                ORDER BY i.id ASC 
+                LIMIT 1) 
+                SEPARATOR ', '
+            ) AS images_urls,
+            GROUP_CONCAT(
+                -- Sous-requête pour obtenir la première image pour chaque produit
+                (SELECT p.nom 
+                FROM plantes p 
+                WHERE p.id = d.plante_id 
+                ORDER BY p.id ASC 
+                ) 
+                SEPARATOR ', '
+            ) AS noms_produits
+        FROM site_kerisnel.panier p
+        INNER JOIN detail_panier d ON d.panier_id = p.id
+        WHERE p.user_id = ? AND p.actif = 1
+        GROUP BY p.id;`,
+        [user_id]
+    );
+    return panierExistant[0];
+};
