@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gsap } from 'gsap';
 import InputFormField from '../shared/inputForm';
-
+import { useDispatch } from 'react-redux';
+import { fetchPanier } from '../../mySlice';
 function UserForm() {
+  const dispatch = useDispatch();
+
   const [showLogin, setShowLogin] = useState(true);
   const [errorMessageEmailExistant, setErrorMessageEmailExistant] = useState('');
   const [errorMessageEmailIncorrect, setErrorMessageEmailIncorrect] = useState('');
@@ -85,9 +88,12 @@ function UserForm() {
     if (result.success) {
       console.log("✅ Connexion réussie !");
       console.log("🔑 Token reçu :", result.token);
-  
+      dispatch(fetchPanier());
+      console.log('coucou aprèsd le fetchPanier')
+      dispatch({ type: 'test/action' });
+
       // Redirection seulement après vérification
-      window.location.href = '/';
+      // window.location.href = '/';
     }
   };
 

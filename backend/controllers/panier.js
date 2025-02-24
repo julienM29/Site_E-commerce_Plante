@@ -3,14 +3,13 @@ import connection from "../config/database.js";
 export const panierExistant = async (user_id, produit_id) => {
     try {
         // Requête pour compter le nombre de paniers actifs de l'utilisateur
-        let panierExistant = getPanier();
-        console.log('panierExisant du panier Existant : ', panierExistant[0].produits_id)
+        let panierExistant = await getPanier(user_id);
         // Si un panier actif existe, on va essayer d'ajouter ou modifier le produit
-        if (panierExistant.length === 1) {
-            const reponse = await addOrModifyProductPanier(user_id, produit_id, panierExistant);  // Ajout/modification du produit
+        if (panierExistant) {
+            const reponse = await addOrModifyProductPanier(user_id, produit_id, panierExistant);
             return reponse;
         } else {
-            await createPanier(user_id, produit_id);  // Création d'un nouveau panier
+            await createPanier(user_id, produit_id);
         }
 
     } catch (err) {
@@ -79,7 +78,6 @@ export const createPanier = async (user_id, produit_id) => {
 
 export const addOrModifyProductPanier = async (user_id, produit_id, panierExistant) => {
     let paramsRequest = [];
-
     try {
         // Vérification que le panier existe bien
         if (!panierExistant || panierExistant.length === 0) {
@@ -87,10 +85,10 @@ export const addOrModifyProductPanier = async (user_id, produit_id, panierExista
         }
 
         // Récupération des données et gestion des valeurs NULL
-        let tabProduitPanierId = (panierExistant[0].produits_id || '').split(', ').map(Number);
-        let tabDetailPanierId = (panierExistant[0].detail_panier_id || '').split(', ').map(Number);
-        let tabDetailPanierPrix = (panierExistant[0].detail_panier_prix_total || '').split(', ').map(Number);
-        let tabDetailPanierQuantite = (panierExistant[0].detail_panier_quantite || '').split(', ').map(Number);
+        let tabProduitPanierId = (panierExistant.produits_id || '').split(', ').map(Number);
+        let tabDetailPanierId = (panierExistant.detail_panier_id || '').split(', ').map(Number);
+        let tabDetailPanierPrix = (panierExistant.detail_panier_prix_total || '').split(', ').map(Number);
+        let tabDetailPanierQuantite = (panierExistant.detail_panier_quantite || '').split(', ').map(Number);
 
         // Conversion de produit_id en nombre pour éviter les erreurs de comparaison
         const produitIdNumber = Number(produit_id);
@@ -129,9 +127,8 @@ export const addOrModifyProductPanier = async (user_id, produit_id, panierExista
             if (!produit || produit.length === 0) {
                 throw new Error(`Produit ID ${produitIdNumber} introuvable.`);
             }
-
             const requeteInsert = `INSERT INTO site_kerisnel.detail_panier (panier_id, plante_id, quantite, prix_total) VALUES (?, ?, 1, ?);`;
-            const paramInsert = [panierExistant[0].id, produit[0].id, produit[0].prix];
+            const paramInsert = [panierExistant.id, produit[0].id, produit[0].prix];
             await connection.promise().query(requeteInsert, paramInsert);
             return true;
         }
@@ -248,27 +245,23 @@ export const getPanier = async (user_id) => {
     const [panierExistant] = await connection.promise().query(
         `SELECT 
             p.*, 
-            GROUP_CONCAT(DISTINCT d.plante_id SEPARATOR ', ') AS produits_id,
-            GROUP_CONCAT(DISTINCT d.id SEPARATOR ', ') AS detail_panier_id,  
-            GROUP_CONCAT(d.prix_total SEPARATOR ', ') AS detail_panier_prix_total,
-            GROUP_CONCAT(d.quantite SEPARATOR ', ') AS detail_panier_quantite,
+            GROUP_CONCAT(DISTINCT d.plante_id ORDER BY d.id DESC SEPARATOR ', ') AS produits_id,
+            GROUP_CONCAT(DISTINCT d.id ORDER BY d.id DESC SEPARATOR ', ') AS detail_panier_id,  
+            GROUP_CONCAT(d.prix_total ORDER BY d.id DESC SEPARATOR ', ') AS detail_panier_prix_total,
+            GROUP_CONCAT(d.quantite ORDER BY d.id DESC SEPARATOR ', ') AS detail_panier_quantite,
             GROUP_CONCAT(
-                -- Sous-requête pour obtenir la première image pour chaque produit
                 (SELECT i.url_image 
                 FROM images i 
                 WHERE i.id_plante = d.plante_id 
-                ORDER BY i.id ASC 
-                LIMIT 1) 
-                SEPARATOR ', '
+                ORDER BY i.id ASC LIMIT 1) 
+                ORDER BY d.id DESC SEPARATOR ', '
             ) AS images_urls,
             GROUP_CONCAT(
-                -- Sous-requête pour obtenir la première image pour chaque produit
                 (SELECT p.nom 
                 FROM plantes p 
                 WHERE p.id = d.plante_id 
-                ORDER BY p.id ASC 
-                ) 
-                SEPARATOR ', '
+                ORDER BY p.id ASC) 
+                ORDER BY d.id DESC SEPARATOR ', '
             ) AS noms_produits
         FROM site_kerisnel.panier p
         INNER JOIN detail_panier d ON d.panier_id = p.id
@@ -277,4 +270,8 @@ export const getPanier = async (user_id) => {
         [user_id]
     );
     return panierExistant[0];
+};
+export const deleteDetailPanier = async (detail_panier_id) => {
+    await connection.promise().query(`DELETE FROM site_kerisnel.detail_panier WHERE id=?;`, [detail_panier_id]);
+    return true;
 };

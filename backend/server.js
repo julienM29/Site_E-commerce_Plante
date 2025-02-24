@@ -10,7 +10,7 @@ import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList } from './controllers/wishList.js';
 import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
-import { getPanier, panierExistant } from './controllers/panier.js';
+import { deleteDetailPanier, getPanier, panierExistant } from './controllers/panier.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -212,10 +212,8 @@ fastify.post('/searchByParams', async (request, reply) => {
 });
 fastify.post('/getPanier/:user_id', async (request, reply) => {
   const { user_id } = request.params;
-  console.log('coucou le server js de get Panier, voici user id : ' , user_id)
   try {
     const panier = await getPanier(user_id);
-    console.log('panier dans le server js : ', panier)
     reply.status(200).send({ panier });;
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
@@ -225,7 +223,6 @@ fastify.post('/getPanier/:user_id', async (request, reply) => {
 fastify.post('/ajoutPanier/:user_id/:produit_id', async (request, reply) => {
   try {
     const { user_id, produit_id } = request.params;  // Récupère l'ID depuis les paramètres de l'URL
-    console.log('server.js ajout panier : user id et produit id :', user_id, produit_id)
     const success = await panierExistant(user_id, produit_id);  // Appel de ta fonction pour ajouter le produit au panier
 
     // Si la fonction renvoie true, cela signifie que l'ajout a réussi
@@ -237,6 +234,24 @@ fastify.post('/ajoutPanier/:user_id/:produit_id', async (request, reply) => {
   } catch (err) {
     reply.status(500).send({
       error: 'Une erreur est survenue lors du chargement du produit',
+      details: err.message
+    });
+  }
+});
+fastify.post('/deleteDetailPanier/:detail_panier_id', async (request, reply) => {
+  try {
+    const {detail_panier_id } = request.params;  // Récupère l'ID depuis les paramètres de l'URL
+    const success = await deleteDetailPanier(detail_panier_id);  // Appel de ta fonction pour ajouter le produit au panier
+
+    // Si la fonction renvoie true, cela signifie que l'ajout a réussi
+    if (success) {
+      reply.send({ success: true});
+    } else {
+      reply.send({ success: false});
+    }
+  } catch (err) {
+    reply.status(500).send({
+      error: 'Une erreur est survenue lors de la suppression du produit dans le panier',
       details: err.message
     });
   }

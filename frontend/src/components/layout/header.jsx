@@ -4,6 +4,7 @@ import Carroussel from '../shared/Carrousel';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import SideBarPanier from '../shared/sideBarPanier/sideBarPanier';
+import SideBarPanier2 from '../shared/sideBarPanier/sideBarPanier2';
 function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -128,7 +129,7 @@ function Header() {
       <div className={`cursor-pointer fixed inset-0 z-10  transition-opacity duration-500 ${isSidebarOpen ? 'bg-black/40  opacity-100 pointer-events-auto' : 'pointer-events-none opacity-0'}`} onClick={closeSidebar} />
 
       {/* SideBar */}
-      <SideBarPanier sidebarRef={sidebarRef} closeSidebar={closeSidebar}/>
+      <SideBarPanier2 sidebarRef={sidebarRef} closeSidebar={closeSidebar}/>
     </>
   );
 }

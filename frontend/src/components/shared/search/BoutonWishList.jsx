@@ -38,7 +38,7 @@ const WishlistButton = ({ userId, isWishlisted, plantId }) => {
   return (
     <button
       onClick={toggleWishlist}
-      className="group z-20 absolute top-2 right-2 p-2 border border-gray-400/50 rounded-full bg-white shadow-md hover:bg-gray-200 transition-all"
+      className="group z-10 absolute top-2 right-2 p-2 border border-gray-400/50 rounded-full bg-white shadow-md hover:bg-gray-200 transition-all"
       aria-label={inWishlist ? "Retirer de la liste d'envie" : "Ajouter à la liste d'envie"}
     >
       <Heart 

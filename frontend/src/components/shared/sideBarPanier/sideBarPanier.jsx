@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import BarreLivraisonGratuite from '../BarreLivraisonGratuite';
 import ConteneurProduitPanier from '../ConteneurProduitPanier';
 import { checkUserConnect } from '../CheckUserInformation';
+
 const SideBarPanier = ({ sidebarRef, closeSidebar }) => {
+    const [produits, setProduits] = useState({});
     const [panier, setPanier] = useState({
         id: '',
         user_id: '',
         createdAt: '',
-        produits: {},
         nb_produits: '',
     });
+
     const [prixTotalPanier, setPrixTotalPanier] = useState(0);
     const [userId, setUserId] = useState();
     // Fonction pour récupérer les informations de la session
@@ -21,11 +23,6 @@ const SideBarPanier = ({ sidebarRef, closeSidebar }) => {
             id: result.user.id,
         })
     };
-    const toNumberArray = (str) =>
-        (str || '') // Remplace NULL par ''
-            .split(', ') // Sépare la chaîne
-            .filter(val => val.trim() !== '') // Filtre les valeurs vides
-            .map(Number); // 
     const getPanier = async (user_id) => {
         try {
             const response = await fetch(`http://localhost:3000/getPanier/${user_id}`, { method: "POST", credentials: "include" });
@@ -65,13 +62,14 @@ const SideBarPanier = ({ sidebarRef, closeSidebar }) => {
             }, {});
 
             // Mise à jour de l'état avec les informations du panier
+            setProduits(produits);
             setPanier({
                 id: data.panier.id,
                 user_id: data.panier.user_id,
                 createdAt: data.panier.created_at,
-                produits,
                 nb_produits: produitsIdArray.length,
             });
+
 
             // Calcul du prix total avec réduction à 2 décimales
             const prixTotal = detailPanierPrixTotalArray.reduce((total, prix) => total + prix, 0).toFixed(2);
@@ -83,6 +81,43 @@ const SideBarPanier = ({ sidebarRef, closeSidebar }) => {
             // setError("Une erreur est survenue lors du chargement de votre panier.");
         }
     };
+    const deleteDetailPanier = async (detail_panier_id) => {
+        try {
+            const response = await fetch(`http://localhost:3000/deleteDetailPanier/${detail_panier_id}`, {
+                method: "POST",
+                credentials: "include"
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+            console.log("Produit supprimé avec succès !");
+
+            // Mettre à jour l'état local après suppression
+            setProduits((prevProduits) => {
+                const newProduits = { ...prevProduits };
+                const produitIdToRemove = Object.values(prevProduits).find(p => p.detailId === detail_panier_id)?.id;
+
+                if (produitIdToRemove) {
+                    delete newProduits[produitIdToRemove];
+                }
+
+                return newProduits;
+            });
+
+            // Mettre à jour le panier avec le nouveau nombre de produits et recalculer le total
+            setPanier((prevPanier) => ({
+                ...prevPanier,
+                nb_produits: Object.keys(produits).length - 1, // -1 car on supprime un produit
+            }));
+
+        } catch (error) {
+            console.error("Erreur de suppression d'un produit dans le panier :", error);
+            toast.error("Impossible de supprimer le produit !");
+        }
+    };
+
+
+
     useEffect(() => {
         getUserInfo();
     }, []);
@@ -93,6 +128,8 @@ const SideBarPanier = ({ sidebarRef, closeSidebar }) => {
             getPanier(userId.id);
         }
     }, [userId]);
+
+
     return (
         <div ref={sidebarRef} className="fixed flex flex-col items-center top-0 right-0 w-1/5 bg-white h-screen border-l shadow-lg transform translate-x-full z-20">
             {/* En tête de la side barre */}
@@ -128,15 +165,18 @@ const SideBarPanier = ({ sidebarRef, closeSidebar }) => {
             {/* Contenu */}
             <div className="w-11/12 h-3/4 flex flex-col gap-2 py-4 overflow-y-auto overflow-x-hidden scrollbar-none ">
                 <BarreLivraisonGratuite prixPanier={prixTotalPanier}></BarreLivraisonGratuite>
-                {Object.values(panier.produits).map((produit) => (
+                {Object.values(produits).map((produit) => (
                     <ConteneurProduitPanier
-                        key={produit.id}  // Assure-toi d'ajouter une clé unique pour chaque élément dans la liste
+                        onDelete={() => deleteDetailPanier(produit.detailId)}
+                        key={produit.id}
+                        detail_panier_id={produit.detailId}
                         imgProduit={produit.imageUrl}
                         prixTotalProduit={produit.prixTotal}
                         nomProduit={produit.nom}
                         quantiteProduit={produit.quantite}
                     />
                 ))}
+
             </div>
             <div className='h-[15%] bg-custom-light w-full flex flex-col gap-4 justify-center items-center'>
 
@@ -153,3 +193,4 @@ const SideBarPanier = ({ sidebarRef, closeSidebar }) => {
 };
 
 export default SideBarPanier;
+
