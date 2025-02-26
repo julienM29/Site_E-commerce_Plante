@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import BarreLivraisonGratuite from '../BarreLivraisonGratuite';
 import ConteneurProduitPanier from '../ConteneurProduitPanier';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +17,7 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
             credentials: "include"
         });
     };
+
     // const prixTotal = detailPanierPrixTotalArray.reduce((total, prix) => total + prix, 0).toFixed(2);
     // setPrixTotalPanier(prixTotal); // Assure-toi que le prix total soit correctement formaté à 2 décimales
     return (
@@ -59,6 +60,7 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
                 <div>
                     {panier.map((produit, index) => (
                         <ConteneurProduitPanier
+                            panierIndex={index}
                             onDelete={() => handleRemoveProduit(produit)}
                             key={produit.id}
                             detail_panier_id={produit.detail_id}

@@ -116,7 +116,14 @@ export const addOrModifyProductPanier = async (user_id, produit_id, panierExista
             const requete = `UPDATE site_kerisnel.detail_panier SET quantite = ?, prix_total = ? WHERE id = ?;`;
             paramsRequest.push(newQuantite, newPrixTotal, indexDetailPanier);
             await connection.promise().query(requete, paramsRequest);
-            return true;
+            return {
+                success: true,
+                method: 'update',
+                newQuantite: newQuantite,
+                newPrixTotal : newPrixTotal,
+                indexDetailPanier: indexDetailPanier
+            };
+            
         } else {
             console.log(`Produit non présent dans le panier, ajout du produit ID ${produitIdNumber}.`);
 
@@ -130,7 +137,10 @@ export const addOrModifyProductPanier = async (user_id, produit_id, panierExista
             const requeteInsert = `INSERT INTO site_kerisnel.detail_panier (panier_id, plante_id, quantite, prix_total) VALUES (?, ?, 1, ?);`;
             const paramInsert = [panierExistant.id, produit[0].id, produit[0].prix];
             await connection.promise().query(requeteInsert, paramInsert);
-            return true;
+            return {
+                success: true,
+                method: 'create',
+            };
         }
 
     } catch (err) {

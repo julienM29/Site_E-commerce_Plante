@@ -42,17 +42,46 @@ const mySlice = createSlice({
   reducers: {
     addProduit: (state, action) => {
       const produit = action.payload;
+      const panierActuel = state.panier;
       
-      // Ajouter le produit au panier
-      state.panier.push(produit);
-      
-      // Calculer le total du produit (en gardant les décimales)
-      const totalProduit = produit.prix * produit.quantite;
-      
-      // Ajouter le total du produit au total global
-      state.total += totalProduit;
-      state.total = parseFloat(state.total.toFixed(2));
+      console.log('addProduit du REDUX, present : ', produit.present);
+      console.log('addProduit du REDUX, quantite : ', produit.quantite);
+      console.log('addProduit du REDUX, prix : ', produit.prix);
+    
+      if (!produit.present) {
+        // Ajouter le produit au panier (en utilisant la méthode immuable)
+        state.panier = [...panierActuel, produit];
+    
+        // Calculer le total du produit
+        const totalProduit = produit.prix * produit.quantite;
+    
+        // Ajouter le total du produit au total global
+        state.total += totalProduit;
+        state.total = parseFloat(state.total.toFixed(2));
+      } else {
+        // Trouver le produit dans le panier
+        const indexProduit = panierActuel.findIndex(item => item.id === produit.id);
+        console.log('on passe dans le else donc quand il existe dans le panier');
+        console.log('voici la quantité avant :', panierActuel[indexProduit].quantite);
+        console.log('voici la quantité qui est envoyée :', produit.quantite);
+    
+        if (indexProduit !== -1) {
+          // Si le produit existe, mettre à jour sa quantité et prix (immuable)
+          state.panier = panierActuel.map(item =>
+            item.id === produit.id
+              ? { ...item, quantite: Number(produit.quantite), prix: parseFloat(produit.prix.toFixed(2)) }
+              : item
+          );
+    
+          // Recalculer le total global en utilisant reduce (en conservant deux décimales)
+          state.total = state.panier.reduce((acc, item) => acc + (item.prix * item.quantite), 0);
+          state.total = parseFloat(state.total.toFixed(2));
+        }
+      }
     },
+    
+    
+    
     removeProduit: (state, action) => {
       const produitIndex = state.panier.findIndex(p => p.id === action.payload.id);
       
@@ -71,7 +100,31 @@ const mySlice = createSlice({
         state.total = parseFloat(state.total.toFixed(2));
       }
     },
-    
+    upQuantityInput: (state, action) => {
+      const { panierIndex } = action.payload;
+      const product = state.panier[panierIndex];
+      if (product) {
+        product.quantite += 1; // Augmenter la quantité
+      }
+    },
+
+    // Action pour diminuer la quantité d'un produit
+    downQuantityInput: (state, action) => {
+      const { panierIndex } = action.payload;
+      const product = state.panier[panierIndex];
+      if (product && product.quantite > 0) {
+        product.quantite -= 1; // Diminuer la quantité
+      }
+    },
+
+    // Action pour changer la quantité (si tu veux aussi gérer un changement direct de valeur)
+    changeQuantityInput: (state, action) => {
+      const { panierIndex, newQuantity } = action.payload;
+      const product = state.panier[panierIndex];
+      if (product) {
+        product.quantite = newQuantity; // Mettre à jour la quantité directement
+      }
+    },
     clearPanier: (state) => {
       state.panier = [];
       state.total = 0;
@@ -142,5 +195,5 @@ const mySlice = createSlice({
   },
 });
 
-export const { addProduit, removeProduit, clearPanier } = mySlice.actions;
+export const { addProduit, removeProduit, clearPanier, upQuantityInput, downQuantityInput, changeQuantityInput } = mySlice.actions;
 export default mySlice.reducer;

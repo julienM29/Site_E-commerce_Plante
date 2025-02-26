@@ -1,9 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import ConteneurQuantity from './QuantityInput';
+import { useDispatch, useSelector } from 'react-redux';
 
-const ConteneurProduitPanier = ({ imgProduit, prixTotalProduit, nomProduit, quantiteProduit, detail_panier_id, onDelete  }) => {
-  const [quantityProduct, setQuantityProduct] = useState(Number(quantiteProduit));
-
+const ConteneurProduitPanier = ({panierIndex, imgProduit, prixTotalProduit, nomProduit, quantiteProduit, detail_panier_id, onDelete  }) => {
+ 
+  const dispatch = useDispatch();
+  const { panier, total, status, error } = useSelector((state) => state.myState);
+  
+  const [quantityProduct, setQuantityProduct] = useState(panier[panierIndex].quantite);
   return (
     <div className="flex flex-col gap-4 border-b-2 pt-2 pb-4">
       <div className="flex items-center gap-3">
@@ -40,7 +44,7 @@ const ConteneurProduitPanier = ({ imgProduit, prixTotalProduit, nomProduit, quan
           </div>
           {/* Quantité et prix */}
           <div className="flex justify-between items-center">
-            <ConteneurQuantity quantityProduct={quantityProduct} heightInput='7' paddingButton='2' setQuantityProduct={setQuantityProduct} />
+            <ConteneurQuantity panierIndex={panierIndex} heightInput='7' paddingButton='2' setQuantityProduct={setQuantityProduct} />
             <p className="text-lg font-semibold text-gray-800">{prixTotalProduit}€</p>
           </div>
         </div>

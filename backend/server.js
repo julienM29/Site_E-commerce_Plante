@@ -223,11 +223,11 @@ fastify.post('/getPanier/:user_id', async (request, reply) => {
 fastify.post('/ajoutPanier/:user_id/:produit_id', async (request, reply) => {
   try {
     const { user_id, produit_id } = request.params;  // Récupère l'ID depuis les paramètres de l'URL
-    const success = await panierExistant(user_id, produit_id);  // Appel de ta fonction pour ajouter le produit au panier
+    const reponse = await panierExistant(user_id, produit_id);  // Appel de ta fonction pour ajouter le produit au panier
 
     // Si la fonction renvoie true, cela signifie que l'ajout a réussi
-    if (success) {
-      reply.send({ success: true});
+    if (reponse.success) {
+      reply.send({ reponse});
     } else {
       reply.send({ success: false});
     }
