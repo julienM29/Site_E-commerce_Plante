@@ -89,11 +89,10 @@ function UserForm() {
       console.log("✅ Connexion réussie !");
       console.log("🔑 Token reçu :", result.token);
       dispatch(fetchPanier());
-      console.log('coucou aprèsd le fetchPanier')
       dispatch({ type: 'test/action' });
 
       // Redirection seulement après vérification
-      // window.location.href = '/';
+      window.location.href = '/';
     }
   };
 

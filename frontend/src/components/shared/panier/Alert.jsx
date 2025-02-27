@@ -22,13 +22,15 @@ export const AjoutPanier = async (dispatch, produit_id, nom, prixInitial, primar
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const data = await response.json(); // Convertir la réponse en JSON
-    const insert_id = data.insertId; // ✅ Récupérer l'ID du panier (ou détail panier)
+    const insert_id = data.reponse.insertId; // ✅ Récupérer l'ID du panier (ou détail panier)
     if (data.reponse.success) {
       toast.success(`${nom} a été ajouté au panier !`, {
         position: "top-right",
         autoClose: 3000,
       });
       if (data.reponse.method === 'update') {
+        console.log('l indexDetailPanier dans un update id = ', data.reponse.indexDetailPanier)
+
         produitAjoute = {
           present: true,
           id: produit_id,
@@ -37,8 +39,10 @@ export const AjoutPanier = async (dispatch, produit_id, nom, prixInitial, primar
           quantite: data.reponse.newQuantite, // 🛒 Par défaut, on ajoute 1
           prix: data.reponse.newPrixTotal,
           detail_id: data.reponse.indexDetailPanier, // ✅ Associer l'ID du détail panier
+          
         };
       } else {
+        console.log('l insert id  dans un insert panier = ', insert_id)
         produitAjoute = {
           present: false,
           id: produit_id,

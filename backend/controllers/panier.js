@@ -3,10 +3,13 @@ import connection from "../config/database.js";
 export const panierExistant = async (user_id, produit_id) => {
     try {
         // Requête pour compter le nombre de paniers actifs de l'utilisateur
-        let panierExistant = await getPanier(user_id);
-        // Si un panier actif existe, on va essayer d'ajouter ou modifier le produit
-        if (panierExistant) {
-            const reponse = await addOrModifyProductPanier(user_id, produit_id, panierExistant);
+        let panierExistant = await verificationPanier(user_id)
+        console.log('ipanier existant : ', panierExistant.count)
+        if (panierExistant.count === 1 || panierExistant.count === '1') {
+            console.log('je passe la première condition')
+            let panier = await getPanier(user_id);
+            // Si un panier actif existe, on va essayer d'ajouter ou modifier le produit
+            const reponse = await addOrModifyProductPanier(user_id, produit_id, panier, panierExistant);
             return reponse;
         } else {
             await createPanier(user_id, produit_id);
@@ -76,54 +79,56 @@ export const createPanier = async (user_id, produit_id) => {
 };
 
 
-export const addOrModifyProductPanier = async (user_id, produit_id, panierExistant) => {
+export const addOrModifyProductPanier = async (user_id, produit_id,panier, panierExistant) => {
     let paramsRequest = [];
     try {
-        // Vérification que le panier existe bien
-        if (!panierExistant || panierExistant.length === 0) {
-            throw new Error('Aucun panier existant trouvé.');
-        }
-
-        // Récupération des données et gestion des valeurs NULL
-        let tabProduitPanierId = (panierExistant.produits_id || '').split(', ').map(Number);
-        let tabDetailPanierId = (panierExistant.detail_panier_id || '').split(', ').map(Number);
-        let tabDetailPanierPrix = (panierExistant.detail_panier_prix_total || '').split(', ').map(Number);
-        let tabDetailPanierQuantite = (panierExistant.detail_panier_quantite || '').split(', ').map(Number);
-
-        // Conversion de produit_id en nombre pour éviter les erreurs de comparaison
+        console.log('panier existant debut du add or modify : ', panier)
         const produitIdNumber = Number(produit_id);
 
-        if (tabProduitPanierId.includes(produitIdNumber)) {
-            const index = tabProduitPanierId.indexOf(produitIdNumber);
+        // Vérification que le panier existe bien
+        if (panier) {
 
-            // Vérification que l'index est valide
-            if (index === -1 || index >= tabDetailPanierId.length || index >= tabDetailPanierPrix.length || index >= tabDetailPanierQuantite.length) {
-                throw new Error('Incohérence des données dans le panier.');
+
+            // Récupération des données et gestion des valeurs NULL
+            let tabProduitPanierId = (panier.produits_id || '').split(', ').map(Number);
+            let tabDetailPanierId = (panier.detail_panier_id || '').split(', ').map(Number);
+            let tabDetailPanierPrix = (panier.detail_panier_prix_total || '').split(', ').map(Number);
+            let tabDetailPanierQuantite = (panier.detail_panier_quantite || '').split(', ').map(Number);
+
+            // Conversion de produit_id en nombre pour éviter les erreurs de comparaison
+
+            if (tabProduitPanierId.includes(produitIdNumber)) {
+                const index = tabProduitPanierId.indexOf(produitIdNumber);
+
+                // Vérification que l'index est valide
+                if (index === -1 || index >= tabDetailPanierId.length || index >= tabDetailPanierPrix.length || index >= tabDetailPanierQuantite.length) {
+                    throw new Error('Incohérence des données dans le panier.');
+                }
+
+                const indexDetailPanier = tabDetailPanierId[index];
+                const prixDetailPanier = tabDetailPanierPrix[index];
+                const quantiteDetailPanier = tabDetailPanierQuantite[index] || 1; // Évite division par zéro
+
+                const prixUnitaire = prixDetailPanier / quantiteDetailPanier;
+                const newQuantite = quantiteDetailPanier + 1;
+                const newPrixTotal = prixUnitaire * newQuantite;
+
+                console.log(`Produit déjà dans le panier : ID ${produitIdNumber}`);
+                console.log(`Ancien prix total: ${prixDetailPanier}, Nouvelle quantité: ${newQuantite}, Nouveau prix total: ${newPrixTotal}`);
+
+                // Mise à jour du panier
+                const requete = `UPDATE site_kerisnel.detail_panier SET quantite = ?, prix_total = ? WHERE id = ?;`;
+                paramsRequest.push(newQuantite, newPrixTotal, indexDetailPanier);
+                await connection.promise().query(requete, paramsRequest);
+                return {
+                    success: true,
+                    method: 'update',
+                    newQuantite: newQuantite,
+                    newPrixTotal: newPrixTotal,
+                    indexDetailPanier: indexDetailPanier
+                };
+
             }
-
-            const indexDetailPanier = tabDetailPanierId[index];
-            const prixDetailPanier = tabDetailPanierPrix[index];
-            const quantiteDetailPanier = tabDetailPanierQuantite[index] || 1; // Évite division par zéro
-
-            const prixUnitaire = prixDetailPanier / quantiteDetailPanier;
-            const newQuantite = quantiteDetailPanier + 1;
-            const newPrixTotal = prixUnitaire * newQuantite;
-
-            console.log(`Produit déjà dans le panier : ID ${produitIdNumber}`);
-            console.log(`Ancien prix total: ${prixDetailPanier}, Nouvelle quantité: ${newQuantite}, Nouveau prix total: ${newPrixTotal}`);
-
-            // Mise à jour du panier
-            const requete = `UPDATE site_kerisnel.detail_panier SET quantite = ?, prix_total = ? WHERE id = ?;`;
-            paramsRequest.push(newQuantite, newPrixTotal, indexDetailPanier);
-            await connection.promise().query(requete, paramsRequest);
-            return {
-                success: true,
-                method: 'update',
-                newQuantite: newQuantite,
-                newPrixTotal : newPrixTotal,
-                indexDetailPanier: indexDetailPanier
-            };
-            
         } else {
             console.log(`Produit non présent dans le panier, ajout du produit ID ${produitIdNumber}.`);
 
@@ -136,10 +141,15 @@ export const addOrModifyProductPanier = async (user_id, produit_id, panierExista
             }
             const requeteInsert = `INSERT INTO site_kerisnel.detail_panier (panier_id, plante_id, quantite, prix_total) VALUES (?, ?, 1, ?);`;
             const paramInsert = [panierExistant.id, produit[0].id, produit[0].prix];
-            await connection.promise().query(requeteInsert, paramInsert);
+            const result = await connection.promise().query(requeteInsert, paramInsert);
+
+            // Récupérer l'insertId du produit ajouté
+            const insertId = result[0].insertId;
+            console.log('insert id dans panier js : ', insertId)
             return {
                 success: true,
                 method: 'create',
+                insertId: insertId,  // Renvoyer insertId dans la réponse
             };
         }
 
@@ -251,6 +261,18 @@ export const addOrModifyProductPanier2 = async (request, reply, user_id, produit
         throw new Error('Erreur lors du traitement du panier.');
     }
 };
+export const verificationPanier = async (user_id) => {
+    const [panierExistant] = await connection.promise().query(
+        `    SELECT COUNT(*) AS count, p.id AS id
+                FROM panier p
+                WHERE p.actif = 1 AND p.user_id = ?
+                GROUP BY p.id;
+`,
+        [user_id]
+    );
+    return panierExistant[0];
+
+}
 export const getPanier = async (user_id) => {
     const [panierExistant] = await connection.promise().query(
         `SELECT 

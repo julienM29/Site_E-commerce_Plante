@@ -60,7 +60,7 @@ function Header() {
           {/* Logo section */}
           <div className='w-1/6 flex justify-center'>
           <a href='/' className="flex items-center gap-2">
-            <img src="/icones/logo_kerisnel.png" alt="Logo" className=" h-20 w-20" />
+            <img src="/icones/logo_kerisnel.png" alt="Logo" className=" h-20 w-24" />
           </a>
           </div>
           <div className='flex gap-6 flex-1'>
