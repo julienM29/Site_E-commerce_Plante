@@ -10,7 +10,7 @@ import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList } from './controllers/wishList.js';
 import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
-import { deleteDetailPanier, getPanier, panierExistant } from './controllers/panier.js';
+import { deleteDetailPanier, getPanier, modifyQuantity, panierExistant } from './controllers/panier.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -252,6 +252,17 @@ fastify.post('/deleteDetailPanier/:detail_panier_id', async (request, reply) => 
   } catch (err) {
     reply.status(500).send({
       error: 'Une erreur est survenue lors de la suppression du produit dans le panier',
+      details: err.message
+    });
+  }
+});
+fastify.post('/changeQuantityDetailPanier/:detail_panier_id/:increment/:newQuantity', async (request, reply) => {
+  try {
+    const { detail_panier_id, increment, newQuantity } = request.params;  // Récupère l'ID depuis les paramètres de l'URL
+    await modifyQuantity(detail_panier_id, increment, newQuantity );  // Appel de ta fonction pour ajouter le produit au panier
+  } catch (err) {
+    reply.status(500).send({
+      error: 'Une erreur est survenue lors du chargement du produit',
       details: err.message
     });
   }

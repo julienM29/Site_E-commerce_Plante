@@ -7,7 +7,6 @@ const ConteneurProduitPanier = ({panierIndex, imgProduit, prixTotalProduit, nomP
   const dispatch = useDispatch();
   const { panier, total, status, error } = useSelector((state) => state.myState);
   
-  const [quantityProduct, setQuantityProduct] = useState(panier[panierIndex].quantite);
   return (
     <div className="flex flex-col gap-4 border-b-2 pt-2 pb-4">
       <div className="flex items-center gap-3">
@@ -44,7 +43,7 @@ const ConteneurProduitPanier = ({panierIndex, imgProduit, prixTotalProduit, nomP
           </div>
           {/* Quantité et prix */}
           <div className="flex justify-between items-center">
-            <ConteneurQuantity panierIndex={panierIndex} heightInput='7' paddingButton='2' setQuantityProduct={setQuantityProduct} />
+            <ConteneurQuantity panierIndex={panierIndex} heightInput='7' paddingButton='2' />
             <p className="text-lg font-semibold text-gray-800">{prixTotalProduit}€</p>
           </div>
         </div>

@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from 'react';
-
-import ConteneurQuantity from '../shared/QuantityInput';
-
+import { useDispatch, useSelector } from 'react-redux';
+import BarreLivraisonGratuite from '../shared/BarreLivraisonGratuite';
 import Swiper3Plants from '../shared/Swiper3Plants';
+import ConteneurDetailProduitPanier from '../shared/panier/ConteneurDetailProduitPanier';
 function Panier() {
-    const [quantityProduct, setQuantityProduct] = useState(0);
+    const { panier, total } = useSelector((state) => state.myState);
     return (
         <>
             <div className="bg-custom-light py-16 min-h-screen w-full flex flex-col items-center gap-10">
                 {/* Panier + prix manquant pour livraison gratuite */}
                 <div className='flex w-9/12'>
                     <p className='w-1/3 text-6xl font-bold text-gray-700'>Panier</p>
-                    <div className='flex flex-col gap-2'>
-                        <div className='flex gap-4 items-center'>
-                            <img src="icones/camion_livraison.png" alt="" className='w-12 object-contain' />
-                            <p className='font-semibold text-lg'> Dépensez encore 41.30euros de plus e obtenez la livraison gratuite !</p>
-                        </div>
-                        <div className='w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-600'>
-                            <div className='bg-emerald-500 h-2.5 rounded-full w-[45%]' ></div>
-                        </div>
+                    <div className='w-1/3 '>
+                        <BarreLivraisonGratuite prixPanier={total}></BarreLivraisonGratuite>
                     </div>
                 </div>
                 {/* Les 2 blocs à gauche tableau à droite recap prix etc */}
@@ -55,35 +49,10 @@ function Panier() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className=" hover:bg-gray-50">
-                                        <td className="px-4 py-4">
-                                            <div className="flex gap-4">
-                                                <img
-                                                    src="images/plante.png"
-                                                    alt=""
-                                                    className="w-20 h-20 rounded-md border"
-                                                />
-                                                <div className="flex flex-col gap-2">
-                                                    <p className="text-lg font-medium text-gray-800">
-                                                        2 Oenothères roses Siskiyou Pink
-                                                    </p>
-                                                    <p className="text-base text-gray-500">
-                                                        Les 2 pots / 9cm de diamètre
-                                                    </p>
-                                                    <div className="flex items-center gap-2 text-sm text-green-600">
-                                                        <img src="icones/verifier_white.png" alt="" className="w-5 h-5" />
-                                                        <span>En stock -</span>
-                                                        <p className="text-gray-500">Expédition dès demain</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-4 text-xl font-medium text-gray-800">5.40 €</td>
-                                        <td className="px-4 py-4 text-sm text-gray-600">
-                                            <ConteneurQuantity quantityProduct={quantityProduct} heightInput='11' paddingButton='3' setQuantityProduct={setQuantityProduct} />
-                                        </td>
-                                        <td className="px-4 py-4 text-xl font-medium text-gray-800">22 €</td>
-                                    </tr>
+                                {panier.map((produit, index) => (
+                                                            <ConteneurDetailProduitPanier key={produit.id} panierIndex={index} produit={produit} />
+
+                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -157,10 +126,10 @@ function Panier() {
                     </div>
                     <div className='flex flex-col gap-6 w-1/3'>
                         <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg'>
-                            <p className='font-semibold text-xl'>Livraison entre le 04/01/2025 et le 09/01/2025</p>
+                            <p className='font-medium text-xl'>Livraison entre le 04/01/2025 et le 09/01/2025</p>
                             <div className='w-full flex justify-between font-semibold text-2xl'>
                                 <p className=''>Total</p>
-                                <p> 17.97 EUR</p>
+                                <p> {total} EUR</p>
                             </div>
                             <p className=''>Livraison 6.90€ (en relais) , offerte dès 59€</p>
                             <button type="submit" className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">

@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addProduit, removeProduit, clearPanier } from '../../../mySlice';
 
 const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
-    const { panier, total, status, error } = useSelector((state) => state.myState);
+    const { panier, total } = useSelector((state) => state.myState);
     const dispatch = useDispatch();
 
-    const [prixTotalPanier, setPrixTotalPanier] = useState(0);
+    const [prixTotalPanier, setPrixTotalPanier] = useState(total);
 
     const handleRemoveProduit = async (produit) => {
         dispatch(removeProduit(produit)); // Supprimer le produit du panier
@@ -17,9 +17,9 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
             credentials: "include"
         });
     };
-
-    // const prixTotal = detailPanierPrixTotalArray.reduce((total, prix) => total + prix, 0).toFixed(2);
-    // setPrixTotalPanier(prixTotal); // Assure-toi que le prix total soit correctement formaté à 2 décimales
+    useEffect(() => {
+      setPrixTotalPanier(total)
+    }, [total]);
     return (
         <div ref={sidebarRef} className="fixed flex flex-col items-center top-0 right-0 w-1/5 bg-white h-screen border-l shadow-lg transform translate-x-full z-20">
             {/* En tête de la side barre */}

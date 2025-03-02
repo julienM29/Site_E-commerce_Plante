@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gsap } from "gsap";
 import Carroussel from '../shared/Carrousel';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import SideBarPanier from '../shared/sideBarPanier/sideBarPanier';
 import SideBarPanier2 from '../shared/sideBarPanier/sideBarPanier2';
@@ -9,9 +9,16 @@ function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();  // Hook pour changer de page
+  const location = useLocation();
 
   const sidebarRef = useRef(null);
-
+  const handleNavigation = () => {
+    if (location.pathname === "/panier") {
+      navigate("/panier");
+    } else {
+      openSidebar()
+    }
+  };
   // Lors de l'ouverture/fermeture de la sidebar, on modifie le style du body
   useEffect(() => {
     if (isSidebarOpen) {
@@ -117,7 +124,7 @@ function Header() {
             <a href="/account" className="rounded-full border-4 border-green-800 bg-white p-2">
               <img src="/icones/agriculteur.png" alt="Agriculteur" className="object-scale-down h-10 w-10" />
             </a>
-            <button type="button" className="rounded-full border-4 border-green-800 bg-white p-2" onClick={openSidebar}>
+            <button type="button" className="rounded-full border-4 border-green-800 bg-white p-2" onClick={handleNavigation}>
               <img src="/icones/brouette_vide.png" alt="Brouette vide" className="object-scale-down h-10 w-10" />
             </button>
           </div>
