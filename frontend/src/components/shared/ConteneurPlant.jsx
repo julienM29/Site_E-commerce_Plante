@@ -21,9 +21,9 @@ const ConteneurPlant = ({ taille, id, primaryImage, secondaryImage, altPrimary, 
           className="rounded-t-xl object-cover w-full h-full absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100"
         />
       </a>
-      <div className='flex flex-col items-center gap-4 pb-4'>
+      <div className='w-full flex flex-col  gap-4 pb-4'>
         <p className='bg-bande-description text-white w-full text-center'>{descriptionRapide}</p>
-        <a href='/plant/1' className='flex justify-start w-full text-lg px-2 font-semibold text-emerald-950'>{nom}</a>
+        <a href='/plant/1' className='block max-w-[90%] text-lg px-2 font-semibold text-emerald-950 truncate overflow-hidden min-w-0'>{nom}</a>
         <div className='flex justify-between w-full px-2'>
           {reduction !== 0 || reduction !== '0' && (
             <p className='flex items-center'>- {reduction} %</p>

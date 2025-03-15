@@ -8,17 +8,21 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
     const { panier, total } = useSelector((state) => state.myState);
     const dispatch = useDispatch();
 
-    const [prixTotalPanier, setPrixTotalPanier] = useState(total);
+    const [prixTotalPanier, setPrixTotalPanier] = useState( total || 0);
 
     const handleRemoveProduit = async (produit) => {
         dispatch(removeProduit(produit)); // Supprimer le produit du panier
-        const response = await fetch(`http://localhost:3000/deleteDetailPanier/${produit.detail_id}`, {
+        await fetch(`http://localhost:3000/deleteDetailPanier/${produit.detail_id}`, {
             method: "POST",
             credentials: "include"
         });
     };
     useEffect(() => {
-      setPrixTotalPanier(total)
+        // Ne mettre à jour le prix total que si `total` a changé
+        if (total !== prixTotalPanier) {
+            setPrixTotalPanier(total);
+            console.log('useEffect set prix total : ', total);
+        }
     }, [total]);
     return (
         <div ref={sidebarRef} className="fixed flex flex-col items-center top-0 right-0 w-1/5 bg-white h-screen border-l shadow-lg transform translate-x-full z-20">
@@ -53,7 +57,7 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
 
             </div>
             {/* Contenu */}
-            {/* {panier.length > 0 ? ( */}
+            {/* {panier ? ( */}
             <div className="w-11/12 h-3/4 flex flex-col gap-2 py-4 overflow-y-auto overflow-x-hidden scrollbar-none ">
                 <BarreLivraisonGratuite prixPanier={prixTotalPanier}></BarreLivraisonGratuite>
 
@@ -65,7 +69,7 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
                             key={produit.id}
                             detail_panier_id={produit.detail_id}
                             imgProduit={produit.image}
-                            prixTotalProduit={produit.prix}
+                            prixTotalProduit={produit.prixTotal}
                             nomProduit={produit.nom}
                             quantiteProduit={produit.quantite}
                         />

@@ -4,15 +4,19 @@ export const panierExistant = async (user_id, produit_id) => {
     try {
         // Requête pour compter le nombre de paniers actifs de l'utilisateur
         let panierExistant = await verificationPanier(user_id)
-        console.log('ipanier existant : ', panierExistant.count)
-        if (panierExistant.count === 1 || panierExistant.count === '1') {
-            console.log('je passe la première condition')
-            let panier = await getPanier(user_id);
+        console.log('dans panier Existant apres le verif panier,  panier existant : ', panierExistant)
+        if (panierExistant) {
+            console.log('il est defined')
+            let panier = (await getPanier(user_id)) || [];
+            console.log(' on a un panier : ', panier,' l user id est : ', user_id)
             // Si un panier actif existe, on va essayer d'ajouter ou modifier le produit
             const reponse = await addOrModifyProductPanier(user_id, produit_id, panier, panierExistant);
             return reponse;
         } else {
-            await createPanier(user_id, produit_id);
+            console.log('il est undefined')
+            const reponse = await createPanier(user_id, produit_id);
+            return reponse;
+
         }
 
     } catch (err) {
@@ -70,7 +74,10 @@ export const createPanier = async (user_id, produit_id) => {
         await connection.promise().query(requeteInsert, [panierId, produit[0].id, produit[0].prix]);
 
         console.log(`Panier créé avec succès (ID: ${panierId}) et produit ajouté (ID: ${produit[0].id}).`);
-        return true;
+        return {
+            success: true,
+            method: 'create',
+        };
 
     } catch (err) {
         console.error('Erreur lors de la création du panier:', err.message);
@@ -82,7 +89,7 @@ export const createPanier = async (user_id, produit_id) => {
 export const addOrModifyProductPanier = async (user_id, produit_id, panier, panierExistant) => {
     let paramsRequest = [];
     try {
-        console.log('panier existant debut du add or modify : ', panier)
+        // console.log('panier existant debut du add or modify : ', panier)
         const produitIdNumber = Number(produit_id);
 
         // Vérification que le panier existe bien

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { downQuantityInput, upQuantityInput, changeQuantityInput } from '../../mySlice';
 import { debounce } from 'lodash'; // Si tu veux un debouncing réel
@@ -38,6 +38,7 @@ const ConteneurQuantity = ({ panierIndex, heightInput, paddingButton }) => {
     
   }
   const asyncIncrementQuantity = async()=>{
+    console.log('le detail panier du increment : ', detail_panierFromRedux)
     try {
       await fetch(`http://localhost:3000/changeQuantityDetailPanier/${detail_panierFromRedux}/${true}/${0}`, {
       method: "POST",
@@ -82,18 +83,19 @@ const ConteneurQuantity = ({ panierIndex, heightInput, paddingButton }) => {
 
   // Fonction pour augmenter la quantité
   const increment = () => {
-    const newValue = quantityFromRedux + 1;
     debouncedIncrement()
     setLocalQuantity((localQuantity + 1))
   };
 
   // Fonction pour diminuer la quantité
   const decrement = () => {
-    const newValue = Math.max(quantityFromRedux - 1, 0); // Évite les valeurs négatives
     debouncedDecrement()
     setLocalQuantity((localQuantity - 1))
   };
-
+  useEffect(() => {
+    setLocalQuantity(quantityFromRedux);
+  }, [quantityFromRedux]);
+  
   return (
     <div className="flex items-center">
       <button

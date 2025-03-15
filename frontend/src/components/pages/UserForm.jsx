@@ -92,7 +92,7 @@ function UserForm() {
       dispatch({ type: 'test/action' });
 
       // Redirection seulement après vérification
-      window.location.href = '/';
+      // window.location.href = '/';
     }
   };
 

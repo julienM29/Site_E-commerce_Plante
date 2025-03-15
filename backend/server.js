@@ -8,7 +8,7 @@ import fastifyJWT from '@fastify/jwt';
 import { createAccount, connexionAccount } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
-import { addWishList, deleteWishList } from './controllers/wishList.js';
+import { addWishList, deleteWishList, getWishList } from './controllers/wishList.js';
 import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
 import { deleteDetailPanier, getPanier, modifyQuantity, panierExistant } from './controllers/panier.js';
 const fastify = Fastify();
@@ -173,7 +173,7 @@ fastify.post('/deleteWishList/:id_user/:id_plante', async (request, reply) => {
 
   try {
     await deleteWishList(id_user, id_plante, request, reply);
-    reply.status(200);
+    reply.status(200).send({success: true});
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }
@@ -224,7 +224,7 @@ fastify.post('/ajoutPanier/:user_id/:produit_id', async (request, reply) => {
   try {
     const { user_id, produit_id } = request.params;  // Récupère l'ID depuis les paramètres de l'URL
     const reponse = await panierExistant(user_id, produit_id);  // Appel de ta fonction pour ajouter le produit au panier
-
+    console.log('reponse : ', reponse)
     // Si la fonction renvoie true, cela signifie que l'ajout a réussi
     if (reponse.success) {
       reply.send({ reponse});
@@ -267,6 +267,19 @@ fastify.post('/changeQuantityDetailPanier/:detail_panier_id/:increment/:newQuant
     });
   }
 });
+fastify.get('/getWishList/:user_id', async (request, reply) => {
+  try {
+    const { user_id } = request.params; // Récupère l'ID utilisateur depuis l'URL
+    const data = await getWishList(user_id); // Récupère la wishlist depuis la BDD
+    reply.status(200).send(data); // ✅ Envoie directement le tableau
+  } catch (err) {
+    reply.status(500).send({
+      error: 'Une erreur est survenue lors du chargement de la wishlist',
+      details: err.message
+    });
+  }
+});
+
 // Lancer le serveur
 fastify.listen({ port: 3000, host: 'localhost' }, (err, address) => {
   if (err) {

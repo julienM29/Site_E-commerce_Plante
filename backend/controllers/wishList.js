@@ -12,13 +12,11 @@ export const addWishList = async (id_user, id_plante, request, reply) => {
         const cookie = request.cookies.wishList;  // Accéder aux cookies de la requête
         const decodedCookie = decodeURIComponent(cookie);  // Décoder le cookie si nécessaire
         let wishList = decodedCookie.split(',').map(Number);  // Séparer par des virgules et convertir chaque valeur en nombre
-        console.log('Ancient wishList : ', wishList)
 
         if (!wishList.includes(Number(id_plante))) {  // 🔹 Comparaison correcte avec Number
             wishList.push(Number(id_plante));  // 🔹 Toujours ajouter en tant que Number
         }
         
-        console.log('new wishList : ', wishList)
         await connection.promise().query(
             'INSERT INTO site_kerisnel.liste_envie (id_user, id_plante, date_ajout) VALUES (?, ?, ?)',
             [id_user, id_plante, formattedDate]
@@ -39,19 +37,14 @@ export const addWishList = async (id_user, id_plante, request, reply) => {
     }
 };
 export const deleteWishList = async (id_user, id_plante, request, reply) => {
-    console.log('je passe dans deleteWishList, id plante : ', id_plante);
 
     // Récupérer et décoder le cookie
     const cookie = request.cookies.wishList;  // Accéder aux cookies de la requête
     const decodedCookie = decodeURIComponent(cookie || ""); // Gérer le cas où le cookie est vide
     let wishList = decodedCookie ? decodedCookie.split(',').map(Number) : []; // Convertir en tableau
 
-    console.log('Ancienne wishList:', wishList);
-
     // 🔹 Supprimer l’ID si présent
     wishList = wishList.filter(id => id !== Number(id_plante));
-
-    console.log('Nouvelle wishList:', wishList);
 
     // 🔹 Mise à jour du cookie
     reply.setCookie("wishList", wishList.join(','), {
@@ -70,3 +63,17 @@ export const deleteWishList = async (id_user, id_plante, request, reply) => {
     );
 };
 
+export const getWishList = async (user_id) => {
+    const [wishList] = await connection.promise().query(
+        `SELECT l.*, p.*, 
+       (SELECT i.url_image 
+        FROM site_kerisnel.images i 
+        WHERE i.id_plante = p.id 
+        LIMIT 1) AS image
+FROM site_kerisnel.liste_envie l
+INNER JOIN plantes p ON l.id_plante = p.id
+WHERE l.id_user = ?;`,
+        [user_id]
+    );
+    return wishList;
+};
