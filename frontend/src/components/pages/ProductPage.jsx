@@ -5,7 +5,8 @@ import { EffectFade } from 'swiper/modules';
 import CaracteristiqueProduit from '../shared/CaracteristiqueProduit';
 import DetailProduit from '../shared/DetailProduit';
 import { useParams } from 'react-router-dom';
-
+import EsthetiqueProduct from '../shared/productPage/EsthetiqueProduct';
+import JardinageProduct from '../shared/productPage/JardinageProduct';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -84,7 +85,7 @@ const ProductPage = () => {
     <div className="bg-custom-light py-6 flex flex-col items-center gap-6">
       <div className="w-3/4 flex flex-col gap-4 pb-6">
         <p className="text-left w-full text-gray-500">
-          Accueil / Plantes / {dataPlants.type} / {dataPlants.famille} / {dataPlants.nom} / {dataPlants.promotion}
+          Accueil / Plantes / {dataPlants.type} / {dataPlants.famille} / {dataPlants.nom} 
         </p>
 
         <div className="w-full flex flex-col xl:flex-row justify-center items-start gap-8">
@@ -127,16 +128,38 @@ const ProductPage = () => {
           />
         </div>
       </div>
-      <CaracteristiqueProduit
-        couleur={dataPlants.couleur || 'Non spécifié'}
-        periodeFloraison={dataPlants.periode_floraison || 'Non spécifié'}
-        hauteurMax={dataPlants.hauteur || 'Non spécifié'}
-        Parfum={dataPlants.parfum }
-        DistancePlantation={dataPlants.distancePlantation || 'Non spécifié'}
-        PeriodePlantation={dataPlants.periodePlantation || 'Non spécifié'}
-        FrequenceArrosage={dataPlants.frequenceArrosage || 'Non spécifié'}
-        Exposition={dataPlants.exposition || 'Non spécifié'}
-      />
+      <div className='bg-white py-6 flex flex-col w-full items-center gap-4 border'>
+      <div className='flex w-[60%] flex-col gap-8 '>
+        <h2 className='w-full text-start text-4xl font-semibold text-green-800'>Caractéristiques</h2>
+        <div className='w-full flex divide-x-2'>
+          <EsthetiqueProduct periodeFloraison={dataPlants.periode_floraison}  
+          hauteurMin={dataPlants.hauteur_min} 
+          hauteurMax={dataPlants.hauteur_max} 
+          fleurCouper={dataPlants.fleurs_pour_couper} 
+          couleur={dataPlants.couleur} 
+          persistant={dataPlants.persistan_feuillage} 
+          parfum={dataPlants.parfum} 
+          port={dataPlants.port} 
+          largeurMin={dataPlants.largeur_maturité_min} 
+          largeurMax={dataPlants.largeur_maturité_max} 
+          couleurFeuille={dataPlants.couleur_feuilles} />
+          <JardinageProduct 
+          rusticite={dataPlants.rusticite}
+          periodePlantation={dataPlants.periode_plantation} 
+          culturePotBac={dataPlants.culture_pot_bac} 
+          frequenceArrosage={dataPlants.frequence_arrosage} 
+          mellifere={dataPlants.mellifere} 
+          protectionFroid={dataPlants.protection_froid} 
+          vitesseCroissance={dataPlants.vitesse_croissance} 
+          distancePlantationMin={dataPlants.distance_plantation_min} 
+          distancePlantationMax={dataPlants.distance_plantation_max} 
+          precaution={dataPlants.precaution} 
+          periodeRecolte={dataPlants.periode_recolte} 
+          greffe={dataPlants.greffe} />
+        </div>
+      </div>
+    </div>
+      
       <PlantSuggestions />
     </div>
   );
