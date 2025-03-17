@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 const JardinageProduct = ({ rusticite, periodePlantation, culturePotBac, frequenceArrosage, mellifere, protectionFroid, vitesseCroissance, distancePlantationMin, distancePlantationMax, precaution, periodeRecolte, greffe }) => {
 
     return (
-        <div className='flex w-1/3 items-center flex-col gap-4'>
-            <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Esthétique</h2>
-            <div className='flex flex-col gap-2'>
+        <div className='flex w-1/3 px-4 flex-col gap-4'>
+            <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Jardinage</h2>
+            <div className='flex flex-col gap-3'>
             {rusticite && (
                     <div className='flex items-center gap-2'>
                         <img src="/icones/rusticite.png" alt="" className='w-10 h-10' />
@@ -39,7 +39,7 @@ const JardinageProduct = ({ rusticite, periodePlantation, culturePotBac, frequen
                     </div>)}
                     {mellifere !== 0 && (
                     <div className='flex items-center gap-2'>
-                    <img src="/icones/feuille_persistant.png" alt="" className='w-10 h-10' />
+                    <img src="/icones/mellifere.png" alt="" className='w-10 h-10' />
                     <div className='h-full flex justify-start'>
                         <p className='h-1/2 font-bold'>Méllifère</p>
                     </div>

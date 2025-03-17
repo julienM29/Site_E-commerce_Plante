@@ -7,6 +7,7 @@ export const loadAProductDB = async (id) => {
     p.nom_latin, 
     p.prix, 
     p.promotion, 
+    p.id_type,
     p.esthetique_id, 
     p.jardinage_id, 
     p.emplacement_id,
@@ -16,6 +17,7 @@ export const loadAProductDB = async (id) => {
     j.*, 
     f.nom AS famille, 
     t.nom AS type,
+    t.image as image_type,
     GROUP_CONCAT(DISTINCT l.litres ORDER BY l.litres SEPARATOR ', ') AS litragesDispo
 FROM 
     site_kerisnel.plantes p

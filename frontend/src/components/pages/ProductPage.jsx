@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Swiper3Plants from '../shared/Swiper3Plants';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade } from 'swiper/modules';
-import CaracteristiqueProduit from '../shared/CaracteristiqueProduit';
 import DetailProduit from '../shared/DetailProduit';
 import { useParams } from 'react-router-dom';
 import EsthetiqueProduct from '../shared/productPage/EsthetiqueProduct';
 import JardinageProduct from '../shared/productPage/JardinageProduct';
+import EmplacementProduct from '../shared/productPage/EmplacementProduct';
+import { Link } from "react-router-dom";
+
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -44,7 +46,7 @@ const ProductPage = () => {
       if (data.product && data.product.length > 0) {
         const product = data.product[0];
         setDataPlants(product);
-        
+
         // Split des images en tableau et mise à jour de tabImages
         const imagesArray = product.images ? product.images.split(', ') : [];
         setTabImages(imagesArray);
@@ -80,13 +82,39 @@ const ProductPage = () => {
       </div>
     </div>
   );
-
+  const navigateByType = async (e) => {
+    console.log("Recherche soumise :", searchQuery);
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`); // Met à jour l'URL
+    }
+  };
   return (
     <div className="bg-custom-light py-6 flex flex-col items-center gap-6">
       <div className="w-3/4 flex flex-col gap-4 pb-6">
+
         <p className="text-left w-full text-gray-500">
-          Accueil / Plantes / {dataPlants.type} / {dataPlants.famille} / {dataPlants.nom} 
+          <Link className=" hover:underline underline-offset-2" to="/">Accueil</Link>
+          <span> / </span>
+          <Link className=" hover:underline underline-offset-2" to="/search">Plantes</Link>
+          <span> / </span>
+          {dataPlants.type && (
+            <>
+              <Link className=" hover:underline underline-offset-2" to={`/search?t=${dataPlants.id_type}`}>{dataPlants.type}</Link>
+              <span> / </span>
+            </>
+          )}
+          {/* {dataPlants.famille && (
+            <>
+              <Link className=" hover:underline underline-offset-2" to={`/plantes/famille/${dataPlants.famille}`}>{dataPlants.famille}</Link>
+              <span> / </span>
+            </>
+          )} */}
+          <span className="">{dataPlants.famille}</span>
+          <span> / </span>
+
+          <span className="font-semibold">{dataPlants.nom}</span>
         </p>
+
 
         <div className="w-full flex flex-col xl:flex-row justify-center items-start gap-8">
           <div className="w-3/6 order-1 xl:order-2">
@@ -129,37 +157,42 @@ const ProductPage = () => {
         </div>
       </div>
       <div className='bg-white py-6 flex flex-col w-full items-center gap-4 border'>
-      <div className='flex w-[60%] flex-col gap-8 '>
-        <h2 className='w-full text-start text-4xl font-semibold text-green-800'>Caractéristiques</h2>
-        <div className='w-full flex divide-x-2'>
-          <EsthetiqueProduct periodeFloraison={dataPlants.periode_floraison}  
-          hauteurMin={dataPlants.hauteur_min} 
-          hauteurMax={dataPlants.hauteur_max} 
-          fleurCouper={dataPlants.fleurs_pour_couper} 
-          couleur={dataPlants.couleur} 
-          persistant={dataPlants.persistan_feuillage} 
-          parfum={dataPlants.parfum} 
-          port={dataPlants.port} 
-          largeurMin={dataPlants.largeur_maturité_min} 
-          largeurMax={dataPlants.largeur_maturité_max} 
-          couleurFeuille={dataPlants.couleur_feuilles} />
-          <JardinageProduct 
-          rusticite={dataPlants.rusticite}
-          periodePlantation={dataPlants.periode_plantation} 
-          culturePotBac={dataPlants.culture_pot_bac} 
-          frequenceArrosage={dataPlants.frequence_arrosage} 
-          mellifere={dataPlants.mellifere} 
-          protectionFroid={dataPlants.protection_froid} 
-          vitesseCroissance={dataPlants.vitesse_croissance} 
-          distancePlantationMin={dataPlants.distance_plantation_min} 
-          distancePlantationMax={dataPlants.distance_plantation_max} 
-          precaution={dataPlants.precaution} 
-          periodeRecolte={dataPlants.periode_recolte} 
-          greffe={dataPlants.greffe} />
+        <div className='flex w-[60%] flex-col gap-8 '>
+          <h2 className='w-full text-start text-4xl font-semibold text-green-800'>Caractéristiques</h2>
+          <div className='w-full flex divide-x-2'>
+            <EsthetiqueProduct periodeFloraison={dataPlants.periode_floraison}
+              hauteurMin={dataPlants.hauteur_min}
+              hauteurMax={dataPlants.hauteur_max}
+              fleurCouper={dataPlants.fleurs_pour_couper}
+              couleur={dataPlants.couleur}
+              persistant={dataPlants.persistan_feuillage}
+              parfum={dataPlants.parfum}
+              port={dataPlants.port}
+              largeurMin={dataPlants.largeur_maturité_min}
+              largeurMax={dataPlants.largeur_maturité_max}
+              couleurFeuille={dataPlants.couleur_feuilles} />
+            <JardinageProduct
+              rusticite={dataPlants.rusticite}
+              periodePlantation={dataPlants.periode_plantation}
+              culturePotBac={dataPlants.culture_pot_bac}
+              frequenceArrosage={dataPlants.frequence_arrosage}
+              mellifere={dataPlants.mellifere}
+              protectionFroid={dataPlants.protection_froid}
+              vitesseCroissance={dataPlants.vitesse_croissance}
+              distancePlantationMin={dataPlants.distance_plantation_min}
+              distancePlantationMax={dataPlants.distance_plantation_max}
+              precaution={dataPlants.precaution}
+              periodeRecolte={dataPlants.periode_recolte}
+              greffe={dataPlants.greffe} />
+            <EmplacementProduct
+              exposition={dataPlants.exposition}
+              typeSol={dataPlants.type_sols}
+              typeClimat={dataPlants.type_climats}
+              utilisation={dataPlants.utilisation} />
+          </div>
         </div>
       </div>
-    </div>
-      
+
       <PlantSuggestions />
     </div>
   );

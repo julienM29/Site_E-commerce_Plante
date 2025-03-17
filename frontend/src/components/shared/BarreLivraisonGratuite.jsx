@@ -13,7 +13,7 @@ const BarreLivraisonGratuite = ({ prixPanier }) => {
     return (
         <div className='flex flex-col gap-2'>
             <div className='flex gap-4 items-center'>
-                <img src="icones/camion_livraison.png" alt="Livraison" className='w-12 object-contain' />
+                <img src="/icones/camion_livraison.png" alt="Livraison" className='w-12 object-contain' />
                 {prixLivraisonGratuit < 0 ? (
                     <p className=' text-center'>
                         La livraison de votre commande est gratuite !

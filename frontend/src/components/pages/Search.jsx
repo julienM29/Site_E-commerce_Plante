@@ -6,13 +6,15 @@ import { useSearchParams } from "react-router-dom";
 import { OrbitProgress } from 'react-loading-indicators';
 function Search() {
     const [selectType, setSelectType] = useState(false);
-    const [typeChoice, setTypeChoice] = useState();
+
     const [types, setTypes] = useState([]);
     const [dataPlants, setDataPlants] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const searchQuery = searchParams.get("q") || "";
+    const typeSearchQuery = searchParams.get("t") || "";
     const [loading, setLoading] = useState(false); // 🔥 État de chargement
     const selectedColor = searchParams.get("color") || null;
+    const [typeChoice, setTypeChoice] = useState();
     const [filters, setFilters] = useState({
         text: searchQuery || null,
         color: null,
@@ -41,21 +43,19 @@ function Search() {
 
     const searchByType = async (id, nom, image) => {
         try {
+            const updatedParams = new URLSearchParams(searchParams);
             setLoading(true);
-            // const response = await fetch(`http://localhost:3000/productByType/${id}`, { method: "POST", credentials: "include" });
-            // if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            // const data = await response.json();
-            if (selectType) {
-                if( typeChoice.id === id){
+            if (typeChoice && typeChoice.id === id) {            
+                updatedParams.delete("t");
+                // Si on reclique sur le même type, on désélectionne
                 setSelectType(false);
-                setTypeChoice();
+                setTypeChoice(null);
                 setFilters((prevState) => ({
                     ...prevState,
                     type: null,
                 }));
-            }} else {
-
-
+            } else {
+                updatedParams.set("t", id); // Ajoute le paramètre `t`
                 setSelectType(true);
                 setTypeChoice({ nom, id, image });
                 setFilters((prevState) => ({
@@ -63,7 +63,7 @@ function Search() {
                     type: id,
                 }));
             }
-            // setDataPlants(Array.isArray(data.products) ? data.products : []);
+            setSearchParams(updatedParams);
         } catch (error) {
             console.error('Erreur lors du chargement des plantes:', error);
             setDataPlants([]);
@@ -71,7 +71,7 @@ function Search() {
             setTimeout(() => setLoading(false), 800);
         }
     };
-
+    
     const searchByText = async () => {
         try {
             setLoading(true);
@@ -117,14 +117,33 @@ function Search() {
             searchByText();
         }
     }, [searchQuery]);
-
-
+    
+    
+    
+    
     useEffect(() => {
         loadTypesPlant();
-        // Si on arrive ici, cela signifie que les `filters` ont changé
-        // console.log('Les filters :', filters);
-        searchByParams(filters); // Appel de la fonction de recherche avec les filtres mis à jour
+        // console.log('change filters :', filters);
+        searchByParams(); // Appel de la fonction de recherche avec les filtres mis à jour
     }, [filters]);
+    useEffect(() => {
+        if (typeSearchQuery && types.length > 0) {  // Vérifie si les types sont chargés
+            // Si typeSearchQuery est déjà pris en compte, on n'effectue pas l'appel à searchByType
+            const idTabType = parseInt(typeSearchQuery, 10) - 1;  // Convertir typeSearchQuery en nombre
+            if (idTabType >= 0 && idTabType < types.length) {
+                const typeTab = types[idTabType];
+                if (typeChoice && typeChoice.id === typeTab.id) {
+                    return;  // Si le type est déjà sélectionné, on ne refait pas l'appel
+                }
+                console.log('typeTab : ', typeTab);
+                searchByType(typeTab.id, typeTab.nom, typeTab.image); // Recherche par type
+            } else {
+                console.error('Index invalide pour le type :', idTabType);
+            }
+        }
+    }, [typeSearchQuery, types]);  // Ajout de `types` dans les dépendances pour éviter les boucles infinies
+    
+    
     return (
         <div className="bg-custom-light py-6 min-h-screen flex flex-col items-center gap-6">
             <div className="w-10/12 flex gap-10">
