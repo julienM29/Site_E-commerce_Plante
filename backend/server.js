@@ -11,6 +11,7 @@ import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList, getWishList } from './controllers/wishList.js';
 import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
 import { deleteDetailPanier, getPanier, modifyQuantity, panierExistant } from './controllers/panier.js';
+import { getSuggestions } from './controllers/suggestion.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -194,6 +195,7 @@ fastify.post('/searchByText/:text', async (request, reply) => {
 
   try {
     const products = await searchByText(text);
+    console.log('les products : ', products)
     reply.status(200).send({ products });;
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
@@ -279,7 +281,17 @@ fastify.get('/getWishList/:user_id', async (request, reply) => {
     });
   }
 });
-
+fastify.post('/getSuggestion/:text', async (request, reply) => {
+  const { text } = request.params;
+console.log('je suis dans le fasitfy avznt get suggestion et texte = ', text)
+  try {
+    const products = await getSuggestions(text);
+    // console.log('les products : ', products)
+    reply.status(200).send({ products });;
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
+  }
+});
 // Lancer le serveur
 fastify.listen({ port: 3000, host: 'localhost' }, (err, address) => {
   if (err) {
