@@ -143,10 +143,6 @@ function HomePage() {
           <TitreSection texte="-15% de remise sur votre première commande !" textColor="text-white" taillePolice="text-3xl" />
           <p className='text-white'> Conseils, promotions, nouveautés, inspiration et plus encore, restez informé de toute notre actualité ! </p>
         </div>
-        <div className='w-3/4 flex flex-col items-center justify-center py-8 gap-12'>
-          <TitreSection texte="Les meilleures ventes" textColor="text-lime-500" taillePolice="text-5xl" />
-          <Swiper3Plants></Swiper3Plants>
-        </div>
       </div>
     </>
   )

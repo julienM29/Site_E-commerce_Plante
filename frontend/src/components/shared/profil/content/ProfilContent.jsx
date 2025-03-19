@@ -52,7 +52,7 @@ const ProfilContent = ({ ongletActif }) => {
   }, [ongletActif]); // Exécute cette logique chaque fois que `ongletActif` change
 
   return (
-    <div className="flex-1 bg-white rounded-3xl self-start">
+    <div className="flex-1 bg-white rounded-3xl self-start shadow-lg">
       <div ref={profilRef}>
         {ongletActif === "profil" && <ProfilInformationForm />}
       </div>
@@ -64,7 +64,7 @@ const ProfilContent = ({ ongletActif }) => {
           <Commande />
         )}
       </div>
-      <div ref={listeEnvieRef}>
+      <div ref={listeEnvieRef} className='p-2 '>
         {ongletActif === "listeEnvie" && (
           <ListeEnvie />
         )}

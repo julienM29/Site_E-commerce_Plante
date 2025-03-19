@@ -1,6 +1,8 @@
 import { useState } from 'react';
-
+import { useDispatch } from 'react-redux';
+import {  clearPanier } from '../../../mySlice';
 function LogoutButton() {
+    const dispatch = useDispatch();
     const logoutUser = async () => {
         console.log('logoutUser dans LogoutButton.jsx')
         const response = await fetch('http://localhost:3000/logout', {
@@ -12,12 +14,14 @@ function LogoutButton() {
             body: JSON.stringify({}), // ✅ Ajouter un body JSON vide
         });
         const result = await response.json();
-        if (result.success) {
+        if (result.success) {    
+            dispatch(clearPanier());
             console.log("✅ Déconnexion réussie !");
             // Redirection seulement après vérification
             window.location.href = '/';
         }
     };
+
     return (
         <div
             className={`relative group flex justify-center items-center gap-2 cursor-pointer  `}

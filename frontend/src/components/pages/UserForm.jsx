@@ -71,10 +71,6 @@ function UserForm() {
     const result = await response.json();
     console.log("📥 Résultat JSON du serveur :", result);
   
-    if (result.token) {
-      console.log("✅ Token reçu :", result.token);
-    }
-  
     if (result.messageEmail ) {
       console.log("❌ Erreur email :", result.messageEmail);
       setErrorMessageEmailIncorrect(result.messageEmail);
@@ -87,13 +83,18 @@ function UserForm() {
   
     if (result.success) {
       console.log("✅ Connexion réussie !");
-      console.log("🔑 Token reçu :", result.token);
-      dispatch(fetchPanier());
+      
+      console.log("🔄 Tentative de récupération du panier...");
+      dispatch(fetchPanier()).then((action) => {
+          console.log("📥 Résultat de fetchPanier :", action);
+      });
+  
       dispatch({ type: 'test/action' });
-
+  
       // Redirection seulement après vérification
       // window.location.href = '/';
-    }
+  }
+  
   };
 
   const submitCreationForm = async (event) => {

@@ -32,5 +32,26 @@
       toast.error("Impossible d'ajouter au panier !");
     }
   };
+  export const deleteWishList = async (produit_id) => {
   
+    try {
+      const result = await checkUserConnect();
+      if (!result?.user?.id) {
+        throw new Error("Utilisateur non connecté !");
+      }
+  
+      const userId = result.user.id;
+      // 🔹 Faire une requête pour ajouter en BDD
+      const response = await fetch(`http://localhost:3000/deleteWishList/${userId}/${produit_id}`, {
+        method: "POST",
+        credentials: "include",
+      });
+  
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      
+    } catch (error) {
+      console.error("Erreur dans AjoutPanier :", error);
+      toast.error("Impossible d'ajouter au panier !");
+    }
+  }; 
   

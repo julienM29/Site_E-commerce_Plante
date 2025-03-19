@@ -8,6 +8,8 @@ import Suggestion from '../shared/inputSearch/Suggestion';
 
 function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false); // État pour suivre si l'input est focus
+
   const [searchQuery, setSearchQuery] = useState("");
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
@@ -17,7 +19,7 @@ function Header() {
   const location = useLocation();
 
   const sidebarRef = useRef(null);
-  
+
   // Fonction de gestion de navigation
   const handleNavigation = () => {
     if (location.pathname === "/panier") {
@@ -85,13 +87,46 @@ function Header() {
 
   // Utilisation de useEffect pour lancer la recherche dès que debouncedSearchQuery change
   useEffect(() => {
-    if (debouncedSearchQuery) {
+    if (debouncedSearchQuery && isInputFocused) {
       setShowSuggestion(true);
       searchByText();
     } else {
+      setShowSuggestion(false); // Fermer les suggestions si l'input est vide ou pas focus
+    }
+  }, [debouncedSearchQuery, isInputFocused]);
+
+  const handleFocus = () => {
+    setIsInputFocused(true);  // Marquer l'input comme étant focus
+  };
+
+  const handleBlur = () => {
+    setIsInputFocused(false); // Marquer l'input comme perdu de focus
+
+    // Si le champ de recherche est vide, fermer les suggestions
+    if (!debouncedSearchQuery.trim()) {
       setShowSuggestion(false);
     }
-  }, [debouncedSearchQuery]);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion); // Remplir l'input avec la suggestion
+    setShowSuggestion(false);   // Fermer les suggestions
+    navigate(`/search?q=${encodeURIComponent(suggestion)}`); // Aller à la page de recherche
+  };
+
+  // Fermeture des suggestions si l'utilisateur clique à l'extérieur
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.search-container')) {
+        setShowSuggestion(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -122,7 +157,7 @@ function Header() {
             </div>
 
             {/* Search input */}
-            <div className="relative text-gray-600 focus-within:text-gray-400 w-10/12">
+            <div className="relative text-gray-600 focus-within:text-gray-400 w-10/12 search-container">
               <span className="absolute inset-y-0 left-0 flex items-center pl-2">
                 <button
                   type="submit"
@@ -149,6 +184,8 @@ function Header() {
                 placeholder="Rechercher un plant..."
                 autoComplete="off"
                 value={searchQuery}
+                onFocus={handleFocus}  
+                onBlur={handleBlur}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -175,7 +212,12 @@ function Header() {
       <Carroussel />
 
       {/* Suggestions de recherche */}
-      {dataPlantsSuggestion.length > 0 && <Suggestion data={dataPlantsSuggestion} />}
+      {showSuggestion && dataPlantsSuggestion.length > 0 && (
+        <Suggestion 
+          data={dataPlantsSuggestion} 
+          onClick={handleSuggestionClick} 
+        />
+      )}
 
       {/* Sidebar */}
       <div className={`cursor-pointer fixed inset-0 z-10  transition-opacity duration-500 ${isSidebarOpen ? 'bg-black/40 opacity-100 pointer-events-auto' : 'pointer-events-none opacity-0'}`} onClick={closeSidebar} />

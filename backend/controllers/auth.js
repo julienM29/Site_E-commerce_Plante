@@ -53,7 +53,7 @@ export const connexionAccount = async (fastify, emailConnexion, motDePasseConnex
         messageMDP = '';
         await setWishListCookie( reply, user.id);
         const token = setUserCookie(fastify, reply, user);
-        // await setPanierCookie( reply, user.id);
+        await setPanierCookie( reply, user.id);
         return { messageEmail, messageMDP, token };
       } else {
         messageMDP = 'Mot de passe incorrect';

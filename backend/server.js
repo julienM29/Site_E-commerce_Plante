@@ -11,6 +11,7 @@ import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList, getWishList } from './controllers/wishList.js';
 import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
 import { deleteDetailPanier, getPanier, modifyQuantity, panierExistant } from './controllers/panier.js';
+import { clearPanier } from '../frontend/src/mySlice.js';
 import { getSuggestions } from './controllers/suggestion.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)

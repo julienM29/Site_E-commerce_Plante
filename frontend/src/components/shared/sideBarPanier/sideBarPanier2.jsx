@@ -6,6 +6,7 @@ import { addProduit, removeProduit, clearPanier } from '../../../mySlice';
 
 const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
     const { panier, total } = useSelector((state) => state.myState);
+    console.log('panier du side bar : ', panier)
     const dispatch = useDispatch();
 
     const [prixTotalPanier, setPrixTotalPanier] = useState( total || 0);
@@ -69,7 +70,7 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
                             key={produit.id}
                             detail_panier_id={produit.detail_id}
                             imgProduit={produit.image}
-                            prixTotalProduit={produit.prixTotal}
+                            prixTotalProduit={produit.prix}
                             nomProduit={produit.nom}
                             quantiteProduit={produit.quantite}
                         />

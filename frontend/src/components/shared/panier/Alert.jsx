@@ -37,7 +37,7 @@ export const AjoutPanier = async (dispatch, produit_id, nom, prixInitial, primar
           image: primaryImage,
           quantite: data.reponse.newQuantite, // 🛒 Par défaut, on ajoute 1
           prixUnitaire: Number(prixInitial),
-          prixTotal: data.reponse.newPrixTotal,
+          prix: data.reponse.newPrixTotal,
           detail_id: data.reponse.indexDetailPanier, // ✅ Associer l'ID du détail panier
 
         };
@@ -50,7 +50,7 @@ export const AjoutPanier = async (dispatch, produit_id, nom, prixInitial, primar
           image: primaryImage,
           quantite: 1, // 🛒 Par défaut, on ajoute 1
           prixUnitaire: prixInitial,
-          prixTotal: prixInitial,
+          prix: prixInitial,
           detail_id: insert_id, // ✅ Associer l'ID du détail panier
         };
       }
