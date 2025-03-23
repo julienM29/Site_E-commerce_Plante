@@ -56,7 +56,6 @@ GROUP BY
 };
 
 export const loadAllProduct = async () => {
-    console.log('coucou le load ALL !')
     try {
         const [products] = await connection.promise().query(`
             SELECT 

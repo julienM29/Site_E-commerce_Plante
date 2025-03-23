@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { checkUserConnect } from '../CheckUserInformation';
 import { addProduit, fetchPanier } from '../../../mySlice';
 
-export const AjoutPanier = async (dispatch, produit_id, nom, prixInitial, primaryImage) => {
+export const AjoutPanier = async (dispatch, produit_id, nom, prixInitial, prixReduit, primaryImage) => {
   try {
     const result = await checkUserConnect();
     if (!result?.user?.id) {
@@ -36,7 +36,7 @@ export const AjoutPanier = async (dispatch, produit_id, nom, prixInitial, primar
           nom: nom,
           image: primaryImage,
           quantite: data.reponse.newQuantite, // 🛒 Par défaut, on ajoute 1
-          prixUnitaire: Number(prixInitial),
+          prixUnitaire:  prixReduit !== null ? Number(prixReduit) : Number(prixInitial), // Ternaire pour prixReduit
           prix: data.reponse.newPrixTotal,
           detail_id: data.reponse.indexDetailPanier, // ✅ Associer l'ID du détail panier
 
@@ -49,8 +49,8 @@ export const AjoutPanier = async (dispatch, produit_id, nom, prixInitial, primar
           nom: nom,
           image: primaryImage,
           quantite: 1, // 🛒 Par défaut, on ajoute 1
-          prixUnitaire: prixInitial,
-          prix: prixInitial,
+          prixUnitaire:  prixReduit !== null ? Number(prixReduit) : Number(prixInitial), // Ternaire pour prixReduit
+          prix: prixReduit !== null ? Number(prixReduit) : Number(prixInitial),
           detail_id: insert_id, // ✅ Associer l'ID du détail panier
         };
       }

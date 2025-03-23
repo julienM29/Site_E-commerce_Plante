@@ -104,6 +104,7 @@ export const searchByParams = async (params) => {
         let mellifere = params.mellifere || null;
         let parfum = params.parfum || null;
         let type = params.type || null;
+        let promotion = params.promotion || null;
 
         let paramsExpo = [];  // Initialisation comme tableau vide
         // Construction de la requête SQL de base
@@ -168,6 +169,9 @@ export const searchByParams = async (params) => {
             conditions.push(`p.id_type = ? `);
             paramsRequest.push(`${type}`);
         }
+        if(promotion){
+            promotionCondition(promotion,conditions)
+        }
         // Si des conditions ont été ajoutées, on ajoute la clause WHERE à la requête
         if (conditions.length > 0) {
             newRequest += ' WHERE ' + conditions.join(' AND ');
@@ -178,7 +182,7 @@ export const searchByParams = async (params) => {
         if (paramsExpo.length > 0) {
             newRequest += ` HAVING COUNT(DISTINCT te.id) = ${paramsExpo.length}`
         }
-        // console.log('newRequest fin de logique : ', newRequest)
+        console.log('newRequest fin de logique : ', newRequest)
         // console.log('params fin de logique : ', paramsRequest)
 
         // Exécution de la requête SQL sécurisée avec les paramètres liés
@@ -339,3 +343,78 @@ export const mellifereCondition = async (mellifere, conditions) => {
         conditions.push(`j.mellifere = 0 `);
     }
 };
+export const promotionCondition = async (mellifere, conditions) => {
+    if(mellifere){
+        conditions.push(`p.promotion != 0 `);
+    } else {
+        conditions.push(`p.promotion = 0 `);
+    }
+};
+
+
+export const loadPromotionsProducts = async ()=> {
+    let newRequest = requete;
+    newRequest += ' WHERE p.promotion != 0 GROUP BY p.id';
+
+    const [products] = await connection.promise().query(newRequest);
+    if (products.length > 0) {
+        const formattedProducts = products.map(product => ({
+            ...product,
+            images: product.images ? product.images.split(', ') : []  // Transformer en tableau
+        }));
+
+        // console.log('Produit(s) trouvé(s) :', formattedProducts.length);
+        return formattedProducts;
+    } else {
+        return [];
+    }
+}
+export const loadNouveauteProducts = async ()=> {
+    let newRequest = requete;
+    newRequest += ' GROUP BY p.id ORDER BY p.id DESC LIMIT 6;';
+
+    const [products] = await connection.promise().query(newRequest);
+    if (products.length > 0) {
+        const formattedProducts = products.map(product => ({
+            ...product,
+            images: product.images ? product.images.split(', ') : []  // Transformer en tableau
+        }));
+
+        return formattedProducts;
+    } else {
+        return [];
+    }
+}
+export const loadSelectionProducts = async ()=> {
+    let newRequest = requete;
+    newRequest += 'Where p.nb_ventes != 0 GROUP BY p.id ORDER BY p.nb_ventes DESC LIMIT 6;';
+
+    const [products] = await connection.promise().query(newRequest);
+    if (products.length > 0) {
+        const formattedProducts = products.map(product => ({
+            ...product,
+            images: product.images ? product.images.split(', ') : []  // Transformer en tableau
+        }));
+
+        return formattedProducts;
+    } else {
+        return [];
+    }
+}
+export const loadSuggestionProducts = async (type_id,produit_id)=> {
+    let newRequest = requete;
+    newRequest += `Where p.id_type = ? AND p.id != ? GROUP BY p.id ORDER BY p.nb_ventes DESC LIMIT 6;`
+    let paramsRequest = [];  // Tableau pour stocker les valeurs à lier à la requête
+paramsRequest.push(type_id,produit_id)
+    const [products] = await connection.promise().query(newRequest, paramsRequest);
+    if (products.length > 0) {
+        const formattedProducts = products.map(product => ({
+            ...product,
+            images: product.images ? product.images.split(', ') : []  // Transformer en tableau
+        }));
+
+        return formattedProducts;
+    } else {
+        return [];
+    }
+}

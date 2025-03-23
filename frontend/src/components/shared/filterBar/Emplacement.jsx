@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function Emplacement({setFilters}) {
+function Emplacement({ setFilters }) {
     const [isOpen, setIsOpen] = useState(false);
     const [emplacement, setEmplacement] = useState({
         PotOuBac: false,
@@ -30,21 +30,20 @@ function Emplacement({setFilters}) {
             [name]: checked,
         }));
     };
-const changeExpositionCheckbox = () => {
+
+    useEffect(() => {
         setFilters((prevState) => ({
             ...prevState,
             emplacement: emplacement,
         }));
-    }
-    useEffect(() => {
-        changeExpositionCheckbox();
-    }, [emplacement]);
+    }, [emplacement, setFilters]); // Ajout de setFilters à la dépendance
+
     return (
         <div className="border-t-4 py-5">
             <button
                 onClick={toggleAccordion}
                 aria-expanded={isOpen}
-                className="flex justify-between items-center w-full px-1  text-left"
+                className="flex justify-between items-center w-full px-1 text-left"
             >
                 <span className="text-lg font-medium">Emplacement</span>
                 <svg

@@ -59,11 +59,11 @@ const JardinageProduct = ({ rusticite, periodePlantation, culturePotBac, frequen
                             <p>{vitesseCroissance} </p>
                         </div>
                     </div>)}
-                    {(distancePlantationMin !== undefined || distancePlantationMax !== undefined) && (
+                    {(distancePlantationMin !== 0 || distancePlantationMax !== 0) && (
                     <div className='flex items-center gap-2'>
                         <img src="/icones/hauteur.png" alt="" className='w-10 h-10' />
                         <div className='flex flex-col gap-1'>
-                            <p className='font-bold'>Hauteur à maturité</p>
+                            <p className='font-bold'>Distance de plantation</p>
                             {distancePlantationMin === distancePlantationMax ? <p>{distancePlantationMax} cm</p> : <p>{distancePlantationMin} - {distancePlantationMax} cm</p>}
                         </div>
                     </div>

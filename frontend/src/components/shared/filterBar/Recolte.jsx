@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function Recolte({setFilters, filters}) {
+function Recolte({ setFilters }) {
     const [isOpen, setIsOpen] = useState(false);
     const [recolte, setRecolte] = useState({
         janvier: false,
@@ -28,15 +28,14 @@ function Recolte({setFilters, filters}) {
             [name]: checked,
         }));
     };
-const changeRecolteCheckbox = () => {
+
+    useEffect(() => {
         setFilters((prevState) => ({
             ...prevState,
             recolte: recolte,
         }));
-    }
-    useEffect(() => {
-        changeRecolteCheckbox();
-    }, [recolte]);
+    }, [recolte, setFilters]); // Directement mettre à jour les filtres
+
     return (
         <div className="border-t-4 py-5">
             <button
@@ -78,7 +77,6 @@ const changeRecolteCheckbox = () => {
                         </label>
                     </div>
                 ))}
-            
             </div>
         </div>
     );

@@ -6,7 +6,6 @@ import { addProduit, removeProduit, clearPanier } from '../../../mySlice';
 
 const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
     const { panier, total } = useSelector((state) => state.myState);
-    console.log('panier du side bar : ', panier)
     const dispatch = useDispatch();
 
     const [prixTotalPanier, setPrixTotalPanier] = useState( total || 0);

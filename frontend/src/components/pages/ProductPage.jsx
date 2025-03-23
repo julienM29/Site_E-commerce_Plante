@@ -13,14 +13,37 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
+import SwiperPromotion from '../shared/SwipperPromotion';
+import { checkUserConnect } from '../shared/CheckUserInformation';
+import TitreSection from '../shared/homePage/TitreSection';
 
 const ProductPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
   const [dataPlants, setDataPlants] = useState({});
+  const [dataPlantsSuggestions, setDataPlantsSuggestions] = useState([]);
   const [tabImages, setTabImages] = useState([]);  // Utilisation de useState pour tabImages
   const { id } = useParams();
+  const [userID, setuserID] = useState();
+  const [dataCookie, setDataCookie] = useState();
 
+  const getUserInfo = async () => {
+    const result = await checkUserConnect();
+    const resultIDUser = result.user.id;
+    setuserID(resultIDUser)
+  };
+
+  const wishList = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/checkWishList`, {
+        credentials: "include",
+      });
+      const dataWishList = await response.json();
+      setDataCookie(dataWishList.wishList);
+    } catch (error) {
+      console.error("Erreur lors de la vérification de la wishlist:", error);
+    }
+  };
   const handleSlideChange = (index) => {
     if (swiperRef.current) {
       swiperRef.current.slideTo(index);
@@ -58,11 +81,23 @@ const ProductPage = () => {
       console.error('Error fetching data:', error);
     }
   };
-
+  const searchSuggestions = async (type_id, produit_id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/loadSuggestionProduct/${type_id}/${produit_id}`);
+      const data = await response.json();
+      setDataPlantsSuggestions(data.products || []);
+    } catch (error) {
+      console.error('Erreur lors du chargement des plantes:', error);
+    }
+  };
   useEffect(() => {
     loadPlants();
+    getUserInfo();
+    wishList();
   }, []);
-
+  useEffect(() => {
+    searchSuggestions(dataPlants.id_type, dataPlants.id);
+  }, [dataPlants])
   const ImgPlants = ({ url, onClick, isActive }) => {
     return (
       <div
@@ -74,20 +109,6 @@ const ProductPage = () => {
     );
   };
 
-  const PlantSuggestions = () => (
-    <div className="w-full flex flex-col items-center gap-6">
-      <h2 className="text-3xl font-semibold">Vous pourriez aussi aimer ceci...</h2>
-      <div className='w-4/5 flex justify-center'>
-        <Swiper3Plants />
-      </div>
-    </div>
-  );
-  const navigateByType = async (e) => {
-    console.log("Recherche soumise :", searchQuery);
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`); // Met à jour l'URL
-    }
-  };
   return (
     <div className="bg-custom-light py-6 flex flex-col items-center gap-6">
       <div className="w-3/4 flex flex-col gap-4 pb-6">
@@ -193,8 +214,12 @@ const ProductPage = () => {
         </div>
       </div>
 
-      <PlantSuggestions />
-    </div>
+      <div className="w-full flex flex-col items-center gap-6">
+        <TitreSection texte="Vous pourriez aussi aimer ceci..." textColor="text-zinc-800" taillePolice="text-3xl" />
+        <div className='w-4/5 flex justify-center'>
+          <SwiperPromotion nbSlides={4} products={dataPlantsSuggestions} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
+        </div>
+      </div>    </div>
   );
 };
 

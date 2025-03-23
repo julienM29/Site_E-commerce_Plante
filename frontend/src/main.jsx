@@ -16,11 +16,12 @@ import Dashboard from './components/Test.jsx';
 import Profil from './components/pages/Profil.jsx';
 import Layout from './components/layout/Layout.jsx';
 import PanierTest from './components/Test.jsx'; 
-
+import ScrollToTop from './components/layout/ScrollToTop.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}> {/* Enveloppe ton application avec Provider et passe le store */}
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />} >
             <Route path="/" element={<HomePage />} /> {/* Page d'accueil */}

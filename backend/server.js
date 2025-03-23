@@ -9,7 +9,7 @@ import { createAccount, connexionAccount } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList, getWishList } from './controllers/wishList.js';
-import { loadProductByType, searchByParams, searchByText } from './controllers/search.js';
+import { loadNouveauteProducts, loadProductByType, loadPromotionsProducts, loadSelectionProducts, loadSuggestionProducts, searchByParams, searchByText } from './controllers/search.js';
 import { deleteDetailPanier, getPanier, modifyQuantity, panierExistant } from './controllers/panier.js';
 import { clearPanier } from '../frontend/src/mySlice.js';
 import { getSuggestions } from './controllers/suggestion.js';
@@ -139,6 +139,39 @@ fastify.get('/loadAllProduct', async (request, reply) => {
   try {
     const product = await loadAllProduct();
     reply.status(200).send({ product });
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit', details: err.message });
+  }
+});
+fastify.get('/loadPromotionProduct', async (request, reply) => {
+  try {
+    const products = await loadPromotionsProducts();
+    reply.status(200).send({ products });
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit', details: err.message });
+  }
+});
+fastify.get('/loadNouveauteProduct', async (request, reply) => {
+  try {
+    const products = await loadNouveauteProducts();
+    reply.status(200).send({ products });
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit', details: err.message });
+  }
+});
+fastify.get('/loadSelectionProduct', async (request, reply) => {
+  try {
+    const products = await loadSelectionProducts();
+    reply.status(200).send({ products });
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit', details: err.message });
+  }
+});
+fastify.get('/loadSuggestionProduct/:type_id/:produit_id', async (request, reply) => {
+  try {
+    const { type_id, produit_id } = request.params;  // Récupère l'ID depuis les paramètres de l'URL
+    const products = await loadSuggestionProducts(type_id, produit_id );
+    reply.status(200).send({ products });
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit', details: err.message });
   }

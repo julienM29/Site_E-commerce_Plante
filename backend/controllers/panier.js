@@ -8,7 +8,7 @@ export const panierExistant = async (user_id, produit_id) => {
         if (panierExistant) {
             console.log('il est defined')
             let panier = (await getPanier(user_id)) || [];
-            console.log(' on a un panier : ', panier,' l user id est : ', user_id)
+            console.log(' on a un panier : ', panier, ' l user id est : ', user_id)
             // Si un panier actif existe, on va essayer d'ajouter ou modifier le produit
             const reponse = await addOrModifyProductPanier(user_id, produit_id, panier, panierExistant);
             return reponse;
@@ -139,14 +139,21 @@ export const addOrModifyProductPanier = async (user_id, produit_id, panier, pani
                 console.log(`Produit non présent dans le panier, ajout du produit ID ${produitIdNumber}.`);
 
                 // Récupération des infos du produit
-                const requeteProduit = `SELECT id, prix FROM site_kerisnel.plantes WHERE id = ?;`;
+                const requeteProduit = `SELECT id, prix, promotion FROM site_kerisnel.plantes WHERE id = ?;`;
                 const [produit] = await connection.promise().query(requeteProduit, [produitIdNumber]);
-
+                console.log('voici le produit : ', produit[0])
+                const reduction = produit[0].promotion;
+                console.log('voici reduction : ' , reduction, ' et le produit : ', produit[0])
+                let prixInsertBDD = produit[0].prix
+                if (reduction !== 0) {
+                    prixInsertBDD = parseFloat(produit[0].prix * (1 - (Number(reduction) / 100))).toFixed(2); // Correction ici
+                }
+                console.log('il doit y avnoqefgaem, prix insert bdd', prixInsertBDD)
                 if (!produit || produit.length === 0) {
                     throw new Error(`Produit ID ${produitIdNumber} introuvable.`);
                 }
                 const requeteInsert = `INSERT INTO site_kerisnel.detail_panier (panier_id, plante_id, quantite, prix_total) VALUES (?, ?, 1, ?);`;
-                const paramInsert = [panierExistant.id, produit[0].id, produit[0].prix];
+                const paramInsert = [panierExistant.id, produit[0].id, prixInsertBDD];
                 const result = await connection.promise().query(requeteInsert, paramInsert);
 
                 // Récupérer l'insertId du produit ajouté
@@ -183,91 +190,6 @@ export const deleteProductPanier = async (user_id) => {
     }
 };
 
-export const addOrModifyProductPanier2 = async (request, reply, user_id, produit_id) => {
-    try {
-        const cookie = request.cookies.panier;  // Accéder aux cookies de la requête
-        const decodedCookiePanier = cookie ? JSON.parse(decodeURIComponent(cookie)) : {};
-
-        // Gestion des valeurs nulles et transformation en tableau de nombres
-        const toNumberArray = (arr) => Array.isArray(arr) ? arr.map(Number) : [];
-
-        let tabProduitPanierId = toNumberArray(decodedCookiePanier.produit_id);
-        let tabDetailPanierId = toNumberArray(decodedCookiePanier.detail_panier_id);
-        let tabDetailPanierPrix = toNumberArray(decodedCookiePanier.detail_panier_prix);
-        let tabDetailPanierQuantite = toNumberArray(decodedCookiePanier.detail_panier_quantite);
-
-        const produitIdNumber = Number(produit_id);
-
-        if (tabProduitPanierId.includes(produitIdNumber)) {
-            // Produit déjà dans le panier
-            const index = tabProduitPanierId.indexOf(produitIdNumber);
-
-            if (index === -1 || index >= tabDetailPanierId.length) {
-                throw new Error('Incohérence des données dans le panier.');
-            }
-
-            const indexDetailPanier = tabDetailPanierId[index];
-            const prixDetailPanier = tabDetailPanierPrix[index];
-            const quantiteDetailPanier = tabDetailPanierQuantite[index] || 1; // Évite division par zéro
-
-            const prixUnitaire = prixDetailPanier / quantiteDetailPanier;
-            const newQuantite = quantiteDetailPanier + 1;
-            const newPrixTotal = prixUnitaire * newQuantite;
-
-            console.log(`Produit déjà dans le panier : ID ${produitIdNumber}`);
-            console.log(`Ancien prix total: ${prixDetailPanier}, Nouvelle quantité: ${newQuantite}, Nouveau prix total: ${newPrixTotal}`);
-
-            // Mise à jour en BDD
-            const requete = `UPDATE site_kerisnel.detail_panier SET quantite = ?, prix_total = ? WHERE id = ?;`;
-            await connection.promise().query(requete, [newQuantite, newPrixTotal, indexDetailPanier]);
-
-            // Mise à jour du cookie
-            tabDetailPanierPrix[index] = newPrixTotal;
-            tabDetailPanierQuantite[index] = newQuantite;
-        } else {
-            console.log(`Produit non présent dans le panier, ajout du produit ID ${produitIdNumber}.`);
-            // Récupération des infos du produit
-            const requeteProduit = `SELECT id, prix FROM site_kerisnel.plantes WHERE id = ?;`;
-            const [produit] = await connection.promise().query(requeteProduit, [produitIdNumber]);
-
-            if (!produit || produit.length === 0) {
-                throw new Error(`Produit ID ${produitIdNumber} introuvable.`);
-            }
-
-            // Ajout en BDD
-            const requeteInsert = `INSERT INTO site_kerisnel.detail_panier (panier_id, plante_id, quantite, prix_total) VALUES (?, ?, 1, ?);`;
-            const insertResult = await connection.promise().query(requeteInsert, [panierExistant[0].id, produit[0].id, produit[0].prix]);
-            const insertId = insertResult[0].insertId;
-
-            // Mise à jour des tableaux
-            tabProduitPanierId.push(produit[0].id);
-            tabDetailPanierId.push(insertId);
-            tabDetailPanierPrix.push(produit[0].prix);
-            tabDetailPanierQuantite.push(1);
-        }
-
-        // Mise à jour du cookie (une seule fois)
-        const newPanierCookie = {
-            produit_id: tabProduitPanierId,
-            detail_panier_id: tabDetailPanierId,
-            detail_panier_prix: tabDetailPanierPrix,
-            detail_panier_quantite: tabDetailPanierQuantite
-        };
-
-        reply.setCookie('panier', JSON.stringify(newPanierCookie), {
-            httpOnly: true,
-            secure: true, // true si HTTPS, sinon false en local
-            sameSite: 'None',
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7 // 1 semaine
-        });
-
-        return true;
-    } catch (err) {
-        console.error('Erreur lors du traitement du panier:', err.message);
-        throw new Error('Erreur lors du traitement du panier.');
-    }
-};
 export const verificationPanier = async (user_id) => {
     const [panierExistant] = await connection.promise().query(
         `    SELECT COUNT(*) AS count, p.id AS id
@@ -290,7 +212,7 @@ export const modifyQuantity = async (detail_produit_id, increment, newQuantity) 
             `,
             [detail_produit_id]
         );
-    } else if (increment === 'change'){
+    } else if (increment === 'change') {
         console.log('il est change')
 
         await connection.promise().query(
@@ -298,7 +220,7 @@ export const modifyQuantity = async (detail_produit_id, increment, newQuantity) 
                SET  quantite= ?
              WHERE id=?;
             `,
-            [newQuantity,detail_produit_id]
+            [newQuantity, detail_produit_id]
         );
     } else {
         console.log('il est false')

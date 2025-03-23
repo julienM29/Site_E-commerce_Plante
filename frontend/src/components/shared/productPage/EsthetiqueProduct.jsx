@@ -67,7 +67,7 @@ const EsthetiqueProduct = ({ periodeFloraison, hauteurMin, hauteurMax, fleurCoup
                             <p>{port}</p>
                         </div>
                     </div>)}
-                {(largeurMin !== undefined || largeurMax !== undefined) && (
+                {(largeurMin !== 0 || largeurMax !== 0) && (
                     <div className='flex items-center gap-2'>
                         <img src="/icones/largeur.png" alt="" className='w-10 h-10' />
                         <div className='flex flex-col gap-1'>

@@ -12,6 +12,7 @@ function Search() {
     const [searchParams, setSearchParams] = useSearchParams();
     const searchQuery = searchParams.get("q") || "";
     const typeSearchQuery = searchParams.get("t") || "";
+    const promotionSearchQuery = searchParams.get("p") || "";
     const [loading, setLoading] = useState(false); // 🔥 État de chargement
     const selectedColor = searchParams.get("color") || null;
     const [typeChoice, setTypeChoice] = useState();
@@ -27,6 +28,7 @@ function Search() {
         recolte: null,
         persistant: null,
         type: null,
+        promotion: null,
     });
     const [initialized, setInitialized] = useState(false); // Nouveau état pour vérifier l'initialisation
     const [productFound, setProductFound] = useState(false); // Nouveau état pour vérifier l'initialisation
@@ -117,7 +119,14 @@ function Search() {
             searchByText();
         }
     }, [searchQuery]);
-    
+    useEffect(() => {
+        if (promotionSearchQuery) { 
+            setFilters((prevState) => ({
+                ...prevState,
+                promotion: true,
+            }));
+        }
+    }, [promotionSearchQuery]);
     
     
     
@@ -143,7 +152,22 @@ function Search() {
         }
     }, [typeSearchQuery, types]);  // Ajout de `types` dans les dépendances pour éviter les boucles infinies
     
-    
+    const resetFilters = () => {
+        setFilters({
+            text: null,
+            color: null,
+            minPrice: null,
+            maxPrice: null,
+            exposition: null,
+            arrosage: null,
+            emplacement: null,
+            floraison: null,
+            recolte: null,
+            persistant: null,
+            type: null,
+            promotion: null,
+        });
+    };
     return (
         <div className="bg-custom-light py-6 min-h-screen flex flex-col items-center gap-6">
             <div className="w-10/12 flex gap-10">
@@ -166,7 +190,7 @@ function Search() {
                                         <p className="text-gray-600 text-xl">Désolé, nous n'avons trouvé aucun résultat. Essayez avec d'autres filtres !</p>
 
                                         {/* Bouton avec effet d'ombre */}
-                                        <button className="mt-4 rounded-3xl text-2xl px-6 py-3 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300 shadow-lg hover:shadow-xl">
+                                        <button onClick={resetFilters} className="mt-4 rounded-3xl text-2xl px-6 py-3 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300 shadow-lg hover:shadow-xl">
                                             Réinitialiser les filtres
                                         </button>
                                     </div>

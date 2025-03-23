@@ -1,18 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BarreLivraisonGratuite from '../shared/BarreLivraisonGratuite';
-import Swiper3Plants from '../shared/Swiper3Plants';
 import ConteneurDetailProduitPanier from '../shared/panier/ConteneurDetailProduitPanier';
+import { checkUserConnect } from '../shared/CheckUserInformation';
+import SwiperPromotion from '../shared/SwipperPromotion';
 function Panier() {
     const { panier, total } = useSelector((state) => state.myState);
+    const [dataSelectionPlants, setDataSelectionPlants] = useState([]);
+    const [userID, setuserID] = useState();
+    const [dataCookie, setDataCookie] = useState();
+    const getUserInfo = async () => {
+        const result = await checkUserConnect();
+        const resultIDUser = result.user.id;
+        setuserID(resultIDUser)
+    };
+
+    const wishList = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/checkWishList`, {
+                credentials: "include",
+            });
+            const dataWishList = await response.json();
+            setDataCookie(dataWishList.wishList);
+        } catch (error) {
+            console.error("Erreur lors de la vérification de la wishlist:", error);
+        }
+    };
+    const searchSelection = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/loadSelectionProduct`);
+            const data = await response.json();
+            setDataSelectionPlants(data.products || []);
+        } catch (error) {
+            console.error('Erreur lors du chargement des plantes:', error);
+        }
+    };
+    useEffect(() => {
+        searchSelection();
+        getUserInfo();
+        wishList();
+    }, []);
     return (
         <>
             <div className="bg-custom-light py-16 min-h-screen w-full flex flex-col items-center gap-10">
                 {/* Panier + prix manquant pour livraison gratuite */}
-                <div className='flex w-9/12'>
+                <div className='flex flex-col gap-2 w-9/12'>
                     <p className='w-1/3 text-6xl font-bold text-gray-700'>Panier</p>
-                    <div className='w-1/3 '>
-                        <BarreLivraisonGratuite prixPanier={total}></BarreLivraisonGratuite>
+                    <div className='w-full flex justify-center '>
+                        <div className='w-1/3'>
+                            <BarreLivraisonGratuite prixPanier={total}></BarreLivraisonGratuite></div>
                     </div>
                 </div>
                 {/* Les 2 blocs à gauche tableau à droite recap prix etc */}
@@ -32,7 +68,9 @@ function Panier() {
                                         <th
                                             scope="col"
                                             className="px-4 py-2 text-xl font-bold text-gray-600 uppercase"
+
                                         >
+                                            Prix Unitaire
                                         </th>
                                         <th
                                             scope="col"
@@ -44,15 +82,15 @@ function Panier() {
                                             scope="col"
                                             className="px-4 py-2 text-xl font-bold text-gray-600 uppercase"
                                         >
-                                            Prix
+                                            Total
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {panier.map((produit, index) => (
-                                                            <ConteneurDetailProduitPanier key={produit.id} panierIndex={index} produit={produit} />
+                                    {panier.map((produit, index) => (
+                                        <ConteneurDetailProduitPanier key={produit.id} panierIndex={index} produit={produit} />
 
-                    ))}
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -167,7 +205,7 @@ function Panier() {
                 </div>
                 <div className='w-3/4 flex flex-col items-center justify-center py-8 gap-12'>
                     <h2 className='text-5xl font-semibold text-gray-700'>Les meilleures ventes </h2>
-                    <Swiper3Plants></Swiper3Plants>
+                    <SwiperPromotion nbSlides={4} products={dataSelectionPlants} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
                 </div>
             </div>
         </>

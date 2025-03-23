@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function Floraison({setFilters,filters}) {
+function Floraison({ setFilters }) {
     const [isOpen, setIsOpen] = useState(false);
     const [floraison, setFloraison] = useState({
         Janvier: false,
@@ -28,21 +28,20 @@ function Floraison({setFilters,filters}) {
             [name]: checked,
         }));
     };
-    const changeFloraisonCheckbox = () => {
+
+    useEffect(() => {
         setFilters((prevState) => ({
             ...prevState,
             floraison: floraison,
         }));
-    }
-    useEffect(() => {
-        changeFloraisonCheckbox();
-    }, [floraison]);
+    }, [floraison, setFilters]); // Directement mettre à jour les filtres
+
     return (
         <div className="border-t-4 py-5">
             <button
                 onClick={toggleAccordion}
                 aria-expanded={isOpen}
-                className="flex justify-between items-center w-full px-1  text-left"
+                className="flex justify-between items-center w-full px-1 text-left"
             >
                 <span className="text-lg font-medium">Mois de floraison</span>
                 <svg
@@ -78,7 +77,6 @@ function Floraison({setFilters,filters}) {
                         </label>
                     </div>
                 ))}
-            
             </div>
         </div>
     );

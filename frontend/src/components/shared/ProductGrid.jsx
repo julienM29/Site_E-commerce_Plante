@@ -41,33 +41,29 @@ const ProductGrid = ({ data }) => {
   }, []);
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
-        {currentItems.map((plant, index) => (
-          <div
-            key={index}
-            className=" w-full "
-          >
-            <ConteneurPlant
-              taille={'full'}
-              id={plant.id}
-              primaryImage={`/images/${plant.images[0]}`}
-              secondaryImage={`/images/${plant.images[1]}`}
-              altPrimary="photo 1 de la plante"
-              altSecondary="photo 2 de la plante"
-              nom={plant.nom}
-              descriptionRapide={plant.famille}
-              prixInitial={plant.prix}
-              prixReduit="0"
-              reduction="0"
-              infoStock="disponible"
-              idUser={userID}
-              isWishlisted={dataCookie?.includes(plant.id)}  // Utilise l'opérateur + pour convertir plant.id en nombre
-              />
-          </div>
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full ">
+  {currentItems.map((plant, index) => (
+    <div key={index} className="w-full">
+      <ConteneurPlant
+        taille={'full'}
+        id={plant.id}
+        primaryImage={`/images/${plant.images[0]}`}
+        secondaryImage={`/images/${plant.images[1]}`}
+        altPrimary="photo 1 de la plante"
+        altSecondary="photo 2 de la plante"
+        nom={plant.nom}
+        descriptionRapide={plant.famille}
+        prixInitial={plant.prix}
+        reduction={plant.promotion || null}
+        infoStock="disponible"
+        idUser={userID}
+        isWishlisted={dataCookie?.includes(plant.id)}
+        hauteur = {500}
+      />
+    </div>
+  ))}
+</div>
 
-        ))}
-
-      </div>
       {/* Pagination */}
       <ReactPaginate
         previousLabel={"previous"}
