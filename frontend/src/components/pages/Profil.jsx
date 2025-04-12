@@ -20,23 +20,23 @@ function Profil() {
     }, []); // Cela ne s'exécute qu'une seule fois, lors du premier rendu
 
     if (userConnect === 'loading') {
-        return         <div className="bg-custom-light py-16 min-h-[78vh] w-full flex justify-center">
-<div className="w-full h-full fixed top-0 left-0 bg-white opacity-75 z-50">
-  <div className="flex justify-center items-center mt-[50vh]">
-    <div className="fas fa-circle-notch fa-spin fa-5x text-violet-600"></div>
-  </div>
-</div>
-</div>;  // Remplacer par un spinner ou un autre indicateur de chargement
+        return <div className="bg-custom-light py-16 min-h-[78vh] w-full flex justify-center">
+            <div className="w-full h-full fixed top-0 left-0 bg-white opacity-75 z-50">
+                <div className="flex justify-center items-center mt-[50vh]">
+                    <div className="fas fa-circle-notch fa-spin fa-5x text-violet-600"></div>
+                </div>
+            </div>
+        </div>;  // Remplacer par un spinner ou un autre indicateur de chargement
     }
-    
+
     if (userConnect === false) {
         return <UserForm />;
     }
 
     // Si l'utilisateur est connecté, afficher le profil
     return (
-        <div className="bg-custom-light items-center h-[78vh] w-full flex justify-center">
-    <div className="w-1/2 flex gap-4 items-start h-3/4">
+        <div className="bg-custom-light items-center h-[80vh] w-full flex justify-center">
+            <div className="w-[55%] flex gap-4 items-start h-[90%]">
                 <ProfilMenu setOngletActif={setOngletActif} ongletActif={ongletActif} />
                 <ProfilContent ongletActif={ongletActif} />
             </div>

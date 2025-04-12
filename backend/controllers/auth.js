@@ -66,7 +66,44 @@ export const connexionAccount = async (fastify, emailConnexion, motDePasseConnex
 
   return { messageEmail, messageMDP };
 };
+export const updateAccount = async (fastify, reply , id_user, prenom, nom, email, telephone, date_naissance, genre) => {
+    try {
+        const requeteUtilisateurExistant = `
+            SELECT COUNT(*) as count
+            FROM utilisateurs
+            WHERE 
+            id = ?
+            `;
+        const utilisateurExistant = await connection.promise().query(requeteUtilisateurExistant, [id_user]);
+        console.log('utilisateurExistant : ', utilisateurExistant[0][0].count)
+        if(utilisateurExistant[0][0].count === 1 || utilisateurExistant[0][0].count === "1"){
+          console.log('je vais update')
+          const [day, month, year] = date_naissance.split('/');
+          const dateBDD = new Date(year, month - 1, day)
+          await connection.promise().query(
+            'UPDATE site_kerisnel.utilisateurs SET prenom= ?, nom=?, email=?, telephone=?, date_naissance=?, genre=? WHERE id=? ',
+            [ prenom, nom, email, telephone, dateBDD, genre, id_user]
+        );
 
+        console.log('Informations modifiées');
+        const updatedUser = {
+          id: id_user,
+          prenom: prenom,
+          nom: nom,
+          email: email,
+          telephone: telephone,
+          date_naissance: date_naissance,  // Assurez-vous que la date est dans le bon format
+          genre: genre
+      };
+        setUserCookie(fastify, reply, updatedUser);
+        return { success: true, message: 'Profil mis à jour avec succès' };
+        }
+        
+    } catch (error) {
+        console.error("Erreur lors de la modification des informations du profil :", error);
+        throw new Error("Impossible de modifier les informations.");
+    }
+};
 export const setWishListCookie = async ( reply, user_id) => {
   const [wishListExistante] = await connection.promise().query(
     'SELECT GROUP_CONCAT(id_plante) AS id_plantes FROM liste_envie WHERE id_user = ?',
@@ -94,6 +131,9 @@ export const setUserCookie = (fastify, reply, user) => {
     prenom: user.prenom,
     nom: user.nom,
     id: user.id,
+    telephone: user.telephone,
+    genre: user.genre,
+    date_naissance : user.date_naissance
   });
 
   //Cookie user Info

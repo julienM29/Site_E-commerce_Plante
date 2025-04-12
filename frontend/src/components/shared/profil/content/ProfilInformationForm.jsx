@@ -5,11 +5,13 @@ import Information from './Information';
 const ProfilInformationForm = () => {
     const [modifyInformation, setModifyInformation] = useState(false)
     const [userInfo, setUserInfo] = useState({
+        id: '',
         prenom: '',
         nom: '',
         email: '',
         telephone: '',
         genre: '',
+        date_naissance:'',
     });
 
 
@@ -17,13 +19,15 @@ const ProfilInformationForm = () => {
     // Fonction pour récupérer les informations de la session
     const getUserInfo = async () => {
         const result = await checkUserConnect();
-
-        // console.log("🔍 Infos utilisateur récupérées :", result);
+        console.log("🔍 Infos utilisateur récupérées :", result);
         setUserInfo({
+            id: result.user.id,
             prenom: result.user.prenom,
             nom: result.user.nom,
             email: result.user.email,
-            telephone: '',
+            telephone: result.user.telephone,
+            date_naissance: result.user.date_naissance,
+            genre: result.user.genre
         })
     };
 
@@ -38,9 +42,6 @@ const ProfilInformationForm = () => {
     const changeContent = () => {
         setModifyInformation(prev => !prev);
     };
-    
-
-
     // Appeler la fonction pour récupérer les informations au montage du composant
     useEffect(() => {
         getUserInfo();

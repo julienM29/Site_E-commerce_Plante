@@ -1,27 +1,49 @@
-import { useState } from 'react';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { useState, useEffect } from "react";
+import Calendar from "react-calendar";
+import 'react-calendar/dist/Calendar.css';
 
-function CustomDatePicker() {
-  const [startDate, setStartDate] = useState(null);
+function CustomDatePicker({ handleUserInfoChange, date_naissance }) {
+  // Vérifie si la date de naissance est passée en prop et la transforme en objet Date valide
+  const [date, setDate] = useState(
+    date_naissance ? new Date(date_naissance) : new Date()  // Si date_naissance existe, l'utiliser ; sinon, utiliser la date actuelle
+  );
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);  // Etat pour afficher ou cacher le calendrier
+
+  const handleDateChange = (newDate) => {
+    setDate(newDate);  // Mise à jour de la date sélectionnée
+    setIsCalendarOpen(false);  // Ferme le calendrier après la sélection
+
+    // Créer un objet simulant l'événement pour handleUserInfoChange
+    const event = {
+      target: {
+        name: "date_naissance",  // Nom du champ pour la date de naissance
+        value: newDate.toLocaleDateString(),  // Format de la date pour l'input
+        type: "date",  // Type de l'input (ici, une date)
+      }
+    };
+
+    // Appel de handleUserInfoChange avec l'objet event simulé
+    handleUserInfoChange(event);
+  };
 
   return (
     <div className="relative w-full">
-      <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none z-20">
-        <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-        </svg>
-      </div>
-      
-      <div className="relative w-full" onClick={() => document.getElementById("datepicker").focus()}>
-        <DatePicker
-          id="datepicker"
-          selected={startDate}
-          onChange={date => setStartDate(date)}
-          className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholderText="Select date"
-        />
-      </div>
+      <input
+        type="text"
+        value={date.toLocaleDateString()} // Affiche la date sélectionnée
+        onClick={() => setIsCalendarOpen(!isCalendarOpen)} // Ouvre/ferme le calendrier
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Sélectionner une date"
+        readOnly // Rendre le champ en lecture seule
+      />
+      {isCalendarOpen && (
+        <div className="absolute top-full mt-2 left-0 z-10">
+          <Calendar
+            onChange={handleDateChange} // Quand une date est sélectionnée
+            value={date} // La date sélectionnée sera la valeur du calendrier
+          />
+        </div>
+      )}
     </div>
   );
 }

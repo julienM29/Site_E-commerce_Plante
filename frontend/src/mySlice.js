@@ -40,15 +40,22 @@ const transformPanier = (data) => {
   }));
 };
 // Fonction utilitaire pour calculer le total
-const calculateTotal = (panier) => {
-  return panier.reduce((acc, produit) => {
-     console.log('recalcul prix total , u et Q : ', produit.prixUnitaire, 'q : ', produit.quantite)
+const calculateTotal = (panier, garantie) => {
+  let total = panier.reduce((acc, produit) => {
     return acc + (produit.prixUnitaire * produit.quantite);
   }, 0);
+
+  // Ajouter la garantie de 3.90€ si garantie = 1
+  if (garantie === 1) {
+    total += 3.90;
+  }
+
+  return parseFloat(total.toFixed(2)); // Assurez-vous que le total soit toujours un nombre à deux décimales
 };
+
 // Fonction utilitaire pour mettre à jour le total
 const updateTotal = (state) => {
-  state.total = parseFloat(calculateTotal(state.panier).toFixed(2));
+  state.total = parseFloat(calculateTotal(state.panier, state.garantie).toFixed(2));
 };
 
 // Fonction asynchrone pour récupérer le panier
@@ -90,14 +97,14 @@ const mySlice = createSlice({
   initialState: {
     panier: [],
     total: 0,
+    garantie : 0,
+    panierId: null, // Stockera l'ID du panier
     status: 'idle', // "idle", "loading", "succeeded", "failed"
     error: null,
   },
   reducers: {
     addProduit: (state, action) => {
-      console.log('addProduit appelé avec le produit : ', action.payload);
       const produit = action.payload;
-      console.log('produit prix : ', produit.prix)
       const panierActuel = state.panier;
     
       if (!produit.present) {
@@ -165,7 +172,17 @@ const mySlice = createSlice({
     clearPanier: (state) => {
       state.panier = [];
       state.total = 0;
+      state.garantie = 0;
     },
+    addGarantie: (state) => {
+      state.garantie = 1;  
+      updateTotal(state);
+    },
+    removeGarantie: (state) => {
+      state.garantie = 0; 
+      updateTotal(state);
+    },
+    
   },
   extraReducers: (builder) => {
     builder
@@ -176,16 +193,22 @@ const mySlice = createSlice({
       .addCase(fetchPanier.fulfilled, (state, action) => {
         console.log("✅ fetchPanier terminé avec succès !");
         console.log("📦 Données du panier avant transformation :", action.payload);
-
+      
         state.status = 'succeeded';
         state.panier = transformPanier(action.payload);
-
+      
+        // 🔹 Récupérer et stocker l'ID du panier
+        state.panierId = action.payload.id || null;  
+        state.garantie = action.payload.garantie !== undefined ? action.payload.garantie : 0;
+      
         console.log("🔄 Panier après transformation :", state.panier);
-
+        console.log("🆔 ID du panier :", state.panierId);
+        console.log("🆔 garantie du panier :", state.garantie);
+      
         // Recalcule le total après récupération du panier
         updateTotal(state);
         console.log("💰 Total après updateTotal :", state.total);
-      })
+      })      
       .addCase(fetchPanier.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
@@ -196,5 +219,5 @@ const mySlice = createSlice({
 });
 
 // Export des actions et du reducer
-export const { addProduit, removeProduit, clearPanier, upQuantityInput, downQuantityInput, changeQuantityInput } = mySlice.actions;
+export const { addProduit, removeProduit, clearPanier, upQuantityInput, downQuantityInput, changeQuantityInput, addGarantie, removeGarantie } = mySlice.actions;
 export default mySlice.reducer;

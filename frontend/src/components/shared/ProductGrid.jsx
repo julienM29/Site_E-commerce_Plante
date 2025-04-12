@@ -1,29 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import ConteneurPlant from "./ConteneurPlant";
-import { checkUserConnect } from '../shared/CheckUserInformation';
+import { getUserInfoAndWishList } from "./UserUtils";
 
 const ProductGrid = ({ data }) => {
-  const [userID, setuserID] = useState();
+  const [userID, setUserID] = useState();
   const [dataCookie, setDataCookie] = useState();
-  const wishList = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/checkWishList`, {
-        credentials: "include",
-      });
-      const dataWishList = await response.json();
-      setDataCookie(dataWishList.wishList);
-    } catch (error) {
-      console.error("Erreur lors de la vérification de la wishlist:", error);
-    } 
-};
-
-  // Fonction pour récupérer les informations de la session
-  const getUserInfo = async () => {
-    const result = await checkUserConnect();
-    const resultIDUser = result.user.id;
-    setuserID(resultIDUser)
-  };
 
   const itemsPerPage = 20;
   const pageCount = Math.ceil(data.length / itemsPerPage);
@@ -36,8 +18,7 @@ const ProductGrid = ({ data }) => {
   const offset = currentPage * itemsPerPage;
   const currentItems = data.slice(offset, offset + itemsPerPage);
   useEffect(() => {
-    getUserInfo();
-    wishList();
+    getUserInfoAndWishList(setUserID, setDataCookie);
   }, []);
   return (
     <div>

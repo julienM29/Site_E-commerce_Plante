@@ -14,9 +14,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import SwiperPromotion from '../shared/SwipperPromotion';
-import { checkUserConnect } from '../shared/CheckUserInformation';
 import TitreSection from '../shared/homePage/TitreSection';
-
+import { getUserInfoAndWishList } from '../shared/UserUtils';
 const ProductPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
@@ -24,26 +23,12 @@ const ProductPage = () => {
   const [dataPlantsSuggestions, setDataPlantsSuggestions] = useState([]);
   const [tabImages, setTabImages] = useState([]);  // Utilisation de useState pour tabImages
   const { id } = useParams();
-  const [userID, setuserID] = useState();
+  const [userID, setUserID] = useState();
   const [dataCookie, setDataCookie] = useState();
+  const threeDaysLater = new Date();
+  threeDaysLater.setDate(threeDaysLater.getDate() + 3);
+  const formattedDate = threeDaysLater.toLocaleDateString("fr-FR"); // Format : "15/03/2025"
 
-  const getUserInfo = async () => {
-    const result = await checkUserConnect();
-    const resultIDUser = result.user.id;
-    setuserID(resultIDUser)
-  };
-
-  const wishList = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/checkWishList`, {
-        credentials: "include",
-      });
-      const dataWishList = await response.json();
-      setDataCookie(dataWishList.wishList);
-    } catch (error) {
-      console.error("Erreur lors de la vérification de la wishlist:", error);
-    }
-  };
   const handleSlideChange = (index) => {
     if (swiperRef.current) {
       swiperRef.current.slideTo(index);
@@ -92,8 +77,7 @@ const ProductPage = () => {
   };
   useEffect(() => {
     loadPlants();
-    getUserInfo();
-    wishList();
+    getUserInfoAndWishList(setUserID, setDataCookie);
   }, []);
   useEffect(() => {
     searchSuggestions(dataPlants.id_type, dataPlants.id);
@@ -174,6 +158,7 @@ const ProductPage = () => {
             prixInitial={dataPlants.prix || 'Non spécifié'}
             typePlant={dataPlants.type || 'Type non spécifié'}
             litrageDisponible={dataPlants.litragesDispo || 'Non spécifié'}
+            dateLivraison={formattedDate}
           />
         </div>
       </div>

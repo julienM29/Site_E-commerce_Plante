@@ -5,7 +5,7 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import fastifyCookie from 'fastify-cookie';
 import fastifyJWT from '@fastify/jwt';
-import { createAccount, connexionAccount } from './controllers/auth.js';
+import { createAccount, connexionAccount, updateAccount } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList, getWishList } from './controllers/wishList.js';
@@ -13,6 +13,8 @@ import { loadNouveauteProducts, loadProductByType, loadPromotionsProducts, loadS
 import { deleteDetailPanier, getPanier, modifyQuantity, panierExistant } from './controllers/panier.js';
 import { clearPanier } from '../frontend/src/mySlice.js';
 import { getSuggestions } from './controllers/suggestion.js';
+import { getCommande, validationCommande } from './controllers/commande.js';
+import { addAdresse, changeActiveAdresse, deleteAdresse, loadActivAdresse, loadModifyAdresse, loadOtherAdresses, modifyAdresse } from './controllers/adresse.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -73,7 +75,22 @@ fastify.get('/userInfo', async (request, reply) => {
     return reply.status(500).send({ error: 'Erreur serveur lors de la vérification du token', details: err.message, success: false });
   }
 });
-
+fastify.post('/updateProfil/:id_user', async (request, reply) => {   
+  const { id_user} = request.params;   
+  const { prenom, nom, email, telephone, date_naissance, genre } = request.body;
+console.log('j arrive ici ! ')
+  try {       
+      const response = await updateAccount(fastify, reply,id_user, prenom, nom, email, telephone, date_naissance, genre);       
+      if (response.success) {         
+          reply.send({ success: true });       
+      } else {         
+          reply.send({ success: false, message: response.message });        
+      }   
+  } catch (err) {       
+      console.error("Erreur côté serveur:", err); 
+      reply.status(500).send({ error: "Une erreur est survenue lors du traitement de l'adresse" });   
+  } 
+}); 
 
 
 
@@ -317,7 +334,6 @@ fastify.get('/getWishList/:user_id', async (request, reply) => {
 });
 fastify.post('/getSuggestion/:text', async (request, reply) => {
   const { text } = request.params;
-console.log('je suis dans le fasitfy avznt get suggestion et texte = ', text)
   try {
     const products = await getSuggestions(text);
     // console.log('les products : ', products)
@@ -326,6 +342,140 @@ console.log('je suis dans le fasitfy avznt get suggestion et texte = ', text)
     reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
   }
 });
+fastify.post('/validationPanier/:id_panier/:garantie', async (request, reply) => {
+  const { id_panier, garantie } = request.params;
+
+  if (!id_panier) {
+    console.error("🚨 Erreur : id_panier est manquant !");
+    return reply.status(400).send({ error: 'id_panier est requis' });
+  }
+
+  if (garantie === undefined) {
+    console.error("🚨 Erreur : garantie est manquante !");
+    return reply.status(400).send({ error: 'Le paramètre garantie est requis' });
+  }
+
+  try {
+    const success = await validationCommande(id_panier, garantie);
+    console.log('✅ Validation terminée.');
+
+    if (success) {
+      reply.send({ success: true, message: "Commande validée avec succès" });
+    } else {
+      reply.status(400).send({ error: "Une commande existe déjà pour ce panier" });
+    }
+  } catch (err) {
+    console.error("❌ Erreur lors de la validation :", err);
+    reply.status(500).send({ error: 'Une erreur est survenue lors de la validation du panier' });
+  }
+});
+fastify.get('/getCommande/:id_user', async (request, reply) => {
+  const { id_user } = request.params;
+  try {
+    const commandes = await getCommande(id_user);
+    // console.log('les products : ', products)
+    reply.status(200).send( commandes );
+  } catch (err) {
+    reply.status(500).send({ error: 'Une erreur est survenue lors du chargement du produit' });
+  }
+});
+fastify.post('/createAddress/:id_user', async (request, reply) => {
+    const { id_user } = request.params;
+    const adresseUser = request.body; // L'objet envoyé depuis le client
+    try {
+        const response = await addAdresse(id_user, adresseUser);
+        if (response.success) {
+          reply.send({ success: true, message: "adresse ajoutée au profil" });
+        } else {
+          reply.send({ success: false, message: "L'adresse existe déjà dans votre profil" });        }
+    } catch (err) {
+        console.error("Erreur côté serveur:", err); // Affiche l'erreur pour comprendre ce qui échoue
+        reply.status(500).send({ error: 'Une erreur est survenue lors du traitement de l\'adresse' });
+    }
+});
+fastify.post('/modifyAdresse/:id_user', async (request, reply) => {
+  const { id_user } = request.params;
+  const adresseUser = request.body; // L'objet envoyé depuis le client
+  try {
+      const response = await modifyAdresse(id_user, adresseUser);
+      if (response.success) {
+        reply.send({ success: true, message: "adresse ajoutée au profil" });
+      } else {
+        reply.send({ success: false, message: "L'adresse existe déjà dans votre profil" });        }
+  } catch (err) {
+      console.error("Erreur côté serveur:", err); // Affiche l'erreur pour comprendre ce qui échoue
+      reply.status(500).send({ error: 'Une erreur est survenue lors du traitement de l\'adresse' });
+  }
+});
+fastify.get('/loadActiveAdress/:id_user', async (request, reply) => {
+  const { id_user } = request.params;
+  try {
+      const response = await loadActivAdresse(id_user);
+      if (response.success) {
+        reply.send({ success: true, adresse: response.adresseActive });
+      } else {
+        reply.send({ success: false, message: "Il n'y a pas d'adresses actives" });        }
+  } catch (err) {
+      console.error("Erreur côté serveur:", err); // Affiche l'erreur pour comprendre ce qui échoue
+      reply.status(500).send({ error: 'Une erreur est survenue lors du traitement de l\'adresse' });
+  }
+});
+fastify.get('/loadOtherAdress/:id_user', async (request, reply) => {
+  const { id_user } = request.params;
+  try {
+      const response = await loadOtherAdresses(id_user);
+      if (response.success) {
+        reply.send({ success: true, adresses: response.adresses });
+      } else {
+        reply.send({ success: false, message: "Il n'y a pas d'adresses actives" });        }
+  } catch (err) {
+      console.error("Erreur côté serveur:", err); // Affiche l'erreur pour comprendre ce qui échoue
+      reply.status(500).send({ error: 'Une erreur est survenue lors du traitement de l\'adresse' });
+  }
+});
+fastify.get('/loadModifyAdress/:id_user/:id_adresse', async (request, reply) => {
+  const { id_user, id_adresse } = request.params;
+  try {
+      const response = await loadModifyAdresse(id_user, id_adresse);
+      if (response.success) {
+        reply.send({ success: true, adresse: response.adresse });
+      } else {
+        reply.send({ success: false, message: "Il n'y a pas d'adresses actives" });        }
+  } catch (err) {
+      console.error("Erreur côté serveur:", err); // Affiche l'erreur pour comprendre ce qui échoue
+      reply.status(500).send({ error: 'Une erreur est survenue lors du traitement de l\'adresse' });
+  }
+});
+fastify.post('/changeActiveAdresse/:id_user/:id_adresse', async (request, reply) => {   
+  const { id_user, id_adresse } = request.params;   
+
+  try {       
+      const response = await changeActiveAdresse(id_user, id_adresse);       
+      if (response.success) {         
+          reply.send({ success: true });       
+      } else {         
+          reply.send({ success: false, message: response.message });        
+      }   
+  } catch (err) {       
+      console.error("Erreur côté serveur:", err); 
+      reply.status(500).send({ error: "Une erreur est survenue lors du traitement de l'adresse" });   
+  } 
+}); 
+fastify.post('/deleteAdresse/:id_adresse', async (request, reply) => {   
+  const { id_adresse } = request.params;   
+console.log('on passe dans le delete, id adresse : ', id_adresse)
+  try {       
+      const response = await deleteAdresse( id_adresse);       
+      if (response.success) {         
+          reply.send({ success: true });       
+      } else {         
+          reply.send({ success: false, message: response.message });        
+      }   
+  } catch (err) {       
+      console.error("Erreur côté serveur:", err); 
+      reply.status(500).send({ error: "Une erreur est survenue lors du traitement de l'adresse" });   
+  } 
+}); 
 // Lancer le serveur
 fastify.listen({ port: 3000, host: 'localhost' }, (err, address) => {
   if (err) {

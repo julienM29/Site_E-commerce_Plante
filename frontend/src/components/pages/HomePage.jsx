@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Swiper3Plants from '../shared/Swiper3Plants';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import SwiperPromotion from '../shared/SwipperPromotion';
-import { checkUserConnect } from '../shared/CheckUserInformation';
 import { Link } from "react-router-dom";
 
 import gsap from 'gsap'; // Importer GSAP
@@ -11,32 +9,17 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import LienInspiration from '../shared/homePage/LienInspiration';
 import TitreSection from '../shared/homePage/TitreSection';
 import BoutonNavigation from '../shared/homePage/BoutonNavigation';
+import { getUserInfoAndWishList } from '../shared/UserUtils';
+import { searchSelection } from '../shared/loadProduct';
 gsap.registerPlugin(ScrollToPlugin);
 
 function HomePage() {
   const [dataPromotionsPlants, setDataPromotionsPlants] = useState([]);
   const [dataNouveautesPlants, setDataNouveautesPlants] = useState([]);
   const [dataSelectionPlants, setDataSelectionPlants] = useState([]);
-  const [userID, setuserID] = useState();
+  const [userID, setUserID] = useState();
   const [dataCookie, setDataCookie] = useState();    
 
-  const getUserInfo = async () => {
-    const result = await checkUserConnect();
-    const resultIDUser = result.user.id;
-    setuserID(resultIDUser)
-  };
-
-  const wishList = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/checkWishList`, {
-        credentials: "include",
-      });
-      const dataWishList = await response.json();
-      setDataCookie(dataWishList.wishList);
-    } catch (error) {
-      console.error("Erreur lors de la vérification de la wishlist:", error);
-    } 
-};
   const searchPromotions = async () => {
     try {
       const response = await fetch(`http://localhost:3000/loadPromotionProduct`);
@@ -51,15 +34,6 @@ function HomePage() {
       const response = await fetch(`http://localhost:3000/loadNouveauteProduct`);
       const data = await response.json();
       setDataNouveautesPlants(data.products || []);
-    } catch (error) {
-      console.error('Erreur lors du chargement des plantes:', error);
-    } 
-  };
-  const searchSelection = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/loadSelectionProduct`);
-      const data = await response.json();
-      setDataSelectionPlants(data.products || []);
     } catch (error) {
       console.error('Erreur lors du chargement des plantes:', error);
     } 
@@ -85,9 +59,8 @@ function HomePage() {
   useEffect(() => {
     searchPromotions();
     searchNouveautes();
-    searchSelection();
-    getUserInfo();
-    wishList();
+    searchSelection(setDataSelectionPlants);
+    getUserInfoAndWishList(setUserID, setDataCookie);
   }, []);
   return (
     <>
@@ -154,7 +127,7 @@ function HomePage() {
             <TitreSection texte="Vous souhaitez aménager" textColor="text-white" taillePolice="text-4xl" />
           </div>
           <div className='max-md:grid max-md:grid-cols-2 flex md:justify-center gap-4 w-5/6'>
-            <LienInspiration texte="Un jardin" image={"/images/jardin.avif"}></LienInspiration>
+            <LienInspiration texte="Un jardin" image={"/images/jardin.avif"} link={'/amenager-mon-jardin'}></LienInspiration>
             <LienInspiration texte="Un potager" image={"images/potager.jpg"}></LienInspiration>
             <LienInspiration texte="Une terrasse" image={"images/terrasse.jpg"}></LienInspiration>
             <LienInspiration texte="Un intérieur" image={"images/plant_interieur.jpg"}></LienInspiration>

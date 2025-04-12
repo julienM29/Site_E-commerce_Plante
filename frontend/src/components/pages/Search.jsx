@@ -132,7 +132,6 @@ function Search() {
     
     useEffect(() => {
         loadTypesPlant();
-        // console.log('change filters :', filters);
         searchByParams(); // Appel de la fonction de recherche avec les filtres mis à jour
     }, [filters]);
     useEffect(() => {

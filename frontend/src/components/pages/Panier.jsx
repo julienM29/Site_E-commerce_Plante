@@ -2,44 +2,68 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BarreLivraisonGratuite from '../shared/BarreLivraisonGratuite';
 import ConteneurDetailProduitPanier from '../shared/panier/ConteneurDetailProduitPanier';
-import { checkUserConnect } from '../shared/CheckUserInformation';
 import SwiperPromotion from '../shared/SwipperPromotion';
+import { getUserInfoAndWishList } from '../shared/UserUtils';
+import { searchSelection } from '../shared/loadProduct';
+import { clearPanier, addGarantie, removeGarantie } from '../../mySlice';
 function Panier() {
-    const { panier, total } = useSelector((state) => state.myState);
+    const { panier, total, panierId, garantie } = useSelector((state) => state.myState);
     const [dataSelectionPlants, setDataSelectionPlants] = useState([]);
-    const [userID, setuserID] = useState();
+    const [userID, setUserID] = useState();
     const [dataCookie, setDataCookie] = useState();
-    const getUserInfo = async () => {
-        const result = await checkUserConnect();
-        const resultIDUser = result.user.id;
-        setuserID(resultIDUser)
+
+    const dispatch = useDispatch();
+
+    const validerAchat = async () => {
+        if (!panierId) {
+            console.error("🚨 Erreur : panierId est null ou indéfini.");
+            return;
+        }
+
+        try {
+            let garantieBool;
+            if (Number(garantie) === 0) {
+                garantieBool = false
+            } else {
+                garantieBool = true;
+            }
+            console.log(`🛒 Envoi de la requête : panierId=${panierId}, garantie=${garantieBool}`);
+
+            const response = await fetch(`http://localhost:3000/validationPanier/${panierId}/${garantieBool}`, {
+                method: 'POST',
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`❌ Erreur serveur : ${errorText}`);
+            } else {
+                dispatch(clearPanier()); // Vider le panier
+
+            }
+
+            console.log("✅ Commande validée avec succès !");
+        } catch (error) {
+            console.error("🌐 Erreur réseau :", error);
+        }
+    };
+    const handleGarantie = () => {
+        if (garantie === 0) {
+            dispatch(addGarantie());
+        } else {
+            dispatch(removeGarantie());
+        }
     };
 
-    const wishList = async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/checkWishList`, {
-                credentials: "include",
-            });
-            const dataWishList = await response.json();
-            setDataCookie(dataWishList.wishList);
-        } catch (error) {
-            console.error("Erreur lors de la vérification de la wishlist:", error);
-        }
-    };
-    const searchSelection = async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/loadSelectionProduct`);
-            const data = await response.json();
-            setDataSelectionPlants(data.products || []);
-        } catch (error) {
-            console.error('Erreur lors du chargement des plantes:', error);
-        }
-    };
+
+
     useEffect(() => {
-        searchSelection();
-        getUserInfo();
-        wishList();
+        searchSelection(setDataSelectionPlants);
+        getUserInfoAndWishList(setUserID, setDataCookie);
     }, []);
+    useEffect(() => {
+        console.log('fuckckck garantie : ', garantie)
+    }, []);
+
     return (
         <>
             <div className="bg-custom-light py-16 min-h-screen w-full flex flex-col items-center gap-10">
@@ -170,9 +194,14 @@ function Panier() {
                                 <p> {total} EUR</p>
                             </div>
                             <p className=''>Livraison 6.90€ (en relais) , offerte dès 59€</p>
-                            <button type="submit" className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">
+                            <button
+                                type="submit"
+                                onClick={validerAchat}
+                                className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
+                            >
                                 Commander
                             </button>
+
                         </div>
                         <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg '>
                             <div className='flex gap-2 items-center'>
@@ -197,9 +226,15 @@ function Panier() {
                                 </div>
 
                             </div>
-                            <button type="submit" className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">
-                                Ajouter
+                            <button
+                                type="button"
+                                onClick={handleGarantie}
+                                className={`w-3/4 flex justify-center ${garantie ? 'bg-emerald-700 hover:bg-emerald-500' : 'bg-gradient-to-r from-emerald-600 to-emerald-300'} hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out`}
+                            >
+                                {garantie !== 0 ? "Retirer" : "Ajouter"}
                             </button>
+
+
                         </div>
                     </div>
                 </div>
