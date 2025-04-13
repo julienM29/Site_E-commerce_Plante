@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import SideBarPanier2 from '../shared/sideBarPanier/sideBarPanier2';
 import Suggestion from '../shared/inputSearch/Suggestion';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,6 +20,7 @@ function Header() {
   const location = useLocation();
 
   const sidebarRef = useRef(null);
+  const { total } = useSelector((state) => state.myState);
 
   // Fonction de gestion de navigation
   const handleNavigation = () => {
@@ -116,6 +118,7 @@ function Header() {
 
   // Fermeture des suggestions si l'utilisateur clique à l'extérieur
   useEffect(() => {
+    
     const handleClickOutside = (e) => {
       if (!e.target.closest('.search-container')) {
         setShowSuggestion(false);
@@ -201,9 +204,14 @@ function Header() {
             <a href="/account" className="rounded-full border-4 border-green-800 bg-white p-2">
               <img src="/icones/agriculteur.png" alt="Agriculteur" className="object-scale-down h-10 w-10" />
             </a>
-            <button type="button" className="rounded-full border-4 border-green-800 bg-white p-2" onClick={handleNavigation}>
-              <img src="/icones/brouette_vide.png" alt="Brouette vide" className="object-scale-down h-10 w-10" />
-            </button>
+<button
+      type="button"
+      className={`rounded-full border-4 ${total > 0 ? 'border-red-700' : 'border-green-800'} bg-white p-2`}
+      onClick={handleNavigation}
+    >
+      <img src="/icones/brouette_vide.png" alt="Brouette vide" className="object-scale-down h-10 w-10" />
+    </button>
+
           </div>
         </div>
       </div>

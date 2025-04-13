@@ -8,6 +8,7 @@ import EsthetiqueProduct from '../shared/productPage/EsthetiqueProduct';
 import JardinageProduct from '../shared/productPage/JardinageProduct';
 import EmplacementProduct from '../shared/productPage/EmplacementProduct';
 import { Link } from "react-router-dom";
+import Cookies from 'js-cookie';  // Assurez-vous d'avoir installé 'js-cookie'
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -75,10 +76,24 @@ const ProductPage = () => {
       console.error('Erreur lors du chargement des plantes:', error);
     }
   };
+  const updateRecentlyViewedProductCookie = async (newProductId) => {
+    await fetch(`http://localhost:3000/updateRecentlyViewProduct/${userID}/${newProductId}`, {
+      method: 'POST',
+    });
+  };
+  
+
+
   useEffect(() => {
     loadPlants();
     getUserInfoAndWishList(setUserID, setDataCookie);
+
   }, []);
+  useEffect(() => {
+    if(userID){
+    updateRecentlyViewedProductCookie(id)
+  }
+  }, [userID]);
   useEffect(() => {
     searchSuggestions(dataPlants.id_type, dataPlants.id);
   }, [dataPlants])
