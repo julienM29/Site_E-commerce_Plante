@@ -15,7 +15,7 @@ import { clearPanier } from '../frontend/src/mySlice.js';
 import { getSuggestions } from './controllers/suggestion.js';
 import { getCommande, validationCommande } from './controllers/commande.js';
 import { addAdresse, changeActiveAdresse, deleteAdresse, loadActivAdresse, loadModifyAdresse, loadOtherAdresses, modifyAdresse } from './controllers/adresse.js';
-import { getRecentlyViewProduct, updateRecentlyViewProductList } from './controllers/recentlyView.js';
+import { deleteRecentlyViewProduct, getRecentlyViewProduct, updateRecentlyViewProductList } from './controllers/recentlyView.js';
 const fastify = Fastify();
 const rootDir = dirname(fileURLToPath(import.meta.url)); // Répertoire actuel du fichier server.js (backend)
 
@@ -485,6 +485,19 @@ fastify.post('/updateRecentlyViewProduct/:id_user/:id_product', async (request, 
         reply.send({ success: true, message: "BDD mise à jour pour les récemments vus" });
       } else {
         reply.send({ success: false, message: "Erreur dans la mise à jour des id des récemments vus" });        }
+  } catch (err) {
+      console.error("Erreur côté serveur:", err); // Affiche l'erreur pour comprendre ce qui échoue
+      reply.status(500).send({ error: 'Une erreur est survenue lors du traitement de l\'adresse' });
+  }
+});
+fastify.post('/deleteRecentlyViewedList/:id_user/:id_product', async (request, reply) => {
+  const { id_user,id_product } = request.params;
+  try {
+      const response = await deleteRecentlyViewProduct(id_user, id_product);
+      if (response.success) {
+        reply.send({ success: true, message: "suppression BDD pour les récemments vus" });
+      } else {
+        reply.send({ success: false, message: "Erreur dans la suppression du produit des récemments vus" });        }
   } catch (err) {
       console.error("Erreur côté serveur:", err); // Affiche l'erreur pour comprendre ce qui échoue
       reply.status(500).send({ error: 'Une erreur est survenue lors du traitement de l\'adresse' });

@@ -18,6 +18,18 @@ WHERE r.user_id = ? order by viewed_at DESC;`,
 
     return { success: true, recentlyViewed: recentlyViewed };
 };
+export const deleteRecentlyViewProduct = async (user_id, produit_id) => {
+    const [result] = await connection.promise().query(
+        `DELETE FROM site_kerisnel.recently_viewed_products
+WHERE user_id=? AND plante_id=?;`,
+        [user_id, produit_id]
+    );
+    if (result.affectedRows > 0) {
+        return { success: true };
+    } else {
+        return { success: false }
+    }
+};
 export const updateRecentlyViewProductList = async (user_id, product_id) => {
     console.log('je passe dans le update, voici user id :', user_id, ' et produit id : ', product_id)
     const connectionDB = connection.promise();
@@ -25,7 +37,7 @@ export const updateRecentlyViewProductList = async (user_id, product_id) => {
 
     // Démarrer la transaction
     await connectionDB.query('START TRANSACTION');
-  
+
     try {
         // Récupérer la liste des produits récemment vus en BDD, triée par date croissante
         const [listRecentlyViewProduct] = await connectionDB.query(
@@ -90,5 +102,4 @@ export const updateRecentlyViewProductList = async (user_id, product_id) => {
     }
 };
 
-  
-  
+

@@ -4,7 +4,7 @@
   import "react-toastify/dist/ReactToastify.css";
   import { checkUserConnect } from '../CheckUserInformation';
   import { AjoutPanier } from "../panier/Alert";
-  export const updateWishList = async (dispatch, produit_id, nom, prixInitial, primaryImage) => {
+  export const updateWishList = async (dispatch, produit_id, nom, prixInitial,prixReduit, primaryImage) => {
   
     try {
       const result = await checkUserConnect();
@@ -23,7 +23,7 @@
   
       const data = await response.json(); // Convertir la réponse en JSON
       if (data.success) {
-        const indexDetailPanier = AjoutPanier(dispatch,produit_id, nom, prixInitial, primaryImage)
+        const indexDetailPanier = AjoutPanier(dispatch,produit_id, nom, prixInitial, prixReduit, primaryImage)
         return indexDetailPanier;
       } 
       

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { checkUserConnect } from '../../CheckUserInformation';
 import { useDispatch, useSelector } from 'react-redux';
-import { upQuantityInput } from '../../../../mySlice';
+import { AjoutPanier } from '../../panier/Alert';
+import ConteneurWishListAndRecentlyViewed from '../../../ConteneurWishlistAndRecentlyViewed';
 
 const ConsulteRecemment = () => {
     const [recentlyViewed, setRecentlyViewed] = useState([]); // Initialisé à [] pour éviter les erreurs
     const dispatch = useDispatch(); // ✅ Utiliser useDispatch dans un composant React
-    const { panier } = useSelector((state) => state.myState);
+    const [changeWishList, setChangeWishList] = useState(false); // Initialisé à [] pour éviter les erreurs
 
     const loadRecentlyView = async () => {
         try {
@@ -19,22 +20,46 @@ const ConsulteRecemment = () => {
         }
     };
 
-
-    const addPanier = async (produit_id) => {
-        console.log('add panier')
+    const modifyRecentlyViewedList = async (produit_id, produit_nom, produit_prix, produit_promotion, produit_image) => {
         try {
-            const detail_panierFromRedux = panier[produit_id]?.detail_id || 0;
-            dispatch(upQuantityInput({ detail_panierFromRedux }));
+            let prixReduit = null;
+            if (produit_promotion !== 0) {
+                prixReduit = parseFloat(produit_prix * (1 - Number(produit_promotion) / 100)).toFixed(2);
+            }
+    
+            // Ajoute 'await' pour attendre la réponse avant de continuer
+            const data = await deleteProductRecentlyViewedList(produit_id);
+    
+            if (data.success) {
+                const indexDetailPanier = AjoutPanier(dispatch, produit_id, produit_nom, produit_prix, prixReduit, produit_image);
+                return indexDetailPanier;
+            }
+    
         } catch (error) {
             console.error('Erreur lors du chargement de la wishlist:', error);
         }
     }
+    
+    const deleteProductRecentlyViewedList = async (produit_id) => {
+        const result = await checkUserConnect();
+        const userId = result.user.id;
+        // 🔹 Faire une requête pour ajouter en BDD
+        const response = await fetch(`http://localhost:3000/deleteRecentlyViewedList/${userId}/${produit_id}`, {
+            method: "POST",
+            credentials: "include",
+        });
+        const data = await response.json(); // Convertir la réponse en JSON
+        if (data.success) {
+            setChangeWishList(prev => !prev); // Bascule l'état pour déclencher le reload
 
+        }
+        return data
+    }
     useEffect(() => {
         loadRecentlyView();
-    }, []);
+    }, [changeWishList]);
     return (
-        <div> {/* ✅ Ajout d'un conteneur englobant */}
+        <div>
             {recentlyViewed.length === 0 ? (
                 <div className="w-full gap-7 flex flex-col items-center px-6 py-8">
                     <img src="./icones/panier_coeur.png" alt="" className="w-28 h-28" />
@@ -51,21 +76,8 @@ const ConsulteRecemment = () => {
                     <h2 className="text-xl font-semibold">Votre liste d'envies :</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                         {recentlyViewed.map((item) => (
-                            <article key={item.id} className="relative bg-white rounded-lg shadow-lg border p-2 hover:shadow-xl transition hover:border-2 hover:border-green-300/70">
-                                <a href={`/produit/${item.id}`}>
-                                    <img src={`images/${item.image}`} alt={item.nom} className="w-full h-40 object-cover rounded-t-lg" />
-                                </a>
-                                <div className="flex flex-col gap-2 p-2">
-                                    <a href={`/produit/${item.id}`} className="text-lg font-semibold truncate hover:text-green-600">{item.nom}</a>
-                                    <p className="text-gray-500 font-bold">{item.prix}€</p>
-                                    <button className="text-sm bg-emerald-800 text-white py-2 px-4 rounded-lg hover:bg-emerald-700"
-                                    onClick={() => addPanier(item.id, item.nom, item.prix, item.image)}
-                                    >
-                                        Ajouter au panier
-                                    </button>
-                                </div>
-                            </article>
 
+                            < ConteneurWishListAndRecentlyViewed key={item.id} item={item} addPanier={modifyRecentlyViewedList} deleteProductList={deleteProductRecentlyViewedList} />
                         ))}
                     </div>
                 </div>
