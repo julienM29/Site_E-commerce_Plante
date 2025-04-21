@@ -3,6 +3,9 @@ import { gsap } from 'gsap';
 import InputFormField from '../shared/inputForm';
 import { useDispatch } from 'react-redux';
 import { fetchPanier } from '../../mySlice';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function UserForm() {
   const dispatch = useDispatch();
 
@@ -49,15 +52,15 @@ function UserForm() {
 
   const submitConnexionForm = async (event) => {
     event.preventDefault();
-  
+
     const formDataCreation = {
       emailConnexion,
       motDePasseConnexion,
     };
-  
+
     console.log("📤 Envoi des données :", formDataCreation);
-  
-    const response =  await fetch('http://localhost:3000/connexion', {
+
+    const response = await fetch('http://localhost:3000/connexion', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -65,31 +68,31 @@ function UserForm() {
       body: JSON.stringify(formDataCreation),
       credentials: 'include',  // Important pour récupérer les cookies !
     });
-  
+
     console.log("📥 Réponse brute du serveur :", response);
-  
+
     const result = await response.json();
     console.log("📥 Résultat JSON du serveur :", result);
-  
-    if (result.messageEmail ) {
+
+    if (result.messageEmail) {
       console.log("❌ Erreur email :", result.messageEmail);
       setErrorMessageEmailIncorrect(result.messageEmail);
     }
-  
-    if (result.messageMDP ) {
+
+    if (result.messageMDP) {
       console.log("❌ Erreur mot de passe :", result.messageMDP);
       setErrorMessageMDPIncorrect(result.messageMDP);
     }
-  
+
     if (result.success) {
       console.log("✅ Connexion réussie !");
-      
+
       console.log("🔄 Tentative de récupération du panier...");
-    
+
       try {
         const action = await dispatch(fetchPanier());
         console.log("📥 Résultat de fetchPanier :", action);
-    
+
         // Optionnel : tu peux vérifier si l'action est fulfilled
         if (fetchPanier.fulfilled.match(action)) {
           console.log("🛒 Panier récupéré avec succès !");
@@ -104,10 +107,10 @@ function UserForm() {
         // Rediriger quand même si besoin
         window.location.href = '/';
       }
-    
+
       dispatch({ type: 'test/action' });
     }
-  
+
   };
 
   const submitCreationForm = async (event) => {
@@ -127,21 +130,50 @@ function UserForm() {
     });
     const result = await response.json();
     setErrorMessageEmailExistant(result.message)
+    const message = (
+      <div className="flex items-center gap-3">
+        <div>
+          <p className="font-semibold">Compte créé avec succès !</p>
+          <p className="text-sm text-gray-700">
+            Vous pouvez maintenant vous connecter.
+          </p>
+        </div>
+      </div>
+    ); 
+    if (result.success) {
+      setShowLogin(true)
+      toast.success(message, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        style: {
+          marginTop: '10vh',
+          borderRadius: '8px',
+          background: '#f0fdf4',
+          color: '#065f46',
+          border: '1px solid #bbf7d0',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        },
+      });
+    }
     // Gère la réponse de l'API, par exemple afficher un message de succès
   }
-  const onChangeInputEmailInscription = (value)=>{
+  const onChangeInputEmailInscription = (value) => {
     setErrorMessageEmailExistant('')
     setEmail(value)
   }
-  const onChangeInputEmailConnexion = (value)=>{
+  const onChangeInputEmailConnexion = (value) => {
     setErrorMessageEmailIncorrect('')
     setEmailConnexion(value)
   }
-  const onChangeInputMDPConnexion = (value)=>{
+  const onChangeInputMDPConnexion = (value) => {
     setErrorMessageMDPIncorrect('')
     setMotDePasseConnexion(value)
   }
-  
+
   return (
     <div className="bg-custom-light w-full flex items-center justify-center h-[78vh]">
       <div className="bg-white flex items-center rounded-3xl border-2 shadow-lg max-md:w-3/4 w-1/2 max-md:h-3/5 h-3/4">
@@ -217,8 +249,8 @@ function UserForm() {
               onChange={(e) => onChangeInputEmailInscription(e.target.value)}
               errorMessage={errorMessageEmailExistant}
             />
-                        
-              <InputFormField
+
+            <InputFormField
               type="password"
               name="floating_password_inscription"
               id="floating_password_inscription"
@@ -229,7 +261,7 @@ function UserForm() {
             <a href="#" onClick={() => setShowLogin(true)} className="text-emerald-600 underline underline-offset-4 font-semibold text-start hover:text-emerald-800">
               Déjà inscrit ? Connectez-vous !
             </a>
-            
+
             <button
               type="submit"
               className="bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"

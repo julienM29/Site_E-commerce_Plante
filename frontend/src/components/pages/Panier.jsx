@@ -19,6 +19,7 @@ function Panier() {
             console.error("🚨 Erreur : panierId est null ou indéfini.");
             return;
         }
+        console.log(`🛒 Envoi de la requête : panierId=${panierId}`);
 
         try {
             let garantieBool;
@@ -201,34 +202,49 @@ function Panier() {
                         </div>
                     </div>
                     <div className='flex flex-col gap-6 w-1/3'>
-                    <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg'>
-  <p className='font-medium text-xl'>
-    Livraison entre le 04/01/2025 et le 09/01/2025
+                        <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg'>
+                            <p className='font-medium text-xl'>
+                                Livraison entre le 04/01/2025 et le 09/01/2025
+                            </p>
+
+                            <div className='w-full flex justify-between font-semibold text-2xl'>
+                                <p>Total</p>
+                                <p>{total} EUR</p>
+                            </div>
+
+                            <p className='text-gray-600'>
+                                Livraison 6.90€ (en relais), offerte dès 59€
+                            </p>
+
+                            {userID ? (
+  <>
+    {panier.length > 0 ? (
+      <button
+        type="submit"
+        onClick={validerAchat}
+        className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
+      >
+        Commander
+      </button>
+    ) : (
+      <div className='flex flex-col gap-2 w-full items-center'>
+        <button
+          disabled
+          className="w-3/4 flex justify-center bg-gray-300 text-gray-600 rounded-full text-md px-5 py-2.5 text-center cursor-not-allowed"
+        >
+          Commander
+        </button>
+        <p className="text-sm text-green-500 mt-2">Ajoutez des articles pour passer commande.</p>
+      </div>
+    )}
+  </>
+) : (
+  <p className="text-center text-yellow-800 bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-3 font-medium text-sm w-full">
+    Connectez-vous pour afficher le panier et pouvoir le valider.
   </p>
+)}
 
-  <div className='w-full flex justify-between font-semibold text-2xl'>
-    <p>Total</p>
-    <p>{total} EUR</p>
-  </div>
-
-  <p className='text-gray-600'>
-    Livraison 6.90€ (en relais), offerte dès 59€
-  </p>
-
-  {userID ? (
-    <button
-      type="submit"
-      onClick={validerAchat}
-      className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
-    >
-      Commander
-    </button>
-  ) : (
-<p className="text-center text-yellow-800 bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-3 font-medium text-sm w-full">
-  Connectez-vous pour afficher le panier et pouvoir le valider.
-</p>
-  )}
-</div>
+                        </div>
 
                         <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg '>
                             <div className='flex gap-2 items-center'>

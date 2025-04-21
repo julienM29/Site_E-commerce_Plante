@@ -18,7 +18,9 @@ function LogoutButton() {
             dispatch(clearPanier());
             console.log("✅ Déconnexion réussie !");
             // Redirection seulement après vérification
-            window.location.href = '/';
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 200); 
         }
     };
 

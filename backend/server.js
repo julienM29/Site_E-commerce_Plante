@@ -137,11 +137,11 @@ fastify.post('/creationCompte', async (request, reply) => {
   }
 
   try {
-    const message = await createAccount(prenom, nom, email, motDePasse);
-    if (message.includes('compte déjà associé')) {
-      return reply.status(400).send({ message });
+    const result = await createAccount(prenom, nom, email, motDePasse);
+    if (!result.success) {
+      return reply.status(400).send({ success: false, message : result.message });
     }
-    reply.status(201).send({ message });
+    reply.status(201).send({success: true, message : result.message });
   } catch (err) {
     reply.status(500).send({ error: 'Une erreur est survenue lors de la création du compte', details: err.message });
   }

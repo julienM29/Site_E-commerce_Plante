@@ -21,15 +21,24 @@ export const createAccount = async (prenom, nom, email, motDePasse) => {
         [nom, prenom, hashPasswordUser, email, now, now, 1, 0]
       );
       message = 'Compte créé avec succès';
+      return {
+        success: true,
+        message: message
+      };
     } else {
       message = 'Un compte est déjà associé à cet email';
+      return {
+        success: false,
+        message: message
+      };
     }
   } catch (err) {
     console.error('Erreur lors de la création du compte:', err);
-    message = 'Erreur lors de la création du compte : ' + err.message;
+    return {
+      success: false,
+      message: 'Erreur lors de la création du compte : ' + err.message
+    };
   }
-
-  return message;
 };
 
 // Fonction de connexion
