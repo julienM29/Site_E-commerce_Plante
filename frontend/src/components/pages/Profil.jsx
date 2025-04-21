@@ -3,6 +3,8 @@ import ProfilMenu from '../shared/profil/ProfilMenu';
 import ProfilContent from '../shared/profil/content/ProfilContent';
 import UserForm from './UserForm';
 import { checkUserConnect } from '../shared/CheckUserInformation';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Profil() {
     const [ongletActif, setOngletActif] = useState('profil');
@@ -17,6 +19,22 @@ function Profil() {
     // Exécution de la fonction de vérification lors du premier rendu
     useEffect(() => {
         isUserConnected();
+        const toastMessage = localStorage.getItem("toastMessage");
+        if(toastMessage){
+            console.log('prout')
+            toast.success(toastMessage, {
+                position: "top-center",  // Position du toast
+                autoClose: 3000,         // Durée d'affichage du toast
+                style: {
+                    marginTop: '10vh',  // 40% de la hauteur de l'écran
+                }
+            });
+            
+              setTimeout(() => {
+                localStorage.removeItem("toastMessage");
+            }, 500);
+        }
+
     }, []); // Cela ne s'exécute qu'une seule fois, lors du premier rendu
 
     if (userConnect === 'loading') {

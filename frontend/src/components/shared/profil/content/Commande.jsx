@@ -26,9 +26,9 @@ const Commande = () => {
                 <div className="w-full flex flex-col items-center gap-7 px-6 py-8">
                     <img src="./icones/colis_vide.png" alt="Colis vide" className="w-28 h-28" />
                     <p className="font-semibold text-lg">Découvrez nos produits</p>
-                    <button className="rounded-lg py-2 px-4 bg-rose-500 text-white">
+                    <a href='/search' className="rounded-lg py-2 px-4 bg-rose-500 text-white hover:bg-rose-400">
                         Voir les produits
-                    </button>
+                    </a>
                 </div>
             ) : (
                 <div className="w-full flex flex-col items-center gap-2 py-6 px-4 max-h-[65vh] overflow-y-auto ">

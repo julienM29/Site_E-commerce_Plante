@@ -85,15 +85,28 @@ function UserForm() {
       console.log("✅ Connexion réussie !");
       
       console.log("🔄 Tentative de récupération du panier...");
-      dispatch(fetchPanier()).then((action) => {
-          console.log("📥 Résultat de fetchPanier :", action);
-      });
-  
+    
+      try {
+        const action = await dispatch(fetchPanier());
+        console.log("📥 Résultat de fetchPanier :", action);
+    
+        // Optionnel : tu peux vérifier si l'action est fulfilled
+        if (fetchPanier.fulfilled.match(action)) {
+          console.log("🛒 Panier récupéré avec succès !");
+          window.location.href = '/';
+        } else {
+          console.warn("⚠️ Panier non récupéré correctement.");
+          // Tu peux quand même rediriger ou non, à toi de voir
+          window.location.href = '/';
+        }
+      } catch (err) {
+        console.error("❌ Erreur lors de fetchPanier :", err);
+        // Rediriger quand même si besoin
+        window.location.href = '/';
+      }
+    
       dispatch({ type: 'test/action' });
-  
-      // Redirection seulement après vérification
-      window.location.href = '/';
-  }
+    }
   
   };
 

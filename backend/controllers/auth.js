@@ -53,7 +53,7 @@ export const connexionAccount = async (fastify, emailConnexion, motDePasseConnex
         messageMDP = '';
         await setWishListCookie( reply, user.id);
         const token = setUserCookie(fastify, reply, user);
-        await setPanierCookie( reply, user.id);
+        // await setPanierCookie( reply, user.id);
         return { messageEmail, messageMDP, token };
       } else {
         messageMDP = 'Mot de passe incorrect';
@@ -104,6 +104,52 @@ export const updateAccount = async (fastify, reply , id_user, prenom, nom, email
         throw new Error("Impossible de modifier les informations.");
     }
 };
+
+export const modifyPassword = async (id_user, motDePasseActuelSaisi, nouveauMotDePasse) => {
+  try {
+    const [rows] = await connection.promise().query(
+      'SELECT mot_de_passe FROM utilisateurs WHERE id = ?',
+      [id_user]
+    );
+
+    if (rows.length === 0) {
+      return {
+        success: false,
+        message: ''
+      };
+    }
+
+    const user = rows[0];
+
+    const motDePasseValide = await argon2.verify(user.mot_de_passe, motDePasseActuelSaisi);
+    if (!motDePasseValide) {
+      return {
+        success: false,
+        message: 'Mot de passe saisi incorrect'
+      };
+    }
+
+    const nouveauHash = await argon2.hash(nouveauMotDePasse);
+    await connection.promise().query(
+      'UPDATE site_kerisnel.utilisateurs SET mot_de_passe = ? WHERE id = ?',
+      [nouveauHash, id_user]
+    );
+    console.log('mot de passe correct, update ok')
+
+    return {
+      success: true,
+      message: ''
+    };
+
+  } catch (err) {
+    console.error('❌ Erreur lors de la modification du mot de passe :', err);
+    return {
+      success: false,
+      message: 'Mot de passe saisi incorrect'
+    };
+  }
+};
+
 export const setWishListCookie = async ( reply, user_id) => {
   const [wishListExistante] = await connection.promise().query(
     'SELECT GROUP_CONCAT(id_plante) AS id_plantes FROM liste_envie WHERE id_user = ?',

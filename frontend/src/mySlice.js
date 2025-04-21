@@ -77,6 +77,7 @@ export const fetchPanier = createAsyncThunk('panier/fetchPanier', async (_, { re
       method: 'POST',
       credentials: 'include',
     });
+    console.log('reponse panier : ', responsePanier)
     if (!responsePanier.ok) throw new Error('Erreur lors de la récupération du panier');
 
     const panier = await responsePanier.json();

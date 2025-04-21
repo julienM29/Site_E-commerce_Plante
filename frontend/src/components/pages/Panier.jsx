@@ -60,9 +60,6 @@ function Panier() {
         searchSelection(setDataSelectionPlants);
         getUserInfoAndWishList(setUserID, setDataCookie);
     }, []);
-    useEffect(() => {
-        console.log('fuckckck garantie : ', garantie)
-    }, []);
 
     return (
         <>
@@ -71,53 +68,70 @@ function Panier() {
                 <div className='flex flex-col gap-2 w-9/12'>
                     <p className='w-1/3 text-6xl font-bold text-gray-700'>Panier</p>
                     <div className='w-full flex justify-center '>
-                        <div className='w-1/3'>
+                        <div className='w-2/5'>
                             <BarreLivraisonGratuite prixPanier={total}></BarreLivraisonGratuite></div>
                     </div>
                 </div>
                 {/* Les 2 blocs à gauche tableau à droite recap prix etc */}
                 <div className='flex gap-4 w-9/12'>
+
                     {/* Tableau + garanti */}
                     <div className='flex flex-col gap-4 w-2/3'>
                         <div className="p-4 bg-white rounded-2xl border shadow-lg">
-                            <table className="w-full border-collapse text-left">
-                                <thead className=" border-b border-gray-200 hover:bg-gray-50">
-                                    <tr>
-                                        <th
-                                            scope="col"
-                                            className="px-4 py-2 text-xl font-bold text-gray-600 uppercase"
+                            {userID ? (
+                                <table className="w-full border-collapse text-left">
+                                    <thead className="border-b border-gray-200 hover:bg-gray-50">
+                                        <tr>
+                                            <th className="px-4 py-2 text-xl font-bold text-gray-600 uppercase">
+                                                Produit
+                                            </th>
+                                            <th className="px-4 py-2 text-xl font-bold text-gray-600 uppercase">
+                                                Prix Unitaire
+                                            </th>
+                                            <th className="px-4 py-2 text-xl font-bold text-gray-600 uppercase">
+                                                Quantité
+                                            </th>
+                                            <th className="px-4 py-2 text-xl font-bold text-gray-600 uppercase">
+                                                Total
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {panier.map((produit, index) => (
+                                            <ConteneurDetailProduitPanier
+                                                key={produit.id}
+                                                panierIndex={index}
+                                                produit={produit}
+                                            />
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center gap-4 min-h-72">
+                                    <img
+                                        src="/icones/brouette_vide.png"
+                                        alt="Panier vide"
+                                        className="w-20 h-20"
+                                    />
+                                    <h2 className="text-2xl font-semibold text-gray-700">
+                                        Votre panier est vide...
+                                    </h2>
+                                    <div className="flex flex-col gap-4 justify-center items-center py-5 px-6 rounded-lg bg-yellow-100/80 border border-yellow-300">
+                                        <p className="text-gray-600 text-sm text-center max-w-md">
+                                            Connectez-vous pour voir votre panier et y ajouter
+                                            des produits.
+                                        </p>
+                                        <a
+                                            href="/login"
+                                            className="bg-emerald-700 hover:bg-emerald-500 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
                                         >
-                                            Produit
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-4 py-2 text-xl font-bold text-gray-600 uppercase"
-
-                                        >
-                                            Prix Unitaire
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-4 py-2 text-xl font-bold text-gray-600 uppercase"
-                                        >
-                                            Quantité
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-4 py-2 text-xl font-bold text-gray-600 uppercase"
-                                        >
-                                            Total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {panier.map((produit, index) => (
-                                        <ConteneurDetailProduitPanier key={produit.id} panierIndex={index} produit={produit} />
-
-                                    ))}
-                                </tbody>
-                            </table>
+                                            Se connecter
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
                         </div>
+
                         <div className="grid grid-cols-3 gap-6">
                             <div className="p-4 bg-white flex flex-col justify-center gap-4 rounded-xl shadow-lg ">
                                 <h2 className="text-emerald-600 text-2xl font-bold text-center ">
@@ -187,22 +201,35 @@ function Panier() {
                         </div>
                     </div>
                     <div className='flex flex-col gap-6 w-1/3'>
-                        <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg'>
-                            <p className='font-medium text-xl'>Livraison entre le 04/01/2025 et le 09/01/2025</p>
-                            <div className='w-full flex justify-between font-semibold text-2xl'>
-                                <p className=''>Total</p>
-                                <p> {total} EUR</p>
-                            </div>
-                            <p className=''>Livraison 6.90€ (en relais) , offerte dès 59€</p>
-                            <button
-                                type="submit"
-                                onClick={validerAchat}
-                                className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
-                            >
-                                Commander
-                            </button>
+                    <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg'>
+  <p className='font-medium text-xl'>
+    Livraison entre le 04/01/2025 et le 09/01/2025
+  </p>
 
-                        </div>
+  <div className='w-full flex justify-between font-semibold text-2xl'>
+    <p>Total</p>
+    <p>{total} EUR</p>
+  </div>
+
+  <p className='text-gray-600'>
+    Livraison 6.90€ (en relais), offerte dès 59€
+  </p>
+
+  {userID ? (
+    <button
+      type="submit"
+      onClick={validerAchat}
+      className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
+    >
+      Commander
+    </button>
+  ) : (
+<p className="text-center text-yellow-800 bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-3 font-medium text-sm w-full">
+  Connectez-vous pour afficher le panier et pouvoir le valider.
+</p>
+  )}
+</div>
+
                         <div className='px-8 py-6 bg-white rounded-2xl flex flex-col items-center gap-6 border shadow-lg '>
                             <div className='flex gap-2 items-center'>
                                 <img src="icones/garantie.png" alt="" className='w-24 h-24 ' />

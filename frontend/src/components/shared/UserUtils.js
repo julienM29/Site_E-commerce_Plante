@@ -5,6 +5,7 @@ export const getUserInfoAndWishList = async (setUserID, setDataCookie) => {
     try {
         // Récupération des infos utilisateur
         const result = await checkUserConnect();
+        if(result.success){
         const resultIDUser = result.user.id;
         setUserID(resultIDUser);
 
@@ -14,6 +15,7 @@ export const getUserInfoAndWishList = async (setUserID, setDataCookie) => {
         });
         const dataWishList = await response.json();
         setDataCookie(dataWishList.wishList);
+    }
     } catch (error) {
         console.error("Erreur lors de la récupération des données utilisateur et wishlist:", error);
     }

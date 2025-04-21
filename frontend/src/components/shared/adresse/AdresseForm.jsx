@@ -13,7 +13,7 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
         pays: '',
         id: '',
     });
-
+    const [defaultAdresse, setDefaultAdresse] = useState(false)
     const [messageErreur, setMessageErreur] = useState(''); // Pour afficher l'erreur
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();  // Hook pour changer de page
@@ -24,26 +24,32 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
             [name]: value,
         }));
     };
+    const handleDefaultAdresseChange = () => {
+        setDefaultAdresse(!defaultAdresse);
+    };
     const submitAdressForm = async (event) => {
         event.preventDefault(); // Empêche le rechargement de la page au submit
-    
+
         setLoading(true); // Montre un indicateur de chargement pendant l'envoi
-    
+
         try {
             let response;
-            const url = adresseUser.id 
+            const url = adresseUser.id
                 ? `http://127.0.0.1:3000/modifyAdresse/${userId}`
                 : `http://127.0.0.1:3000/createAddress/${userId}`;
-        
+
             response = await fetch(url, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(adresseUser),
+                body: JSON.stringify({
+                    adresseUser: adresseUser,
+                    defaultAdress: defaultAdresse
+                }),
                 credentials: 'include',
             });
-    
+
             const result = await response.json();
             console.log('result : ', result)
             if (result.success) {
@@ -58,13 +64,13 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
             setLoading(false); // Arrête le chargement
         }
     };
-    
+
     const loadModifyAdresse = async (idAdresse) => {
         try {
             const response = await fetch(`http://localhost:3000/loadModifyAdress/${userId}/${idAdresse}`);
             const data = await response.json();
             console.log("Données reçues :", data); // Debugging
-    
+
             if (data.adresse && data.adresse.length > 0) { // Vérifie si le tableau n'est pas vide
                 const adresseData = data.adresse[0]; // Prend le premier élément du tableau
                 setAdresseUser({
@@ -77,6 +83,9 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
                     pays: adresseData.pays ?? "",
                     id: adresseData.id ?? "",
                 });
+                if (adresseData.default) {
+                    setDefaultAdresse(!defaultAdresse);
+                }
             } else {
                 console.error("Aucune adresse trouvée !");
                 setMessageErreur("Aucune adresse trouvée.");
@@ -86,14 +95,14 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
             setMessageErreur("Erreur lors du chargement des données.");
         }
     };
-    
-    
+
+
     useEffect(() => {
         if (idAdresseToModif) {
             loadModifyAdresse(idAdresseToModif);
         }
     }, [idAdresseToModif, userId]);  // 🔹 Ajoute `idAdresseToModif` aux dépendances
-    
+
     return (
         <div className="relative">
             <button className="absolute right-3 top-3 text-gray-600 hover:text-gray-900"
@@ -127,7 +136,7 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
                             name="nom"
                             id="nom"
                             className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.nom  || ""}
+                            value={adresseUser.nom || ""}
                             onChange={handleChange}
                         />
                     </div>
@@ -142,7 +151,7 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
                             name="telephone"
                             id="telephone"
                             className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.telephone  || ""}
+                            value={adresseUser.telephone || ""}
                             onChange={handleChange}
                         />
                     </div>
@@ -159,7 +168,7 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
                     <h2 className="font-medium">Adresse sélectionnée</h2>
                     {adresseUser.adresse ? (
                         <p className='p-3 bg-gray-100 rounded'>
-                            {adresseUser.adresse  || ""}
+                            {adresseUser.adresse || ""}
                         </p>
                     ) : (
                         <p className="text-gray-500 p-3 bg-gray-100 rounded">Sélectionner une adresse</p>
@@ -175,7 +184,7 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
                             name="pays"
                             id="pays"
                             className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.pays  || ""}
+                            value={adresseUser.pays || ""}
                             onChange={handleChange}
                         />
                     </div>
@@ -186,7 +195,7 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
                             name="code_postal"
                             id="code_postal"
                             className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.code_postal  || ""}
+                            value={adresseUser.code_postal || ""}
                             onChange={handleChange}
                         />
                     </div>
@@ -197,11 +206,25 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
                             name="ville"
                             id="ville"
                             className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.ville  || ""}
+                            value={adresseUser.ville || ""}
                             onChange={handleChange}
                         />
                     </div>
                 </div>
+                <div className="flex items-center gap-3">
+                    <input
+                        type="checkbox"
+                        id="adresseDefaut"
+                        name="adresseDefaut"
+                        checked={defaultAdresse}
+                        onChange={handleDefaultAdresseChange}
+                        className="accent-emerald-600 w-5 h-5"
+                    />
+                    <label htmlFor="adresseDefaut" className="font-medium text-gray-800">
+                        Définir cette adresse comme adresse par défaut
+                    </label>
+                </div>
+
                 <div className='flex flex-col gap-2'>
                     {messageErreur && <div className="error text-red-600 font-semibold">{messageErreur}</div>} {/* Affiche l'erreur si présente */}
                     <button

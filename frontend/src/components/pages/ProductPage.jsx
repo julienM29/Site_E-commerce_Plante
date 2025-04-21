@@ -174,6 +174,7 @@ const ProductPage = () => {
             typePlant={dataPlants.type || 'Type non spécifié'}
             litrageDisponible={dataPlants.litragesDispo || 'Non spécifié'}
             dateLivraison={formattedDate}
+            userID={userID}
           />
         </div>
       </div>

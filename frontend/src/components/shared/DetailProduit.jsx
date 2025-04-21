@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ConteneurQuantity from '../shared/QuantityInput';
 
-const DetailProduit = ({ nom, nomLatin, promotion, prixInitial, typePlant, litrageDisponible, dateLivraison }) => {
+const DetailProduit = ({ nom, nomLatin, promotion, prixInitial, typePlant, litrageDisponible, dateLivraison, userID }) => {
   const [quantityProduct, setQuantityProduct] = useState(0);
 
   // Calcul du prix réduit si la promotion est différente de 0
@@ -17,26 +17,24 @@ const DetailProduit = ({ nom, nomLatin, promotion, prixInitial, typePlant, litra
 
       {/* Prix du plant */}
       <div className='flex flex-col gap-2'>
-        <div className={`flex ${promotion !== 0 ? 'justify-between items-center' : 'w-full justify-end'} `}>
-          {/* Badge de réduction */}
+        <p className="bg-emerald-600 text-white py-2 px-5 w-fit font-semibold text-lg rounded-lg">{typePlant}</p>
+        <div className={`flex ${promotion !== 0 ? 'justify-between items-center' : 'w-full justify-end'}`}>
           {promotion !== 0 && (
-            <p className="bg-red-700 py-1 px-2 text-white font-semibold text-xl w-fit rounded-md">
-              -{promotion}%
+            <p className="bg-red-700 py-3 px-4 text-white font-semibold text-sm rounded-md uppercase tracking-wide">
+              Promo -{promotion}%
             </p>
           )}
-          {/* Prix */}
           {promotion !== 0 ? (
-            <div className="flex flex-col items-end gap-2">
-              <p className="text-red-700 font-semibold text-3xl">{prixReduit}€</p>
-              <p className="font-semibold text-xl">
-                <del>{prixInitial}€</del>
-              </p>
+            <div className="flex flex-col items-end gap-3">
+              <p className="text-4xl font-bold text-red-600">{prixReduit}€</p>
+              <p className="text-base font-medium text-gray-500 line-through">{prixInitial}€</p>
             </div>
           ) : (
             <p className="font-semibold text-3xl text-end">{prixInitial}€</p>
           )}
         </div>
-        <p className="bg-emerald-600 text-white py-2 px-5 w-fit font-semibold text-lg rounded-lg">{typePlant}</p>
+
+
       </div>
 
       {/* Format des plants + form */}
@@ -65,17 +63,33 @@ const DetailProduit = ({ nom, nomLatin, promotion, prixInitial, typePlant, litra
 
 
         {/* Section pour la quantité et l'ajout au panier */}
-        <div className='flex justify-between items-center gap-6'>
-          <ConteneurQuantity
-            quantityProduct={quantityProduct}
-            heightInput='11'
-            paddingButton='3'
-            setQuantityProduct={setQuantityProduct}
-          />
-          <button className="rounded-lg bg-emerald-900 text-white w-2/3 py-2">
-            Ajouter au panier
-          </button>
-        </div>
+        {userID ? (
+          <div className='flex justify-between items-center gap-6'>
+            <ConteneurQuantity
+              quantityProduct={quantityProduct}
+              heightInput='11'
+              paddingButton='3'
+              setQuantityProduct={setQuantityProduct}
+            />
+            <button className="rounded-lg bg-emerald-900 text-white w-2/3 py-2">
+              Ajouter au panier
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-3 items-center bg-yellow-100 border border-yellow-300 rounded-xl  py-3 px-4">
+            <p className="text-yellow-900 font-medium text-sm">
+              Veuillez vous connecter pour ajouter ce produit à votre panier.
+            </p>
+            <a
+              href="/login"
+              className="bg-emerald-700 hover:bg-emerald-800 text-white text-sm px-4 py-2 rounded-lg transition-colors"
+            >
+              Se connecter
+            </a>
+          </div>
+
+        )}
+
       </div>
 
 

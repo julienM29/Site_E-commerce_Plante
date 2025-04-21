@@ -5,7 +5,7 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import fastifyCookie from 'fastify-cookie';
 import fastifyJWT from '@fastify/jwt';
-import { createAccount, connexionAccount, updateAccount } from './controllers/auth.js';
+import { createAccount, connexionAccount, updateAccount, modifyPassword } from './controllers/auth.js';
 import { loadTypeDB } from './controllers/type.js';
 import { loadAllProduct, loadAProductDB } from './controllers/product.js';
 import { addWishList, deleteWishList, getWishList } from './controllers/wishList.js';
@@ -92,6 +92,25 @@ console.log('j arrive ici ! ')
       reply.status(500).send({ error: "Une erreur est survenue lors du traitement de l'adresse" });   
   } 
 }); 
+fastify.post('/modifyPassword', async (request, reply) => {   
+  const { id_user, motDePasseActuelSaisi, nouveauMotDePasse } = request.body;
+
+  try {
+    console.log('id user : ', id_user, ' password : ', motDePasseActuelSaisi, ' new password : ', nouveauMotDePasse)
+
+      const response = await modifyPassword(id_user, motDePasseActuelSaisi, nouveauMotDePasse);
+
+      if (response.success) {         
+          reply.send({ success: true });       
+      } else {   
+        console.log('message : ', response.message)      
+          reply.send({ success: false, message: response.message });        
+      }   
+  } catch (err) {       
+      console.error("Erreur côté serveur:", err); 
+      reply.status(500).send({ error: "Une erreur est survenue lors du traitement du mot de passe" });   
+  } 
+});
 
 
 
@@ -382,9 +401,10 @@ fastify.get('/getCommande/:id_user', async (request, reply) => {
 });
 fastify.post('/createAddress/:id_user', async (request, reply) => {
     const { id_user } = request.params;
-    const adresseUser = request.body; // L'objet envoyé depuis le client
+    const { adresseUser, defaultAdress } = request.body; // <- déstructuration ici
+    console.log('default adresse : ', defaultAdress)
     try {
-        const response = await addAdresse(id_user, adresseUser);
+        const response = await addAdresse(id_user, adresseUser, defaultAdress);
         if (response.success) {
           reply.send({ success: true, message: "adresse ajoutée au profil" });
         } else {
@@ -396,9 +416,9 @@ fastify.post('/createAddress/:id_user', async (request, reply) => {
 });
 fastify.post('/modifyAdresse/:id_user', async (request, reply) => {
   const { id_user } = request.params;
-  const adresseUser = request.body; // L'objet envoyé depuis le client
+  const { adresseUser, defaultAdress } = request.body; // <- déstructuration ici
   try {
-      const response = await modifyAdresse(id_user, adresseUser);
+      const response = await modifyAdresse(id_user, adresseUser, defaultAdress);
       if (response.success) {
         reply.send({ success: true, message: "adresse ajoutée au profil" });
       } else {

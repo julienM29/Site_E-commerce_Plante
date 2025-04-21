@@ -98,11 +98,16 @@ const AdresseContent = ({ userId, changeContent, setIdAdresseToModif }) => {
                 {activeAdresse ? (
                     <div className="relative rounded-xl px-5 py-6 flex flex-col gap-4 justify-start items-start w-64 h-auto border-2 shadow-lg border-green-400">
                         <div className="absolute top-3 right-3 cursor-pointer">
-                            <img
-                                src="./icones/stylo.png"
-                                alt="Modifier l'adresse"
-                                className="w-5 h-5"
-                            />
+                            <button className="cursor-pointer"
+                                onClick={() => modifyAdresse(activeAdresse.id)}>
+                                <img
+                                    src="./icones/stylo.png"
+                                    alt="Modifier l'adresse"
+                                    className="w-5 h-5 "
+                                    data-tooltip-id="tooltip-modifier"
+                                    data-tooltip-content="Modifier"
+                                />
+                            </button>
                         </div>
                         <p><strong>{activeAdresse.nom} {activeAdresse.prenom}</strong></p>
                         <p>{activeAdresse.adresse}</p>
@@ -111,63 +116,92 @@ const AdresseContent = ({ userId, changeContent, setIdAdresseToModif }) => {
                         <p>{activeAdresse.telephone}</p>
                     </div>
                 ) : (
-                    <p className="text-gray-500">Aucune adresse active</p>
+                    <div className="flex px-5 justify-center">
+                        <p className="text-gray-500">Vous n'avez aucune adresse par défault</p>
+                    </div>
                 )}
             </div>
 
             {/* Liste des autres adresses */}
             <div className="py-4 flex flex-col gap-4">
-                <h3 className="text-xl text-center font-semibold">Autres adresses</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-h-[300px] overflow-y-auto">
-                    {otherAdresses && otherAdresses.length > 0 ? (
-                        otherAdresses.map((adresse, index) => (
-                            <div key={index} className="relative rounded-xl px-5 py-6 flex flex-col gap-4 justify-start items-start w-full h-auto border-2 shadow-lg hover:border-green-400">
-                                <div className="w-full flex justify-between items-center cursor-pointer">
-                                    <button className="px-2 py-1 rounded-xl border shadow-lg bg-green-400 text-white text-xs hover:bg-green-500"
-                                        onClick={() => changeDefaultAdresse(adresse.id)}>
-                                        Définir par défaut !
-                                    </button>
-                                    <button className="cursor-pointer"
-                                        onClick={() => modifyAdresse(adresse.id)}>
-                                        <img
-                                            src="./icones/stylo.png"
-                                            alt="Modifier l'adresse"
-                                            className="w-5 h-5 "
-                                            data-tooltip-id="tooltip-modifier"
-                                            data-tooltip-content="Modifier"
-                                        />                                   
-                                    </button>
-                                    {/* Icône Modifier avec Tooltip */}
+    <h3 className="text-xl text-center font-semibold">Autres adresses</h3>
 
+    {/* Affichage conditionnel de la grille */}
+    {otherAdresses?.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-h-[300px] overflow-y-auto">
+            {otherAdresses.map((adresse, index) => (
+                <div
+                    key={index}
+                    className="relative rounded-xl px-5 py-6 flex flex-col gap-4 justify-start items-start w-full h-auto border-2 shadow-lg hover:border-green-400"
+                >
+                    <div className="w-full flex justify-between items-center cursor-pointer">
+                        {/* Bouton Définir par défaut */}
+                        <button
+                            className="px-2 py-1 rounded-xl border shadow-lg bg-green-400 text-white text-xs hover:bg-green-500"
+                            onClick={() => changeDefaultAdresse(adresse.id)}
+                            aria-label="Définir cette adresse comme adresse par défaut"
+                        >
+                            Définir par défaut !
+                        </button>
 
-                                    {/* Icône Supprimer avec Tooltip */}
-                                    <button
-                                        className="text-gray-600 hover:text-gray-900"
-                                        onClick={() => deleteAdresse(adresse.id)}
-                                        data-tooltip-id="tooltip-supprimer"
-                                        data-tooltip-content="Supprimer"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                    </button>
-                                </div>
+                        {/* Bouton Modifier */}
+                        <button
+                            className="cursor-pointer"
+                            onClick={() => modifyAdresse(adresse.id)}
+                            aria-label="Modifier l'adresse"
+                        >
+                            <img
+                                src="./icones/stylo.png"
+                                alt="Modifier l'adresse"
+                                className="w-5 h-5"
+                                data-tooltip-id="tooltip-modifier"
+                                data-tooltip-content="Modifier"
+                            />
+                        </button>
 
-                                <p><strong>{adresse.nom} {adresse.prenom}</strong></p>
-                                <p>{adresse.adresse}</p>
-                                <p>{adresse.code_postal} {adresse.ville}</p>
-                                <p>{adresse.pays}</p>
-                                <p>{adresse.telephone}</p>
+                        {/* Bouton Supprimer */}
+                        <button
+                            className="text-gray-600 hover:text-gray-900"
+                            onClick={() => deleteAdresse(adresse.id)}
+                            data-tooltip-id="tooltip-supprimer"
+                            data-tooltip-content="Supprimer"
+                            aria-label="Supprimer cette adresse"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                className="w-6 h-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
 
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-gray-500">Aucune autre adresse</p>
-                    )}
-                    <Tooltip id="tooltip-modifier" place="top" effect="solid" />
-                    <Tooltip id="tooltip-supprimer" place="top" effect="solid" />
+                    {/* Informations sur l'adresse */}
+                    <p><strong>{adresse.nom} {adresse.prenom}</strong></p>
+                    <p>{adresse.adresse}</p>
+                    <p>{adresse.code_postal} {adresse.ville}</p>
+                    <p>{adresse.pays}</p>
+                    <p>{adresse.telephone}</p>
                 </div>
-            </div>
+            ))}
+        </div>
+    ) : (
+        <p className="text-gray-500 text-center w-full">Vous n'avez aucune autre adresse enregistrée.</p>
+    )}
+
+    <Tooltip id="tooltip-modifier" place="top" effect="solid" />
+    <Tooltip id="tooltip-supprimer" place="top" effect="solid" />
+</div>
+
+
         </div>
     );
 
