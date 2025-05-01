@@ -1,47 +1,65 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 
 function CustomDatePicker({ handleUserInfoChange, date_naissance }) {
-  // Vérifie si la date de naissance est passée en prop et la transforme en objet Date valide
   const [date, setDate] = useState(
-    date_naissance ? new Date(date_naissance) : new Date()  // Si date_naissance existe, l'utiliser ; sinon, utiliser la date actuelle
+    date_naissance ? new Date(date_naissance) : new Date()
   );
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);  // Etat pour afficher ou cacher le calendrier
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const calendarRef = useRef(null); // <- Référence du composant
 
   const handleDateChange = (newDate) => {
-    setDate(newDate);  // Mise à jour de la date sélectionnée
-    setIsCalendarOpen(false);  // Ferme le calendrier après la sélection
+    setDate(newDate);
+    setIsCalendarOpen(false);
 
-    // Créer un objet simulant l'événement pour handleUserInfoChange
     const event = {
       target: {
-        name: "date_naissance",  // Nom du champ pour la date de naissance
-        value: newDate.toLocaleDateString(),  // Format de la date pour l'input
-        type: "date",  // Type de l'input (ici, une date)
-      }
+        name: "date_naissance",
+        value: newDate.toLocaleDateString(),
+        type: "date",
+      },
     };
 
-    // Appel de handleUserInfoChange avec l'objet event simulé
     handleUserInfoChange(event);
   };
 
+  // Fermer le calendrier si on clique à l'extérieur
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target)
+      ) {
+        setIsCalendarOpen(false);
+      }
+    };
+
+    if (isCalendarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    // Nettoyage à la destruction du composant
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCalendarOpen]);
+
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={calendarRef}>
       <input
         type="text"
-        value={date.toLocaleDateString()} // Affiche la date sélectionnée
-        onClick={() => setIsCalendarOpen(!isCalendarOpen)} // Ouvre/ferme le calendrier
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        value={date.toLocaleDateString()}
+        onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+        className="focus:outline-none focus:border-emerald-600 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full dark:placeholder-gray-400"
         placeholder="Sélectionner une date"
-        readOnly // Rendre le champ en lecture seule
+        readOnly
       />
       {isCalendarOpen && (
         <div className="absolute top-full mt-2 left-0 z-10">
-          <Calendar
-            onChange={handleDateChange} // Quand une date est sélectionnée
-            value={date} // La date sélectionnée sera la valeur du calendrier
-          />
+          <Calendar onChange={handleDateChange} value={date} />
         </div>
       )}
     </div>

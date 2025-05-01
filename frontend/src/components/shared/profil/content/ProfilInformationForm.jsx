@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { checkUserConnect } from '../../CheckUserInformation';
 import InformationForm from './InformationForm';
 import Information from './Information';
-const ProfilInformationForm = () => {
+const ProfilInformationForm = ({setOngletActif, isMobile}) => {
     const [modifyInformation, setModifyInformation] = useState(false)
     const [userInfo, setUserInfo] = useState({
         id: '',
@@ -52,9 +52,9 @@ const ProfilInformationForm = () => {
     return (
         <div>
             {modifyInformation ? (
-                <InformationForm userInfo={userInfo} handleChange={handleChange} changeContent={changeContent} />
+                <InformationForm userInfo={userInfo} handleChange={handleChange} changeContent={changeContent} setOngletActif={setOngletActif} isMobile={isMobile}/>
             ) : (
-                <Information userInfo={userInfo} handleChange={handleChange} changeContent={changeContent}/>
+                <Information userInfo={userInfo} handleChange={handleChange} changeContent={changeContent} setOngletActif={setOngletActif} isMobile={isMobile}/>
             )}
         </div>
     );

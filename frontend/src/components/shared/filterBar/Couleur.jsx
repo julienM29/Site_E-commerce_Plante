@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ColorFilter = ({ setFilters, filters }) => {
+const ColorFilter = ({ setFilters, filters, isMobile }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
@@ -28,8 +28,21 @@ const ColorFilter = ({ setFilters, filters }) => {
       color: prevState.color === colorButton ? null : colorButton,
     }));
   };
-
-  return (
+  return isMobile ?
+      <div
+        className={`grid grid-cols-6 gap-4 transition-all duration-500 ease-in-out overflow-hidden px-2  max-h-screen opacity-100 py-2 w-full`}
+      >
+        {colors.map(([colorName, colorClass]) => (
+          <button
+            key={colorName}
+            onClick={() => handleColorChange(colorName)}
+            className={`border rounded-full w-9 h-9 transition-all duration-300 ${filters.color === colorName ? 'border-2 border-black' : ''
+              } ${colorClass}`}
+            style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
+          ></button>
+        ))}
+      </div>
+    :
     <div className="border-t-4 py-5">
       <button
         onClick={toggleAccordion}
@@ -55,15 +68,15 @@ const ColorFilter = ({ setFilters, filters }) => {
           <button
             key={colorName}
             onClick={() => handleColorChange(colorName)}
-            className={`border rounded-full w-9 h-9 transition-all duration-300 ${
-              filters.color === colorName ? 'border-2 border-black' : ''
-            } ${colorClass}`}
+            className={`border rounded-full w-9 h-9 transition-all duration-300 ${filters.color === colorName ? 'border-2 border-black' : ''
+              } ${colorClass}`}
             style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
           ></button>
         ))}
       </div>
     </div>
-  );
+
+
 };
 
 export default ColorFilter;

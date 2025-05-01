@@ -182,7 +182,7 @@ export const searchByParams = async (params) => {
         if (paramsExpo.length > 0) {
             newRequest += ` HAVING COUNT(DISTINCT te.id) = ${paramsExpo.length}`
         }
-        console.log('newRequest fin de logique : ', newRequest)
+        // console.log('newRequest fin de logique : ', newRequest)
         // console.log('params fin de logique : ', paramsRequest)
 
         // Exécution de la requête SQL sécurisée avec les paramètres liés
@@ -355,7 +355,6 @@ export const promotionCondition = async (mellifere, conditions) => {
 export const loadPromotionsProducts = async ()=> {
     let newRequest = requete;
     newRequest += ' WHERE p.promotion != 0 GROUP BY p.id';
-
     const [products] = await connection.promise().query(newRequest);
     if (products.length > 0) {
         const formattedProducts = products.map(product => ({

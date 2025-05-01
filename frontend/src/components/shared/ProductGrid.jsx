@@ -22,9 +22,9 @@ const ProductGrid = ({ data }) => {
   }, []);
   return (
     <div>
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full ">
-  {currentItems.map((plant, index) => (
-    <div key={index} className="w-full">
+<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-md:justify-items-center">
+{currentItems.map((plant, index) => (
+    <div key={index} className="w-full max-md:w-4/5 ">
       <ConteneurPlant
         taille={'full'}
         id={plant.id}
@@ -36,7 +36,7 @@ const ProductGrid = ({ data }) => {
         descriptionRapide={plant.famille}
         prixInitial={plant.prix}
         reduction={plant.promotion || null}
-        infoStock="disponible"
+        infoStock="En stock"
         idUser={userID}
         isWishlisted={dataCookie?.includes(plant.id)}
         hauteur = {500}

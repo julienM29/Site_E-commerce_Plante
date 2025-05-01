@@ -5,10 +5,12 @@ import UserForm from './UserForm';
 import { checkUserConnect } from '../shared/CheckUserInformation';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useMediaQuery } from 'react-responsive'; // ou un custom hook
 
 function Profil() {
     const [ongletActif, setOngletActif] = useState('profil');
     const [userConnect, setUserConnect] = useState('loading');  // null pour indiquer que la vérification est en cours
+    const isMobile = useMediaQuery({ maxWidth: 767 });
 
     // Fonction asynchrone pour vérifier la connexion de l'utilisateur
     const isUserConnected = async () => {
@@ -53,10 +55,10 @@ function Profil() {
 
     // Si l'utilisateur est connecté, afficher le profil
     return (
-        <div className="bg-custom-light items-center h-[80vh] w-full flex justify-center">
-            <div className="w-[55%] flex gap-4 items-start h-[90%]">
-                <ProfilMenu setOngletActif={setOngletActif} ongletActif={ongletActif} />
-                <ProfilContent ongletActif={ongletActif} />
+        <div className={`${isMobile ? 'h-full pt-2 px-3 pb-8' : 'h-[79vh]'} bg-custom-light items-center    w-full flex justify-center`}>
+            <div className={`${isMobile ? 'w-full flex-col ' : ' w-[60%]'}  flex gap-4 items-start h-[95%]`}>
+                <ProfilMenu setOngletActif={setOngletActif} ongletActif={ongletActif} isMobile={isMobile} />
+                <ProfilContent ongletActif={ongletActif} setOngletActif={setOngletActif} isMobile={isMobile} />
             </div>
         </div>
     );

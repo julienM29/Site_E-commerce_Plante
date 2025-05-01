@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-function Floraison({ setFilters }) {
+function Floraison({ setFilters, isMobile }) {
     const [isOpen, setIsOpen] = useState(false);
     const [floraison, setFloraison] = useState({
         Janvier: false,
@@ -16,6 +16,7 @@ function Floraison({ setFilters }) {
         Novembre: false,
         Décembre: false,
     });
+    const prevFloraisonRef = useRef(floraison); // Initialisation avec l'état actuel de 'emplacement'
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
@@ -30,12 +31,18 @@ function Floraison({ setFilters }) {
     };
 
     useEffect(() => {
-        setFilters((prevState) => ({
-            ...prevState,
-            floraison: floraison,
-        }));
-    }, [floraison, setFilters]); // Directement mettre à jour les filtres
+        const timeoutId = setTimeout(() => {
+            if (JSON.stringify(prevFloraisonRef.current) !== JSON.stringify(floraison)) {
+                setFilters((prevState) => ({
+                    ...prevState,
+                    floraison,
+                }));
+                prevFloraisonRef.current = floraison; // Mise à jour de la référence
+            }
+        }, 100); // Délai de 100ms avant de mettre à jour les filters
 
+        return () => clearTimeout(timeoutId); // Nettoyage du timeout lors de la prochaine exécution
+    }, [floraison, setFilters]);
     return (
         <div className="border-t-4 py-5">
             <button
@@ -60,7 +67,7 @@ function Floraison({ setFilters }) {
                 </svg>
             </button>
             <div
-                className={`transition-all duration-500 ease-in-out overflow-hidden px-2 flex flex-col gap-2 ${isOpen ? 'max-h-screen opacity-100 py-2 pt-4' : 'max-h-0 opacity-0 py-0'}`}
+                className={`transition-all duration-500 ease-in-out overflow-hidden px-2 grid gap-2 ${isMobile ? ' grid-cols-3 ' : 'grid-cols-2 '} ${isOpen ? 'max-h-screen opacity-100 py-2 pt-4' : 'max-h-0 opacity-0 py-0'}`}
             >
                 {Object.entries(floraison).map(([month, isChecked]) => (
                     <div className="flex items-center" key={month}>

@@ -11,6 +11,5 @@ export const getSuggestions = async (searchQuery) => {
         WHERE p.nom LIKE ?;`,
         [`%${searchQuery}%`]  // Ajout des % pour la recherche partielle
     );
-    console.log('dans get Suggestion , les suggestions : ', suggestions)
     return suggestions;
 };

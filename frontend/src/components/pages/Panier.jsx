@@ -6,12 +6,13 @@ import SwiperPromotion from '../shared/SwipperPromotion';
 import { getUserInfoAndWishList } from '../shared/UserUtils';
 import { searchSelection } from '../shared/loadProduct';
 import { clearPanier, addGarantie, removeGarantie } from '../../mySlice';
+import { useGsapPanier } from '../../useGsapPanier';
 function Panier() {
     const { panier, total, panierId, garantie } = useSelector((state) => state.myState);
     const [dataSelectionPlants, setDataSelectionPlants] = useState([]);
     const [userID, setUserID] = useState();
     const [dataCookie, setDataCookie] = useState();
-
+    useGsapPanier(dataSelectionPlants)
     const dispatch = useDispatch();
 
     const validerAchat = async () => {
@@ -217,32 +218,32 @@ function Panier() {
                             </p>
 
                             {userID ? (
-  <>
-    {panier.length > 0 ? (
-      <button
-        type="submit"
-        onClick={validerAchat}
-        className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
-      >
-        Commander
-      </button>
-    ) : (
-      <div className='flex flex-col gap-2 w-full items-center'>
-        <button
-          disabled
-          className="w-3/4 flex justify-center bg-gray-300 text-gray-600 rounded-full text-md px-5 py-2.5 text-center cursor-not-allowed"
-        >
-          Commander
-        </button>
-        <p className="text-sm text-green-500 mt-2">Ajoutez des articles pour passer commande.</p>
-      </div>
-    )}
-  </>
-) : (
-  <p className="text-center text-yellow-800 bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-3 font-medium text-sm w-full">
-    Connectez-vous pour afficher le panier et pouvoir le valider.
-  </p>
-)}
+                                <>
+                                    {panier.length > 0 ? (
+                                        <button
+                                            type="submit"
+                                            onClick={validerAchat}
+                                            className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
+                                        >
+                                            Commander
+                                        </button>
+                                    ) : (
+                                        <div className='flex flex-col gap-2 w-full items-center'>
+                                            <button
+                                                disabled
+                                                className="w-3/4 flex justify-center bg-gray-300 text-gray-600 rounded-full text-md px-5 py-2.5 text-center cursor-not-allowed"
+                                            >
+                                                Commander
+                                            </button>
+                                            <p className="text-sm text-green-500 mt-2">Ajoutez des articles pour passer commande.</p>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <p className="text-center text-yellow-800 bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-3 font-medium text-sm w-full">
+                                    Connectez-vous pour afficher le panier et pouvoir le valider.
+                                </p>
+                            )}
 
                         </div>
 
@@ -281,7 +282,7 @@ function Panier() {
                         </div>
                     </div>
                 </div>
-                <div className='w-3/4 flex flex-col items-center justify-center py-8 gap-12'>
+                <div className='w-11/12 flex flex-col items-center justify-center py-8 gap-12' id='meilleurs_ventes'>
                     <h2 className='text-5xl font-semibold text-gray-700'>Les meilleures ventes </h2>
                     <SwiperPromotion nbSlides={4} products={dataSelectionPlants} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
                 </div>

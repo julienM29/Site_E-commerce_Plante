@@ -31,12 +31,16 @@ const Commande = () => {
                     </a>
                 </div>
             ) : (
-                <div className="w-full flex flex-col items-center gap-2 py-6 px-4 max-h-[65vh] overflow-y-auto ">
-                    <h2 className='text-xl font-semibold'>Vos commandes</h2>
+                <div
+                    className="w-full flex flex-col items-center gap-2 py-6 px-4 max-h-[65vh] overflow-y-auto"
+                    style={{ scrollbarGutter: 'stable' }}
+                >
+                    <h2 className="text-xl font-semibold">Vos commandes</h2>
                     {commandes.map((commande, index) => (
                         <CommandeCard key={index} commande={commande} />
                     ))}
                 </div>
+
             )}
         </div>
     );

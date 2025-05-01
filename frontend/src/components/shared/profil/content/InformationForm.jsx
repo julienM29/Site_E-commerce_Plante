@@ -4,7 +4,7 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css"; // Import du CSS
 import { useNavigate, useLocation } from "react-router-dom";
 
-function InformationForm({ userInfo, changeContent }) {
+function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) {
         const navigate = useNavigate();  // Hook pour changer de page
     
     // Créer un état pour les modifications
@@ -59,16 +59,15 @@ function InformationForm({ userInfo, changeContent }) {
     return (
         <div className="relative w-full flex justify-center px-6 py-8">
             {/* Bouton pour quitter la modification */}
-            <button
-                className="text-gray-600 hover:text-gray-900"
-                onClick={cancelModifications}
-                data-tooltip-id="tooltip-stopModification"
-                data-tooltip-content="Annuler les modifications"
+            
+            <button className="text-gray-600 hover:text-gray-900" onClick={cancelModifications}
             >
                 <img
                     src="./icones/out_form_information.png"
                     alt="Annuler les modifications"
-                    className="absolute top-3 right-2 w-7 h-7 cursor-pointer"
+                    className="absolute top-5 right-5 w-7 h-7 cursor-pointer"
+                    data-tooltip-id="tooltip-stopModification"
+                data-tooltip-content="Annuler les modifications"
                 />
             </button>
             <Tooltip id="tooltip-stopModification" place="top" effect="solid" />
@@ -81,23 +80,23 @@ function InformationForm({ userInfo, changeContent }) {
             >
                 <div className="w-full flex gap-4">
                     <div className="flex flex-col gap-2 w-1/2">
-                        <label htmlFor="prenom">Prénom</label>
+                        <label htmlFor="prenom" className='font-semibold'>Prénom</label>
                         <input
                             type="text"
                             name="prenom"
                             id="prenom"
-                            className="h-10 border mt-1 rounded px-4 w-full bg-gray-100"
+                            className="h-10 border mt-1 rounded px-4 w-full bg-gray-100 focus:border-emerald-600 focus:outline-none"
                             value={userInfoModif.prenom}
                             onChange={handleUserInfoChange}
                         />
                     </div>
                     <div className="flex flex-col gap-2 w-1/2">
-                        <label htmlFor="nom">Nom</label>
+                        <label htmlFor="nom" className='font-semibold'>Nom</label>
                         <input
                             type="text"
                             name="nom"
                             id="nom"
-                            className="h-10 border mt-1 rounded px-4 w-full bg-gray-100"
+                            className="h-10 border mt-1 rounded px-4 w-full bg-gray-100 focus:border-emerald-600 focus:outline-none"
                             value={userInfoModif.nom}
                             onChange={handleUserInfoChange}
                         />
@@ -106,36 +105,36 @@ function InformationForm({ userInfo, changeContent }) {
 
                 <div className="w-full flex gap-4">
                     <div className="flex flex-col gap-2 w-1/2">
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="email" className='font-semibold'>Email</label>
                         <input
                             type="text"
                             name="email"
                             id="email"
-                            className="h-10 border mt-1 rounded px-4 w-full bg-gray-100"
+                            className="h-10 border mt-1 rounded px-4 w-full bg-gray-100 focus:border-emerald-600 focus:outline-none"
                             value={userInfoModif.email}
                             onChange={handleUserInfoChange}
                         />
                     </div>
                     <div className="flex flex-col gap-2 w-1/2">
-                        <label htmlFor="telephone">Téléphone</label>
+                        <label htmlFor="telephone" className='font-semibold'>Téléphone</label>
                         <input
                             type="number"
                             name="telephone"
                             id="telephone"
-                            className="h-10 border mt-1 rounded px-4 w-full bg-gray-100"
+                            className="h-10 border mt-1 rounded px-4 w-full bg-gray-100 focus:border-emerald-600 focus:outline-none"
                             value={userInfoModif.telephone}
                             onChange={handleUserInfoChange}
                         />
                     </div>
                 </div>
 
-                <div className="w-full flex gap-4">
-                    <div className="flex flex-col gap-2 w-1/2">
-                        <label htmlFor="date_naissance">Date de naissance</label>
+                <div className={`w-full flex ${isMobile ? 'flex-col gap-2 items-center' : ''} gap-4`}>
+                    <div className={`flex flex-col gap-2 ${isMobile ? 'w-3/4' : 'w-1/2'}`}>
+                        <label htmlFor="date_naissance" className='font-semibold'>Date de naissance</label>
                         <CustomDatePicker handleUserInfoChange={handleUserInfoChange} date_naissance={userInfoModif.date_naissance}/>
                     </div>
-                    <div className="flex flex-col gap-2 w-1/2">
-                        <label htmlFor="genre">Genre</label>
+                    <div className={`flex flex-col gap-2  ${isMobile ? 'w-3/4' : 'w-1/2'}`}>
+                        <label htmlFor="genre" className='font-semibold'>Genre</label>
                         <div className="flex gap-4 items-center h-full">
                             <div className="flex items-center">
                                 <input
@@ -169,17 +168,19 @@ function InformationForm({ userInfo, changeContent }) {
                                     value="autre"
                                     checked={userInfoModif.genre === 'autre'}
                                     onChange={handleUserInfoChange}
-                                    className="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                                    className="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-green-500"
                                 />
+
+
                                 <label htmlFor="genre-autre" className="ml-2">Autre</label>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded">
-                    Mettre à jour
-                </button>
+                <button type="submit" className="rounded-lg bg-emerald-900 text-white w-2/3 py-3 hover:bg-emerald-800 active:scale-95 transition transform">
+                Mettre à jour les informations
+        </button>
+                
             </form>
         </div>
     );

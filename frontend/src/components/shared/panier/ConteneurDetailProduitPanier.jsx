@@ -28,7 +28,7 @@ const ConteneurDetailProduitPanier = ({ panierIndex, produit }) => {
             </td>
             <td className="px-4 py-4 text-xl font-medium text-gray-800">{prixUnite} €</td>
             <td className="px-4 py-4 text-sm text-gray-600">
-                <ConteneurQuantity panierIndex={panierIndex} heightInput='11' paddingButton='3' />
+                <ConteneurQuantity panierIndex={panierIndex} heightInput='9' paddingButton='3' />
             </td>
             <td className="px-4 py-4 text-xl font-medium text-gray-800">{produit.prix} €</td>
         </tr>

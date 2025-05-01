@@ -127,7 +127,7 @@ const ConteneurQuantity = ({ panierIndex, heightInput, paddingButton }) => {
         onChange={handleChange}
         min={1}
         pattern="^(?!0(\.|\b))([1-9]\d*|\d+(\.\d+)?)"
-        className={` bg-gray-50 border-y-2 border-gray-300 h-${heightInput} text-center text-gray-900 text-sm focus:border-blue-500 block w-16  dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900`}
+        className={` bg-gray-50 border-y border-gray-300 h-${heightInput} text-center text-gray-900 text-sm focus:border-blue-500 block w-16  dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900`}
         placeholder="0"
         required
       />

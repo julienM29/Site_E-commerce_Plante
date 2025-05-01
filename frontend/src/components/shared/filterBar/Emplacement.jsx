@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-function Emplacement({ setFilters }) {
+function Emplacement({ setFilters, isMobile }) {
     const [isOpen, setIsOpen] = useState(false);
     const [emplacement, setEmplacement] = useState({
         PotOuBac: false,
@@ -13,6 +13,8 @@ function Emplacement({ setFilters }) {
         Bordure: false,
         Rocaille: false,
     });
+
+    const prevEmplacementRef = useRef(emplacement); // Initialisation avec l'état actuel de 'emplacement'
 
     const labelMapping = {
         PotOuBac: "Pot ou bac",
@@ -31,12 +33,20 @@ function Emplacement({ setFilters }) {
         }));
     };
 
+    // Utilisation de useEffect pour détecter les changements et mettre à jour les filtres après un délai
     useEffect(() => {
-        setFilters((prevState) => ({
-            ...prevState,
-            emplacement: emplacement,
-        }));
-    }, [emplacement, setFilters]); // Ajout de setFilters à la dépendance
+        const timeoutId = setTimeout(() => {
+            if (JSON.stringify(prevEmplacementRef.current) !== JSON.stringify(emplacement)) {
+                setFilters((prevState) => ({
+                    ...prevState,
+                    emplacement,
+                }));
+                prevEmplacementRef.current = emplacement; // Mise à jour de la référence
+            }
+        }, 100); // Délai de 100ms avant de mettre à jour les filters
+
+        return () => clearTimeout(timeoutId); // Nettoyage du timeout lors de la prochaine exécution
+    }, [emplacement, setFilters]);
 
     return (
         <div className="border-t-4 py-5">
@@ -62,7 +72,7 @@ function Emplacement({ setFilters }) {
                 </svg>
             </button>
             <div
-                className={`transition-all duration-500 ease-in-out overflow-hidden px-2 flex flex-col gap-2 ${isOpen ? 'max-h-screen opacity-100 py-2 pt-4' : 'max-h-0 opacity-0 py-0'}`}
+                className={`transition-all duration-500 ease-in-out overflow-hidden px-2 grid ${isMobile ? ' grid-cols-3 ' : 'grid-cols-2'} gap-2 ${isOpen ? 'max-h-screen opacity-100 py-2 pt-4' : 'max-h-0 opacity-0 py-0'}`}
             >
                 {Object.entries(emplacement).map(([type, isChecked]) => (
                     <div className="flex items-center" key={type}>

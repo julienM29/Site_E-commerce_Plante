@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 import MultiRangeSlider from './MultiRangeSlider';
-function Accordeon({setFilters, filters}) {
+function Accordeon({setFilters, filters, isMobile}) {
     const [isOpen, setIsOpen] = useState(false);
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
     };
 
-    return (
+    return isMobile ?
+    <div className='flex flex-col gap-2 w-2/5'>
+        <span className="text-lg font-medium">Prix</span>
+
+        <MultiRangeSlider setFilters={setFilters} filters={filters}/>
+
+    </div>
+    :
         <div className=" border-t-4 py-5">
             <button
                 onClick={toggleAccordion}
@@ -36,7 +43,7 @@ function Accordeon({setFilters, filters}) {
                     <MultiRangeSlider setFilters={setFilters} filters={filters}/>
             </div>
         </div>
-    );
+    
 }
 
 export default Accordeon;

@@ -7,7 +7,7 @@ import Commande from './Commande';
 import ListeEnvie from './ListeEnvie';
 import ModifyMDP from './ModifyPassword';
 import ConsulteRecemment from './ConsulteRecemment';
-const ProfilContent = ({ ongletActif }) => {
+const ProfilContent = ({ ongletActif, setOngletActif, isMobile }) => {
   const profilRef = useRef(null);
   const adresseRef = useRef(null);
   const commandeRef = useRef(null);
@@ -52,9 +52,9 @@ const ProfilContent = ({ ongletActif }) => {
   }, [ongletActif]); // Exécute cette logique chaque fois que `ongletActif` change
 
   return (
-    <div className="flex-1 bg-white rounded-3xl self-start shadow-lg">
+    <div className="w-full bg-white rounded-3xl self-start shadow-lg">
       <div ref={profilRef}>
-        {ongletActif === "profil" && <ProfilInformationForm />}
+        {ongletActif === "profil" && <ProfilInformationForm setOngletActif={setOngletActif} isMobile={isMobile} />}
       </div>
       <div ref={adresseRef}>
         {ongletActif === "adresse" && <Adresse />}

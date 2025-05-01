@@ -116,15 +116,15 @@ const ModifyMDP = () => {
 
 
     return (
-        <div className="w-full gap-7 flex flex-col items-center px-6 py-8">
+        <div className="w-full gap-7 flex flex-col items-center py-4">
             <div className='w-1/2 flex flex-col items-center gap-2'>
-                <img src="./icones/profil_password.png" alt="" className='w-28 h-28' />
+                <img src="./icones/profil_password.png" alt="" className='w-24 h-24' />
                 <p className='text-lg'>Modifier le mot de passe de</p>
                 <p className='font-semibold text-xl'>{userInfo.email}</p>
             </div>
 
             <form
-                className="w-full max-w-2xl gap-7 flex flex-col items-center"
+                className="w-full max-w-2xl gap-4 flex flex-col items-center"
                 id="loginForm"
                 onSubmit={submitChangeMDPForm}
             >
@@ -198,7 +198,9 @@ const ModifyMDP = () => {
 
                 <button
                     type="submit"
-                    className="mt-4 bg-blue-500 text-white p-2 rounded disabled:opacity-50"
+                    className="bg-emerald-700 hover:bg-emerald-800  text-white  px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+
+                    // className="mt-4 bg-blue-500 text-white p-2 rounded "
                     disabled={newMotDePasse !== confirmationMotDePasse}
                 >
                     Mettre à jour

@@ -8,7 +8,7 @@ import ConteneurPlant from './ConteneurPlant';
 const SwiperPromotion = ({ nbSlides, products, userID, dataCookie }) => {
 
     return (
-        <div className='flex justify-center w-5/6'>
+        <div className='flex justify-center w-full md:w-5/6'>
             
             <Swiper
                 modules={[Navigation]}
@@ -38,7 +38,8 @@ const SwiperPromotion = ({ nbSlides, products, userID, dataCookie }) => {
             >
                 {products.map((plant, index) => (
                     
-                    <SwiperSlide key={index}> <ConteneurPlant
+                    <SwiperSlide key={index}> 
+                    <ConteneurPlant
                     taille={'11/12'}
                     id={plant.id}
                     primaryImage={`/images/${plant.images[0]}`}
@@ -49,7 +50,7 @@ const SwiperPromotion = ({ nbSlides, products, userID, dataCookie }) => {
                     descriptionRapide={plant.famille}
                     prixInitial={plant.prix}
                     reduction={plant.promotion || null}
-                    infoStock="disponible"
+                    infoStock="En stock"
                     idUser={userID}
                     isWishlisted={dataCookie?.includes(plant.id)}
                     hauteur = {500}

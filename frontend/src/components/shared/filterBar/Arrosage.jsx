@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function Arrosage({ setFilters, filters }) {
+function Arrosage({ setFilters, filters, isMobile }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleAccordion = () => {
@@ -18,7 +18,31 @@ function Arrosage({ setFilters, filters }) {
         }));
     };
 
-    return (
+    return isMobile ?
+    <div className='flex flex-col gap-2'>
+        <span className="text-lg font-medium">Arrosage</span>
+
+        <div
+                className={`transition-all duration-500 ease-in-out overflow-hidden py-2 flex flex-col gap-2 max-h-screen opacity-100 `}
+            >
+                {["élevé", "modéré", "faible"].map((level) => (
+                    <div key={level} className="flex items-center">
+                        <input
+                            id={`${level}-checkbox`}
+                            type="checkbox"
+                            name={level}
+                            checked={filters.arrosage?.[level] || false} // Utilisation de filters directement
+                            onChange={handleArrosageChange}
+                            className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-600 checked:bg-emerald-600 checked:border-emerald-600 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label htmlFor={`${level}-checkbox`} className="ms-2 text-sm font-medium text-gray-900">
+                            {level.charAt(0).toUpperCase() + level.slice(1)}
+                        </label>
+                    </div>
+                ))}
+            </div>
+    </div>
+    :
         <div className="border-t-4 py-5">
             <button
                 onClick={toggleAccordion}
@@ -58,7 +82,6 @@ function Arrosage({ setFilters, filters }) {
                 ))}
             </div>
         </div>
-    );
 }
 
 export default Arrosage;

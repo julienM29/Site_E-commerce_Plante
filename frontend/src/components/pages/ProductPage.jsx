@@ -17,7 +17,9 @@ import 'swiper/css/effect-fade';
 import SwiperPromotion from '../shared/SwipperPromotion';
 import TitreSection from '../shared/homePage/TitreSection';
 import { getUserInfoAndWishList } from '../shared/UserUtils';
+import { useGsapProductPage } from '../../useGsapProductPage';
 const ProductPage = () => {
+
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef(null);
   const [dataPlants, setDataPlants] = useState({});
@@ -29,6 +31,8 @@ const ProductPage = () => {
   const threeDaysLater = new Date();
   threeDaysLater.setDate(threeDaysLater.getDate() + 3);
   const formattedDate = threeDaysLater.toLocaleDateString("fr-FR"); // Format : "15/03/2025"
+
+useGsapProductPage(dataPlantsSuggestions);
 
   const handleSlideChange = (index) => {
     if (swiperRef.current) {
@@ -123,12 +127,6 @@ const ProductPage = () => {
               <span> / </span>
             </>
           )}
-          {/* {dataPlants.famille && (
-            <>
-              <Link className=" hover:underline underline-offset-2" to={`/plantes/famille/${dataPlants.famille}`}>{dataPlants.famille}</Link>
-              <span> / </span>
-            </>
-          )} */}
           <span className="">{dataPlants.famille}</span>
           <span> / </span>
 
@@ -136,7 +134,7 @@ const ProductPage = () => {
         </p>
 
 
-        <div className="w-full flex flex-col xl:flex-row justify-center items-start gap-8">
+        <div className="w-full flex flex-col xl:flex-row justify-center items-start gap-4">
           <div className="w-3/6 order-1 xl:order-2">
             <Swiper
               slidesPerView={1}
@@ -155,7 +153,7 @@ const ProductPage = () => {
             </Swiper>
           </div>
 
-          <div className="py-1 max-xl:w-full w-1/6 h-full xl:top-0 order-2 xl:order-1 custom-controls flex xl:flex-col justify-start items-center gap-4">
+          <div className="py-1 max-xl:w-full w-1/6 h-full xl:top-0 order-2 xl:order-1 custom-controls flex xl:flex-col justify-start items-end gap-4">
             {tabImages.map((url, index) => (
               <ImgPlants
                 key={index}
@@ -217,10 +215,11 @@ const ProductPage = () => {
 
       <div className="w-full flex flex-col items-center gap-6">
         <TitreSection texte="Vous pourriez aussi aimer ceci..." textColor="text-zinc-800" taillePolice="text-3xl" />
-        <div className='w-4/5 flex justify-center'>
+        <div className='w-11/12 flex justify-center' id='swipperSuggestion'>
           <SwiperPromotion nbSlides={4} products={dataPlantsSuggestions} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
         </div>
-      </div>    </div>
+      </div>    
+    </div>
   );
 };
 

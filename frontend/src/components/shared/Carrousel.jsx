@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import gsap from 'gsap';
 
-const Carroussel = () => {
+const Carroussel = ({taille}) => {
     useEffect(() => {
         const carrousel = document.getElementById("carrousel");
         const texts = [
@@ -17,6 +17,7 @@ const Carroussel = () => {
             // Créer une nouvelle div pour le texte
             const newText = document.createElement("div");
             newText.classList.add("carousel-text");
+            newText.classList.add(taille);
             newText.innerText = texts[index];
             carrousel.appendChild(newText);
 
@@ -56,7 +57,7 @@ const Carroussel = () => {
     }, []); // Dépendances vides pour n'exécuter qu'une fois à l'initialisation
 
     return (
-        <div id="carrousel" className="carousel py-2 h-10 w-full bg-slider-text text-white font-normal"></div>
+        <div id="carrousel" className="carousel py-2 h-10 w-full bg-slider-text text-white font-normal max-md:text-sm"></div>
     );
 };
 

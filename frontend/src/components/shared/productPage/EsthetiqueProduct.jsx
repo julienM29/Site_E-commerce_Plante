@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 const EsthetiqueProduct = ({ periodeFloraison, hauteurMin, hauteurMax, fleurCouper, couleur, persistant, parfum, port, largeurMin, largeurMax, couleurFeuille }) => {
 
     return (
-        <div className='flex w-1/3 px-4 flex-col gap-4'>
+        <div className='caracteristique flex w-1/3 px-4 flex-col gap-4'>
             <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Esthétique</h2>
             <div className='flex flex-col gap-3'>
                 <div className='flex items-center gap-2'>

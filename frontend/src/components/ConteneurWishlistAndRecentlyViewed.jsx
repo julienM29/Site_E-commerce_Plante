@@ -8,7 +8,7 @@ const ConteneurWishListAndRecentlyViewed = ({ item, addPanier, deleteProductList
     }
 
     return (
-        <article className="relative bg-white rounded-lg shadow-lg border  hover:shadow-xl transition hover:border-2 hover:border-green-300/70">
+        <article className="relative bg-white rounded-lg shadow-lg border  hover:shadow-xl transition  hover:border-green-300/70">
             {item.promotion !== 0 && (
                 <p className='w-3/4 text-center roup z-10 absolute top-5 left-0 p-1 border rounded-e-lg bg-white/90 '>- {item.promotion} % sur le produit</p>
 

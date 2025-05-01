@@ -54,44 +54,17 @@ const ListeEnvie = () => {
                     <p className="text-center font-semibold">
                         Vous pouvez ajouter des articles dans votre liste d'envies et les commander plus tard !
                     </p>
-                    <a href='/search' className="rounded-lg py-2 px-4 bg-rose-500 text-white hover:bg-rose-400">
+                    <a href='/search'  className="rounded-lg bg-emerald-900 text-white text-center py-3 px-6 hover:bg-emerald-800 active:scale-95 transition transform">
                         Voir les produits
                     </a>
+
                 </div>
             ) : (
                 <div className="w-full gap-5 flex flex-col items-center px-4 py-6 max-h-[65vh] overflow-y-auto ">
                     <h2 className="text-xl font-semibold">Votre liste d'envies :</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                         {wishList.map((item) => (
-                                                        < ConteneurWishListAndRecentlyViewed key={item.id} item={item} addPanier={modifyWishList} deleteProductList={deleteProductWishList} />
-
-                            // <article key={item.id} className="relative bg-white rounded-lg shadow-lg border p- hover:shadow-xl transition hover:border-2 hover:border-green-300/70">
-                            //     {item.promotion !== 0 && (
-                            //         <p className='w-3/4 text-center roup z-10 absolute top-5 left-0 px-3 border rounded-e-lg bg-white/90 '>- {item.promotion} % sur le produit</p>
-
-                            //     )}
-                            //     <button
-                            //         className="absolute top-1 right-1 bg-gray-300/90 text-black w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-700 hover:text-white transition-all duration-200"
-                            //         onClick={() => deleteProductWishList(item.id)}
-                            //         aria-label="Supprimer de la liste d'envies"
-                            //         title="Supprimer de la liste d'envies"
-                            //     >
-                            //         ✖
-                            //     </button>
-
-                            //     <a href={`/produit/${item.id}`}>
-                            //         <img src={`images/${item.image}`} alt={item.nom} className="w-full h-40 object-cover rounded-t-lg" />
-                            //     </a>
-                            //     <div className="flex flex-col gap-2 p-2">
-                            //         <a href={`/produit/${item.id}`} className="text-lg font-semibold truncate hover:text-green-600">{item.nom}</a>
-                            //         <p className="text-gray-500 font-bold">{item.prix}€</p>
-                            //         <button className="text-sm bg-emerald-800 text-white py-2 px-4 rounded-lg hover:bg-emerald-700"
-                            //             onClick={() => modifyWishList(item.id, item.nom, item.prix,item.promotion, item.image)}>
-                            //             Ajouter au panier
-                            //         </button>
-                            //     </div>
-                            // </article>
-
+                        < ConteneurWishListAndRecentlyViewed key={item.id} item={item} addPanier={modifyWishList} deleteProductList={deleteProductWishList} />
                         ))}
                     </div>
                 </div>

@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import ConteneurQuantity from './QuantityInput';
 import { useDispatch, useSelector } from 'react-redux';
 
-const ConteneurProduitPanier = ({panierIndex, imgProduit, prixTotalProduit, nomProduit, quantiteProduit, detail_panier_id, onDelete  }) => {
- 
+const ConteneurProduitPanier = ({ panierIndex, imgProduit, prixTotalProduit, nomProduit, quantiteProduit, detail_panier_id, onDelete }) => {
+
   const dispatch = useDispatch();
   const { panier, total, status, error } = useSelector((state) => state.myState);
-  
+
   return (
     <div className="flex flex-col gap-4 border-b-2 pt-2 pb-4">
       <div className="flex items-center gap-3">
         {/* Image */}
-        <img src={`/images/${imgProduit}`} alt={nomProduit} className="w-20 h-20 object-cover rounded-lg border-2 border-gray-500/40" />
+        <img
+          src={`/images/${imgProduit}`}
+          alt={nomProduit}
+          className="w-20 h-20 object-cover rounded-lg border-2 border-gray-500/40 hover:scale-105 transition-transform duration-300"
+        />
 
         {/* Contenu produit */}
         <div className="flex-1 flex flex-col gap-4">
@@ -19,7 +23,10 @@ const ConteneurProduitPanier = ({panierIndex, imgProduit, prixTotalProduit, nomP
           <div className='flex flex-col gap-1'>
             <div className="flex justify-between items-center">
               <p className="font-medium text-lg text-gray-900">{nomProduit}</p>
-              <button className="p-2 rounded-full hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-300" onClick={()=>onDelete(detail_panier_id)}>
+              <button
+                className="p-2 rounded-full hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors duration-300"
+                onClick={() => onDelete(detail_panier_id)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -43,9 +50,10 @@ const ConteneurProduitPanier = ({panierIndex, imgProduit, prixTotalProduit, nomP
           </div>
           {/* Quantité et prix */}
           <div className="flex justify-between items-center">
-            <ConteneurQuantity panierIndex={panierIndex} heightInput='7' paddingButton='2' />
-            <p className="text-lg font-semibold text-gray-800">{prixTotalProduit}€</p>
+            <ConteneurQuantity panierIndex={panierIndex} heightInput="7" paddingButton="2" />
+            <p className="text-xl font-bold text-emerald-600">{prixTotalProduit}€</p>
           </div>
+
         </div>
       </div>
     </div>

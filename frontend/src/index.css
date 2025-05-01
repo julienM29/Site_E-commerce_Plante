@@ -44,13 +44,7 @@ input[type="search"]::-webkit-search-cancel-button {
     }
   }
   
-  /* Appliquez l'animation à la classe souhaitée */
-  .bounce-horizontal {
-    animation: bounce-horizontal 1s ease-in-out infinite; /* 1s = durée, ease-in-out = timing function, infinite = répétition */
-  }
-  .buttonHover:hover .buttonHover-icon {
-    animation: bounce-horizontal 0.5s ease-in-out;
-  }
+
   
 /* Personnalisation des boutons de navigation */
 .my-custom-swiper .swiper-button-next,

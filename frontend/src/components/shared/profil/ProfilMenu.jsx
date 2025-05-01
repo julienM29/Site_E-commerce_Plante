@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import LogoutButton from './LogoutButton';
-const ProfilMenu = ({ setOngletActif, ongletActif }) => {
+const ProfilMenu = ({ setOngletActif, ongletActif, isMobile }) => {
 
 
 
@@ -28,7 +28,41 @@ const ProfilMenu = ({ setOngletActif, ongletActif }) => {
 
         )
     }
-    return (
+    return isMobile ?
+        <div className="flex flex-col items-center p-4 gap-4 w-full">
+            {/* User Header */}
+            <div className="flex flex-col items-center text-center gap-1">
+                <div className="bg-zinc-400 rounded-full p-3 text-white text-2xl">MJ</div>
+                <p className="text-lg font-semibold">Miossec Julien</p>
+                <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <img src="/icones/horloge.png" className="w-4 h-4" alt="Horloge" />
+                    <span>06:03:05 PM</span>
+                </div>
+            </div>
+
+            {/* Menu (horizontal scrollable) */}
+            <div className="flex overflow-x-auto justify-between w-full ">
+                {[
+                    { icon: 'profil.png', label: 'Profil', key: 'profil' },
+                    { icon: 'profil_adress.png', label: 'Adresse', key: 'adresse' },
+                    { icon: 'profil_commande.png', label: 'Commande', key: 'commande' },
+                    { icon: 'profil_coeur.png', label: "Liste d'envie", key: 'listeEnvie' },
+                    { icon: 'profil_listing_view.png', label: 'Consultés', key: 'consulteRecemment' },
+                ].map(({ icon, label, key }) => (
+                    <button
+                        key={key}
+                        onClick={() => setOngletActif(key)}
+                        className={`flex flex-col items-center   ${ongletActif === key ? 'text-emerald-600 font-semibold' : 'text-gray-500'}`}
+                    >
+                        <img src={`/icones/${icon}`} className="w-6 h-6 mb-1" alt={label} />
+                        <span className="text-sm">{label}</span>
+                    </button>
+                ))}
+            </div>
+
+        </div>
+
+        :
         <div className="w-[280px] rounded-3xl bg-white border shadow-lg flex flex-col gap-4 self-start">
             <div className="flex gap-6 items-center rounded-2xl border-b p-5 shadow-lg">
                 <p className="rounded-full bg-zinc-400 p-2 text-2xl">MJ</p>
@@ -59,7 +93,6 @@ const ProfilMenu = ({ setOngletActif, ongletActif }) => {
                 <LogoutButton />
             </div>
         </div>
-    );
 };
 
 export default ProfilMenu;

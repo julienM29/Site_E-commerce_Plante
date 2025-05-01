@@ -25,7 +25,7 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
         }
     }, [total]);
     return (
-        <div ref={sidebarRef} className="fixed flex flex-col items-center top-0 right-0 w-1/5 bg-white h-screen border-l shadow-lg transform translate-x-full z-20">
+        <div ref={sidebarRef} className="fixed flex flex-col items-center justify-between top-0 right-0 w-1/5 bg-white h-screen border-l shadow-lg transform translate-x-full z-20">
             {/* En tête de la side barre */}
             <div className="w-full flex items-center justify-around h-[10%] bg-custom-light px-4 py-2">
                 <div className="text-3xl font-semibold tracking-wide flex gap-2">
@@ -81,12 +81,11 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
             )} */}
 
 
-            <div className='h-[15%] bg-custom-light w-full flex flex-col gap-4 justify-center items-center'>
+            <div className='h-[12%] bg-custom-light w-full flex flex-col gap-4 justify-center items-center'>
 
-                <button type="submit" className="w-3/4 font-bold flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l hover:from-emerald-600 hover:to-emerald-300 focus:ring-4 focus:outline-none focus:ring-emerald-400  text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out">
-                    <a href="/panier">Aller au panier - {total} euros</a>
-                </button>
-                <button onClick={closeSidebar} className="w-3/4 flex justify-center items-center font-semibold  text-md text-emerald-600 underline-offset-4 hover:underline">
+                <a href="/panier"   className="flex justify-center items-center font-semibold bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 focus:ring-4 focus:ring-emerald-300 text-white rounded-full text-base px-6 py-3 shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+                >Aller au panier - {total} euros</a>
+                <button onClick={closeSidebar} className="w-3/4 flex justify-center items-center font-semibold  text-sm text-emerald-600 underline-offset-4 hover:underline">
                     Continuer vos achats
 
                 </button>
