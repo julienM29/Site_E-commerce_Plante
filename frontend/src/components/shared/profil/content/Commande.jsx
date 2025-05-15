@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { checkUserConnect } from '../../CheckUserInformation';
 import CommandeCard from '../../commande/CommandeCard';
 
-const Commande = () => {
+const Commande = ({isMobile}) => {
     const [commandes, setCommandes] = useState([]);
 
     const loadCommandes = async () => {
@@ -35,9 +35,9 @@ const Commande = () => {
                     className="w-full flex flex-col items-center gap-2 py-6 px-4 max-h-[65vh] overflow-y-auto"
                     style={{ scrollbarGutter: 'stable' }}
                 >
-                    <h2 className="text-xl font-semibold">Vos commandes</h2>
+                    <h2 className={`${isMobile ? "text-lg" :"text-xl"} font-semibold`}>Vos commandes</h2>
                     {commandes.map((commande, index) => (
-                        <CommandeCard key={index} commande={commande} />
+                        <CommandeCard key={index} commande={commande} isMobile={isMobile}/>
                     ))}
                 </div>
 

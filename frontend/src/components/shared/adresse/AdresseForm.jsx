@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AdresseAutocomplete from "./AdresseAutoComplete";
 
-const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
+const AdresseForm = ({ userId, changeContent, idAdresseToModif, isMobile }) => {
     const [adresseUser, setAdresseUser] = useState({
         prenom: '',
         nom: '',
@@ -105,137 +105,132 @@ const AdresseForm = ({ userId, changeContent, idAdresseToModif }) => {
 
     return (
         <div className="relative">
-            <button className="absolute right-3 top-3 text-gray-600 hover:text-gray-900"
-                onClick={changeContent}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-            <h2 className='pt-4 text-center font-semibold text-xl'>Ajouter une adresse</h2>
-            <form
-                className="w-full gap-7 flex flex-col px-6 py-8"
-                onSubmit={submitAdressForm} // Utilisation de onSubmit ici
-            >
-                {/* Identité */}
-                <div className="flex gap-4">
-                    <div className="flex flex-col gap-1 w-1/2">
-                        <label htmlFor="prenom" className="font-medium">Prénom</label>
-                        <input
-                            type="text"
-                            name="prenom"
-                            id="prenom"
-                            className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.prenom || ""}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-1 w-1/2">
-                        <label htmlFor="nom" className="font-medium">Nom</label>
-                        <input
-                            type="text"
-                            name="nom"
-                            id="nom"
-                            className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.nom || ""}
-                            onChange={handleChange}
-                        />
-                    </div>
+        {/* Bouton de fermeture */}
+        <button
+            className="absolute right-3 top-3 text-gray-600 hover:text-gray-900"
+            onClick={changeContent}
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    
+        {/* Titre */}
+        <h2 className={`pt-4 text-center font-semibold ${isMobile ? 'text-lg' : 'text-xl'}`}>{adresseUser ? "Modifier l'adresse" : 'Ajouter une adresse'}</h2>
+    
+        {/* Formulaire */}
+        <form
+            className={`w-full flex flex-col ${isMobile ? 'gap-5 px-4 py-6' : 'gap-7 px-6 py-8'}`}
+            onSubmit={submitAdressForm}
+        >
+    
+            {/* Identité */}
+            <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-4`}>
+                {/* Prénom */}
+                <div className="flex flex-col gap-1 w-full">
+                    <label htmlFor="prenom" className="font-medium">Prénom</label>
+                    <input
+                        type="text"
+                        name="prenom"
+                        id="prenom"
+                        className="h-10 border rounded px-4 bg-gray-100 focus:border-emerald-600 focus:border-2 focus:outline-none"
+                        value={adresseUser.prenom || ""}
+                        onChange={handleChange}
+                    />
                 </div>
-
-                {/* Téléphone */}
-                <div className="flex gap-4">
-                    <div className="flex flex-col gap-1 w-1/2">
-                        <label htmlFor="telephone" className="font-medium">Téléphone</label>
-                        <input
-                            type="tel"
-                            name="telephone"
-                            id="telephone"
-                            className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.telephone || ""}
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    {/* Autocomplete */}
-                    <div className="flex flex-col gap-1 w-1/2">
-                        <h2 className="font-medium">Adresse de livraison</h2>
-                        <AdresseAutocomplete setAdresseUser={setAdresseUser} />
-
-
-                    </div>
+    
+                {/* Nom */}
+                <div className="flex flex-col gap-1 w-full">
+                    <label htmlFor="nom" className="font-medium">Nom</label>
+                    <input
+                        type="text"
+                        name="nom"
+                        id="nom"
+                        className="h-10 border rounded px-4 bg-gray-100 focus:border-emerald-600 focus:border-2 focus:outline-none"
+                        value={adresseUser.nom || ""}
+                        onChange={handleChange}
+                    />
+                </div>
+            </div>
+    
+            {/* Téléphone + Autocomplete */}
+            <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-4`}>
+                <div className="flex flex-col gap-1 w-full">
+                    <label htmlFor="telephone" className="font-medium">Téléphone</label>
+                    <input
+                        type="tel"
+                        name="telephone"
+                        id="telephone"
+                        className="h-10 border rounded px-4 bg-gray-100 focus:border-emerald-600 focus:border-2 focus:outline-none"
+                        value={adresseUser.telephone || ""}
+                        onChange={handleChange}
+                    />
                 </div>
                 <div className="flex flex-col gap-1 w-full">
-                    <h2 className="font-medium">Adresse sélectionnée</h2>
-                    {adresseUser.adresse ? (
-                        <p className='p-3 bg-gray-100 rounded'>
-                            {adresseUser.adresse || ""}
-                        </p>
-                    ) : (
-                        <p className="text-gray-500 p-3 bg-gray-100 rounded">Sélectionner une adresse</p>
-                    )}
-
+                    <h2 className="font-medium">Adresse de livraison</h2>
+                    <AdresseAutocomplete setAdresseUser={setAdresseUser} />
                 </div>
-                {/* Détails Adresse */}
-                <div className="flex gap-4">
-                    <div className="flex flex-col gap-1 w-1/3">
-                        <label htmlFor="pays" className="font-medium">Pays</label>
+            </div>
+    
+            {/* Adresse sélectionnée */}
+            <div className="flex flex-col gap-1 w-full">
+                <h2 className="font-medium">Adresse sélectionnée</h2>
+                {adresseUser.adresse ? (
+                    <p className='p-3 bg-gray-100 rounded'>
+                        {adresseUser.adresse || ""}
+                    </p>
+                ) : (
+                    <p className="text-gray-500 p-3 bg-gray-100 rounded">Sélectionner une adresse</p>
+                )}
+            </div>
+    
+            {/* Détails adresse */}
+            <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-4`}>
+                {["pays", "code_postal", "ville"].map((field, idx) => (
+                    <div key={idx} className="flex flex-col gap-1 w-full">
+                        <label htmlFor={field} className="font-medium">
+                            {field === "pays" ? "Pays" : field === "code_postal" ? "Code postal" : "Ville"}
+                        </label>
                         <input
                             type="text"
-                            name="pays"
-                            id="pays"
-                            className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.pays || ""}
+                            name={field}
+                            id={field}
+                            className="h-10 border rounded px-4 bg-gray-100 focus:border-emerald-600 focus:border-2 focus:outline-none"
+                            value={adresseUser[field] || ""}
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col gap-1 w-1/3">
-                        <label htmlFor="code_postal" className="font-medium">Code postal</label>
-                        <input
-                            type="text"
-                            name="code_postal"
-                            id="code_postal"
-                            className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.code_postal || ""}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-1 w-1/3">
-                        <label htmlFor="ville" className="font-medium">Ville</label>
-                        <input
-                            type="text"
-                            name="ville"
-                            id="ville"
-                            className="h-10 border rounded px-4 bg-gray-100"
-                            value={adresseUser.ville || ""}
-                            onChange={handleChange}
-                        />
-                    </div>
-                </div>
-                <div className="flex items-center gap-3">
-                    <input
-                        type="checkbox"
-                        id="adresseDefaut"
-                        name="adresseDefaut"
-                        checked={defaultAdresse}
-                        onChange={handleDefaultAdresseChange}
-                        className="accent-emerald-600 w-5 h-5"
-                    />
-                    <label htmlFor="adresseDefaut" className="font-medium text-gray-800">
-                        Définir cette adresse comme adresse par défaut
-                    </label>
-                </div>
-
-                <div className='flex flex-col gap-2'>
-                    {messageErreur && <div className="error text-red-600 font-semibold">{messageErreur}</div>} {/* Affiche l'erreur si présente */}
-                    <button
-                        type="submit" // Utilisation du type submit pour soumettre le formulaire
-                        className="mt-4 bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded"
-                    >
-                        Sauvegarder l’adresse
-                    </button>
-                </div>
-            </form>
-        </div>
+                ))}
+            </div>
+    
+            {/* Adresse par défaut */}
+            <div className="flex items-center gap-3">
+                <input
+                    type="checkbox"
+                    id="adresseDefaut"
+                    name="adresseDefaut"
+                    checked={defaultAdresse}
+                    onChange={handleDefaultAdresseChange}
+                    className="accent-emerald-600 w-5 h-5"
+                />
+                <label htmlFor="adresseDefaut" className="font-medium text-gray-800">
+                    Définir cette adresse comme adresse par défaut
+                </label>
+            </div>
+    
+            {/* Bouton et erreur */}
+            <div className='flex flex-col items-center gap-2'>
+                {messageErreur && <div className="text-red-600 font-semibold">{messageErreur}</div>}
+                <button
+                    type="submit"
+                    className={`w-3/4 font-medium text-white rounded ${isMobile ? 'py-3 text-base' : 'py-2'} bg-emerald-700 hover:bg-emerald-800`}
+                >
+                    {adresseUser.adresse !== '' ? "Sauvegarder les modifications" : "Sauvegarder l’adresse"}
+                </button>
+            </div>
+        </form>
+    </div>
+    
     );
 };
 

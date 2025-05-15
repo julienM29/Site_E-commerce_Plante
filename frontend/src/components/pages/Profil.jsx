@@ -55,7 +55,11 @@ function Profil() {
 
     // Si l'utilisateur est connecté, afficher le profil
     return (
-        <div className={`${isMobile ? 'h-full pt-2 px-3 pb-8' : 'h-[79vh]'} bg-custom-light items-center    w-full flex justify-center`}>
+<div
+  className={`w-full flex bg-custom-light 
+    ${isMobile ? 'min-h-screen pt-2 px-3 pb-8 items-start' : 'h-[88vh] justify-center items-center'}
+  `}
+>
             <div className={`${isMobile ? 'w-full flex-col ' : ' w-[60%]'}  flex gap-4 items-start h-[95%]`}>
                 <ProfilMenu setOngletActif={setOngletActif} ongletActif={ongletActif} isMobile={isMobile} />
                 <ProfilContent ongletActif={ongletActif} setOngletActif={setOngletActif} isMobile={isMobile} />

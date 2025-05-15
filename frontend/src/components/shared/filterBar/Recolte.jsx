@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-function Recolte({ setFilters, isMobile }) {
+function Recolte({ setFilters, filters, isMobile }) {
     const [isOpen, setIsOpen] = useState(false);
     const [recolte, setRecolte] = useState({
         janvier: false,
@@ -22,14 +22,22 @@ function Recolte({ setFilters, isMobile }) {
         setIsOpen(!isOpen);
     };
 
+    // const handleRecolteChange = (event) => {
+    //     const { name, checked } = event.target;
+    //     setRecolte((prevState) => ({
+    //         ...prevState,
+    //         [name]: checked,
+    //     }));
+    // };
     const handleRecolteChange = (event) => {
-        const { name, checked } = event.target;
-        setRecolte((prevState) => ({
-            ...prevState,
-            [name]: checked,
-        }));
-    };
- 
+        const { name, checked } = event.target;       
+        setFilters({
+            recolte: {
+                ...filters.recolte,
+                [name]: checked,
+            },
+        })
+        };
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             if (JSON.stringify(prevRecolteRef.current) !== JSON.stringify(recolte)) {
@@ -75,7 +83,7 @@ function Recolte({ setFilters, isMobile }) {
                             id={`${month}-checkbox`}
                             type="checkbox"
                             name={month}
-                            checked={isChecked}
+                            checked={filters.recolte?.[month] || false}
                             onChange={handleRecolteChange}
                             className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-600 checked:bg-emerald-600 checked:border-emerald-600 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />

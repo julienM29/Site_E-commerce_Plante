@@ -52,9 +52,9 @@ function Footer() {
             Rosier, Plante, Graine, Arbre & Arbuste © Willemse SAS, Jardinerie en Ligne 2023- Tous droits réservés
             *Les prix de référence sont les prix les plus bas constatés sur le site willemsefrance.fr  entre le 03/01/2024 et le 31/01/2024, sauf pour les bulbes d’automne entre le 01/08/2024 et le 31/08/2024</p>
         </div>
-        <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-3 rounded-lg shadow-lg">
+        {/* <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-3 rounded-lg shadow-lg">
           <p className="text-sm font-medium">Screen Size: {screenSize}</p>
-        </div>
+        </div> */}
       </div>
     </>
   );

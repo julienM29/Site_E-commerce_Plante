@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {  clearPanier } from '../../../mySlice';
-function LogoutButton() {
+import { clearPanier } from '../../../mySlice';
+import { resetFilters } from '../../../filterSlice';
+
+function LogoutButton({ isMobile }) {
     const dispatch = useDispatch();
     const logoutUser = async () => {
         console.log('logoutUser dans LogoutButton.jsx')
@@ -14,17 +16,18 @@ function LogoutButton() {
             body: JSON.stringify({}), // ✅ Ajouter un body JSON vide
         });
         const result = await response.json();
-        if (result.success) {    
+        if (result.success) {
             dispatch(clearPanier());
+            dispatch(resetFilters());
             console.log("✅ Déconnexion réussie !");
             // Redirection seulement après vérification
             setTimeout(() => {
                 window.location.href = '/';
-            }, 200); 
+            }, 200);
         }
     };
 
-    return (
+    return !isMobile ?
         <div
             className={`relative group flex justify-center items-center gap-2 cursor-pointer  `}
 
@@ -41,7 +44,14 @@ function LogoutButton() {
                 </div>
             </button>
         </div>
-    );
+        :
+        <button
+            onClick={() => logoutUser()}
+            className="mt-2 text-red-500 text-sm underline underline-offset-2 hover:text-red-700 transition"
+        >
+            Se déconnecter
+        </button>
+
 }
 
 export default LogoutButton;

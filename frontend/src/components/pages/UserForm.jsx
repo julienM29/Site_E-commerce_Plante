@@ -175,8 +175,8 @@ function UserForm() {
   }
 
   return (
-    <div className="bg-custom-light w-full flex items-center justify-center h-[80vh]">
-      <div className="bg-white flex items-center rounded-3xl border-2 shadow-lg max-md:w-3/4 w-1/2 max-md:h-3/5 h-3/4">
+    <div className="bg-custom-light w-full flex items-center justify-center max-md:min-h-screen h-[80vh] px-4 ">
+      <div className="bg-white flex items-center rounded-3xl border-2 shadow-lg max-md:w-full w-1/2 max-md:h-3/5 h-3/4">
         <div ref={loginRef} className={`max-xl:rounded-3xl  rounded-l-3xl bg-white w-full xl:w-1/2 flex flex-col gap-8 justify-center ${!showLogin ? 'hidden' : ''}`}>
           <h2 className="text-center max-sm:text-2xl text-4xl text-gray-600 font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-800 from-emerald-500">
             Connectez-vous !
@@ -219,7 +219,7 @@ function UserForm() {
           </form>
         </div>
 
-        <div ref={registerRef} className={`rounded-l-3xl gap-8 bg-white w-1/2 flex flex-col justify-center ${showLogin ? 'hidden' : ''}`}>
+        <div ref={registerRef} className={`max-xl:rounded-3xl  rounded-l-3xl bg-white w-full xl:w-1/2 flex flex-col gap-8 justify-center ${showLogin ? 'hidden' : ''}`}>
           <h2 className="text-center text-4xl text-gray-600 font-semibold text-transparent bg-clip-text bg-gradient-to-r to-emerald-800 from-emerald-500">
             Inscrivez-vous !
           </h2>

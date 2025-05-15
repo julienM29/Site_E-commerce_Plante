@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-import ProfilInformationForm from './ProfilInformationForm';
+import ProfilInformation from './ProfilInformation';
 import Adresse from './Adresse';
 import Commande from './Commande';
 import ListeEnvie from './ListeEnvie';
@@ -54,24 +54,24 @@ const ProfilContent = ({ ongletActif, setOngletActif, isMobile }) => {
   return (
     <div className="w-full bg-white rounded-3xl self-start shadow-lg">
       <div ref={profilRef}>
-        {ongletActif === "profil" && <ProfilInformationForm setOngletActif={setOngletActif} isMobile={isMobile} />}
+        {ongletActif === "profil" && <ProfilInformation setOngletActif={setOngletActif} isMobile={isMobile} />}
       </div>
       <div ref={adresseRef}>
-        {ongletActif === "adresse" && <Adresse />}
+        {ongletActif === "adresse" && <Adresse isMobile={isMobile}/>}
       </div>
       <div ref={commandeRef}>
         {ongletActif === "commande" && (
-          <Commande />
+          <Commande isMobile={isMobile}/>
         )}
       </div>
-      <div ref={listeEnvieRef} className='p-2 '>
+      <div ref={listeEnvieRef}  >
         {ongletActif === "listeEnvie" && (
-          <ListeEnvie />
+          <ListeEnvie isMobile={isMobile}/>
         )}
       </div>
       <div ref={consulteRecemmentRef}>
         {ongletActif === "consulteRecemment" && (
-          < ConsulteRecemment/>
+          < ConsulteRecemment isMobile={isMobile}/>
         )}
       </div>
       <div ref={motDePasseRef}>

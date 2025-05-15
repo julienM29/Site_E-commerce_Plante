@@ -1,17 +1,16 @@
-  import React, { useState, useEffect } from 'react';
-  import ProductGrid from '../shared/ProductGrid';
-  import SwiperTest from '../shared/SwiperTest';
-  import FilterBar from '../shared/FilterBar';
-  import { useSearchParams } from "react-router-dom";
-  import { OrbitProgress } from 'react-loading-indicators';
-  import { useMediaQuery } from 'react-responsive'; // ou un custom hook
+import React, { useState, useEffect } from 'react';
+import ProductGrid from '../shared/ProductGrid';
+import SwiperTest from '../shared/SwiperTest';
+import FilterBar from '../shared/FilterBar';
+import { useSearchParams } from "react-router-dom";
+import { OrbitProgress } from 'react-loading-indicators';
 import { fetchProductsByParams, fetchTypes } from '../shared/search/SearchUtils';
-  
+import { useSelector, useDispatch } from 'react-redux'; // Importer useSelector et useDispatch
+import { setAllFilters, resetFilters } from '../../filterSlice';
 const SearchDesktop = ({
-  
+
 }) => {
     const [selectType, setSelectType] = useState(false);
-    const isDesktop = useMediaQuery({ minWidth: 768 }); // md: breakpoint de Tailwind
 
     const [types, setTypes] = useState([]);
     const [dataPlants, setDataPlants] = useState([]);
@@ -20,34 +19,16 @@ const SearchDesktop = ({
     const typeSearchQuery = searchParams.get("t") || "";
     const promotionSearchQuery = searchParams.get("p") || "";
     const [loading, setLoading] = useState(false); // 🔥 État de chargement
-    const selectedColor = searchParams.get("color") || null;
     const [typeChoice, setTypeChoice] = useState();
-    const [filters, setFilters] = useState({
-        text: searchQuery || null,
-        color: null,
-        minPrice: null,
-        maxPrice: null,
-        exposition: null,
-        arrosage: null,
-        emplacement: null,
-        floraison: null,
-        recolte: null,
-        persistant: null,
-        type: null,
-        promotion: null,
-    });
-    const [initialized, setInitialized] = useState(false); // Nouveau état pour vérifier l'initialisation
+    const filters = useSelector((state) => state.filters);
+    const [filtersReset, setFiltersReset] = useState(false);
+
     const [productFound, setProductFound] = useState(false); // Nouveau état pour vérifier l'initialisation
 
-    // const loadTypesPlant = async () => {
-    //     try {
-    //         const response = await fetch('http://127.0.0.1:3000/loadType');
-    //         const data = await response.json();
-    //         setTypes(data.types || []);
-    //     } catch (error) {
-    //         console.error('Erreur lors du chargement des types:', error);
-    //     }
-    // };
+    const dispatch = useDispatch();
+    const handleSetFilter = (newFilters) => {
+        dispatch(setAllFilters(newFilters));
+    };
     const loadTypesPlant = async () => {
         try {
             const data = await fetchTypes();
@@ -60,23 +41,27 @@ const SearchDesktop = ({
         try {
             const updatedParams = new URLSearchParams(searchParams);
             setLoading(true);
-            if (typeChoice && typeChoice.id === id) {            
+            if (typeChoice && typeChoice.id === id) {
                 updatedParams.delete("t");
                 // Si on reclique sur le même type, on désélectionne
                 setSelectType(false);
                 setTypeChoice(null);
-                setFilters((prevState) => ({
-                    ...prevState,
-                    type: null,
-                }));
+                handleSetFilter({ type: null });
+
+                // setFilters((prevState) => ({
+                //     ...prevState,
+                //     type: null,
+                // }));
             } else {
                 updatedParams.set("t", id); // Ajoute le paramètre `t`
                 setSelectType(true);
                 setTypeChoice({ nom, id, image });
-                setFilters((prevState) => ({
-                    ...prevState,
-                    type: id,
-                }));
+                handleSetFilter({ type: id });
+
+                // setFilters((prevState) => ({
+                //     ...prevState,
+                //     type: id,
+                // }));
             }
             setSearchParams(updatedParams);
         } catch (error) {
@@ -86,7 +71,7 @@ const SearchDesktop = ({
             setTimeout(() => setLoading(false), 800);
         }
     };
-    
+
     const searchByText = async () => {
         try {
             setLoading(true);
@@ -100,32 +85,6 @@ const SearchDesktop = ({
             setTimeout(() => setLoading(false), 650);
         }
     };
-    // const searchByParams = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const response = await fetch(`http://localhost:3000/searchByParams`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(filters), // Corps dynamique basé sur les filtres
-    //             credentials: "include"
-    //         });
-    //         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    //         const data = await response.json();
-    //         setDataPlants(data.products || []);
-    //         if (data.products.length > 0) {
-    //             setProductFound(true)
-    //         } else {
-    //             setProductFound(false)
-    //             console.log('date null normalement : ', data.products)
-    //         }
-    //     } catch (error) {
-    //         console.error('Erreur lors du chargement des plantes:', error);
-    //     } finally {
-    //         setTimeout(() => setLoading(false), 650);
-    //     }
-    // };
     const searchByParams = async () => {
         try {
             setLoading(true);
@@ -149,16 +108,18 @@ const SearchDesktop = ({
         }
     }, [searchQuery]);
     useEffect(() => {
-        if (promotionSearchQuery) { 
-            setFilters((prevState) => ({
-                ...prevState,
-                promotion: true,
-            }));
+        if (promotionSearchQuery) {
+            handleSetFilter({ promotion: true });
+
+            // setFilters((prevState) => ({
+            //     ...prevState,
+            //     promotion: true,
+            // }));
         }
     }, [promotionSearchQuery]);
-    
-    
-    
+
+
+
     useEffect(() => {
         loadTypesPlant();
         searchByParams(); // Appel de la fonction de recherche avec les filtres mis à jour
@@ -179,28 +140,22 @@ const SearchDesktop = ({
             }
         }
     }, [typeSearchQuery, types]);  // Ajout de `types` dans les dépendances pour éviter les boucles infinies
-    
-    const resetFilters = () => {
-        setFilters({
-            text: null,
-            color: null,
-            minPrice: null,
-            maxPrice: null,
-            exposition: null,
-            arrosage: null,
-            emplacement: null,
-            floraison: null,
-            recolte: null,
-            persistant: null,
-            type: null,
-            promotion: null,
-        });
+
+    const resetFiltersHandler = () => {
+        dispatch(resetFilters());
+        setFiltersReset(true);
     };
-  return (
-<div className="bg-custom-light py-6 min-h-screen flex flex-col items-center gap-6">
-            <div className="w-10/12 flex gap-10">
-                <FilterBar setFilters={setFilters} filters={filters} />
-                <div className="w-4/5 flex flex-col gap-4 flex-grow">
+    useEffect(() => {
+        if (filtersReset) {
+            searchByParams();
+            setFiltersReset(false);
+        }
+    }, [filters, filtersReset]);
+    return (
+        <div className="bg-custom-light py-6 min-h-screen flex flex-col items-center gap-6">
+            <div className="w-10/12 flex gap-8">
+                <FilterBar setFilters={handleSetFilter} filters={filters} />
+                <div className="w-[80%] flex flex-col gap-4 flex-grow">
                     {loading ? (
                         <div className="h-screen flex justify-center items-center ">
                             <OrbitProgress color="#32cd32" size="large" text="" textColor="" />
@@ -218,7 +173,7 @@ const SearchDesktop = ({
                                         <p className="text-gray-600 text-xl">Désolé, nous n'avons trouvé aucun résultat. Essayez avec d'autres filtres !</p>
 
                                         {/* Bouton avec effet d'ombre */}
-                                        <button onClick={resetFilters} className="mt-4 rounded-3xl text-2xl px-6 py-3 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300 shadow-lg hover:shadow-xl">
+                                        <button onClick={resetFiltersHandler} className="mt-4 rounded-3xl text-2xl px-6 py-3 bg-emerald-800 text-white font-bold transition-transform transform hover:scale-105 duration-300 shadow-lg hover:shadow-xl">
                                             Réinitialiser les filtres
                                         </button>
                                     </div>
@@ -260,7 +215,7 @@ const SearchDesktop = ({
                     )}
                 </div>
             </div>
-        </div>  );
+        </div>);
 };
 
 export default SearchDesktop;

@@ -15,7 +15,7 @@ import Promotion from './filterBar/Promotion';
 
 const FilterBar = ({setFilters, filters}) => {
     return (
-<div className="w-1/5 flex flex-col p-4 rounded-2xl border shadow-2xl bg-white self-start max-w-[313px]">
+<div className="w-[18%] flex flex-col p-4 rounded-2xl border shadow-2xl bg-white self-start ">
 
             <p className='text-rose-700 text-3xl font-semibold pb-4 '>Filtre</p>
             <ul>

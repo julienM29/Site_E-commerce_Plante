@@ -182,8 +182,8 @@ export const searchByParams = async (params) => {
         if (paramsExpo.length > 0) {
             newRequest += ` HAVING COUNT(DISTINCT te.id) = ${paramsExpo.length}`
         }
-        // console.log('newRequest fin de logique : ', newRequest)
-        // console.log('params fin de logique : ', paramsRequest)
+        console.log('newRequest fin de logique : ', newRequest)
+        console.log('params fin de logique : ', paramsRequest)
 
         // Exécution de la requête SQL sécurisée avec les paramètres liés
         const [products] = await connection.promise().query(newRequest, paramsRequest);

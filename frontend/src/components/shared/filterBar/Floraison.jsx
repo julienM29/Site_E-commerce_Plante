@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-function Floraison({ setFilters, isMobile }) {
+function Floraison({ setFilters,filters, isMobile }) {
     const [isOpen, setIsOpen] = useState(false);
     const [floraison, setFloraison] = useState({
         Janvier: false,
@@ -22,14 +22,22 @@ function Floraison({ setFilters, isMobile }) {
         setIsOpen(!isOpen);
     };
 
+    // const handleFloraisonChange = (event) => {
+    //     const { name, checked } = event.target;
+    //     setFloraison((prevState) => ({
+    //         ...prevState,
+    //         [name]: checked,
+    //     }));
+    // };
     const handleFloraisonChange = (event) => {
-        const { name, checked } = event.target;
-        setFloraison((prevState) => ({
-            ...prevState,
-            [name]: checked,
-        }));
-    };
-
+        const { name, checked } = event.target;       
+        setFilters({
+            floraison: {
+                ...filters.floraison,
+                [name]: checked,
+            },
+        })
+        };
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             if (JSON.stringify(prevFloraisonRef.current) !== JSON.stringify(floraison)) {
@@ -75,7 +83,7 @@ function Floraison({ setFilters, isMobile }) {
                             id={`${month}-checkbox`}
                             type="checkbox"
                             name={month}
-                            checked={isChecked}
+                            checked={filters.floraison?.[month] || false}
                             onChange={handleFloraisonChange}
                             className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-600 checked:bg-emerald-600 checked:border-emerald-600 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />

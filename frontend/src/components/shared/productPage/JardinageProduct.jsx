@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 const JardinageProduct = ({ rusticite, periodePlantation, culturePotBac, frequenceArrosage, mellifere, protectionFroid, vitesseCroissance, distancePlantationMin, distancePlantationMax, precaution, periodeRecolte, greffe }) => {
 
     return (
-        <div className='caracteristique flex w-1/3 px-4 flex-col gap-4'>
+        <div className='caracteristique flex w-full md:w-1/3 px-4 flex-col gap-4'>
             <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Jardinage</h2>
             <div className='flex flex-col gap-3'>
             {rusticite && (

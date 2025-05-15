@@ -8,7 +8,7 @@ const ConteneurProduitPanier = ({ panierIndex, imgProduit, prixTotalProduit, nom
   const { panier, total, status, error } = useSelector((state) => state.myState);
 
   return (
-    <div className="flex flex-col gap-4 border-b-2 pt-2 pb-4">
+    <div className="flex flex-col gap-4 md:border-b-2 max-md:border-t-2 pt-2 pb-4">
       <div className="flex items-center gap-3">
         {/* Image */}
         <img

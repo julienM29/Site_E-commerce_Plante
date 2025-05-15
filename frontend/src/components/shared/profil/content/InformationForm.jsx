@@ -5,8 +5,8 @@ import "react-tooltip/dist/react-tooltip.css"; // Import du CSS
 import { useNavigate, useLocation } from "react-router-dom";
 
 function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) {
-        const navigate = useNavigate();  // Hook pour changer de page
-    
+    const navigate = useNavigate();  // Hook pour changer de page
+
     // Créer un état pour les modifications
     const [userInfoModif, setUserInfoModif] = useState(userInfo);
     // Fonction pour gérer les changements dans le formulaire
@@ -57,9 +57,9 @@ function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) 
     };
 
     return (
-        <div className="relative w-full flex justify-center px-6 py-8">
+        <div className="relative w-full flex flex-col items-center gap-6 px-6 pt-4 pb-6">
             {/* Bouton pour quitter la modification */}
-            
+
             <button className="text-gray-600 hover:text-gray-900" onClick={cancelModifications}
             >
                 <img
@@ -67,7 +67,7 @@ function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) 
                     alt="Annuler les modifications"
                     className="absolute top-5 right-5 w-7 h-7 cursor-pointer"
                     data-tooltip-id="tooltip-stopModification"
-                data-tooltip-content="Annuler les modifications"
+                    data-tooltip-content="Annuler les modifications"
                 />
             </button>
             <Tooltip id="tooltip-stopModification" place="top" effect="solid" />
@@ -131,7 +131,7 @@ function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) 
                 <div className={`w-full flex ${isMobile ? 'flex-col gap-2 items-center' : ''} gap-4`}>
                     <div className={`flex flex-col gap-2 ${isMobile ? 'w-3/4' : 'w-1/2'}`}>
                         <label htmlFor="date_naissance" className='font-semibold'>Date de naissance</label>
-                        <CustomDatePicker handleUserInfoChange={handleUserInfoChange} date_naissance={userInfoModif.date_naissance}/>
+                        <CustomDatePicker handleUserInfoChange={handleUserInfoChange} date_naissance={userInfoModif.date_naissance} />
                     </div>
                     <div className={`flex flex-col gap-2  ${isMobile ? 'w-3/4' : 'w-1/2'}`}>
                         <label htmlFor="genre" className='font-semibold'>Genre</label>
@@ -144,7 +144,7 @@ function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) 
                                     value="homme"
                                     checked={userInfoModif.genre === 'homme'}
                                     onChange={handleUserInfoChange}
-                                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                    className="h-4 w-4 accent-emerald-600 border-gray-300 rounded focus:ring-blue-500"
                                 />
                                 <label htmlFor="genre-homme" className="ml-2">Homme</label>
                             </div>
@@ -156,7 +156,7 @@ function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) 
                                     value="femme"
                                     checked={userInfoModif.genre === 'femme'}
                                     onChange={handleUserInfoChange}
-                                    className="h-4 w-4 text-pink-600 border-gray-300 rounded focus:ring-pink-500"
+                                    className="h-4 w-4 accent-emerald-600 border-gray-300 rounded focus:ring-pink-500"
                                 />
                                 <label htmlFor="genre-femme" className="ml-2">Femme</label>
                             </div>
@@ -168,7 +168,7 @@ function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) 
                                     value="autre"
                                     checked={userInfoModif.genre === 'autre'}
                                     onChange={handleUserInfoChange}
-                                    className="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-green-500"
+                                    className="h-4 w-4 accent-emerald-600 border-gray-300 rounded focus:ring-green-500"
                                 />
 
 
@@ -178,9 +178,9 @@ function InformationForm({ userInfo, changeContent, setOngletActif, isMobile }) 
                     </div>
                 </div>
                 <button type="submit" className="rounded-lg bg-emerald-900 text-white w-2/3 py-3 hover:bg-emerald-800 active:scale-95 transition transform">
-                Mettre à jour les informations
-        </button>
-                
+                    Mettre à jour les informations
+                </button>
+
             </form>
         </div>
     );

@@ -2,19 +2,21 @@ import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Utiliser localStorage
 import { combineReducers } from 'redux';
-import myReducer from './mySlice'; // Ton slice où tu gères le panier, par exemple
-
+import myReducer from './mySlice'; // Ton slice où tu gères le panier
+import bottomSheetReducer from './bottomSheet'; // Importer le bottomSheetSlice
+import filterReducer from './filterSlice';
 // Configuration de redux-persist
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['myState'], // Choisis les reducers à persister
+  whitelist: ['myState', 'bottomSheet', 'filters'],
 };
 
-// Combine reducers si tu en as plusieurs
+// Combine reducers
 const rootReducer = combineReducers({
   myState: myReducer,
-  // Ajoute d'autres reducers ici si nécessaire
+  bottomSheet: bottomSheetReducer,
+  filters: filterReducer,
 });
 
 // Applique redux-persist sur ton reducer

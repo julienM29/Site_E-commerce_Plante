@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { checkUserConnect } from '../../CheckUserInformation';
 import InformationForm from './InformationForm';
 import Information from './Information';
-const ProfilInformationForm = ({setOngletActif, isMobile}) => {
+import ModifyMDP from './ModifyPassword';
+const ProfilInformation = ({setOngletActif, isMobile}) => {
     const [modifyInformation, setModifyInformation] = useState(false)
     const [userInfo, setUserInfo] = useState({
         id: '',
@@ -13,7 +14,11 @@ const ProfilInformationForm = ({setOngletActif, isMobile}) => {
         genre: '',
         date_naissance:'',
     });
-
+    const [modifyMdp, setModifyMdp] = useState(false);
+    const toggleModifyMdp = () => {
+        setModifyMdp(prev => !prev);
+    };
+    
 
 
     // Fonction pour récupérer les informations de la session
@@ -51,14 +56,30 @@ const ProfilInformationForm = ({setOngletActif, isMobile}) => {
 
     return (
         <div>
-            {modifyInformation ? (
-                <InformationForm userInfo={userInfo} handleChange={handleChange} changeContent={changeContent} setOngletActif={setOngletActif} isMobile={isMobile}/>
+            {modifyMdp ? (
+                <ModifyMDP toggleModifyMdp={toggleModifyMdp} isMobile={isMobile}/>
+            ) : modifyInformation ? (
+                <InformationForm
+                    userInfo={userInfo}
+                    handleChange={handleChange}
+                    changeContent={changeContent}
+                    setOngletActif={setOngletActif}
+                    isMobile={isMobile}
+                />
             ) : (
-                <Information userInfo={userInfo} handleChange={handleChange} changeContent={changeContent} setOngletActif={setOngletActif} isMobile={isMobile}/>
+                <Information
+                    userInfo={userInfo}
+                    handleChange={handleChange}
+                    changeContent={changeContent}
+                    toggleModifyMdp={toggleModifyMdp} // Tu peux passer ça ici
+                    setOngletActif={setOngletActif}
+                    isMobile={isMobile}
+                />
             )}
         </div>
     );
+    
 
 };
 
-export default ProfilInformationForm;
+export default ProfilInformation;

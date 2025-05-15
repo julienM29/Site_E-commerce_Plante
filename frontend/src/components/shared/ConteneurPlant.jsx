@@ -31,14 +31,14 @@ const ConteneurPlant = ({ taille, hauteur, id, primaryImage, secondaryImage, alt
       <div className='w-full flex flex-col justify-between gap-4 pb-4 max-md:h-[50%] h-[40%]'>
         <p className='bg-bande-description text-white w-full text-center max-md:text-xs'>{descriptionRapide}</p>
         <div className='w-full h-full flex flex-col  gap-4'>
-          <a href='/plant/1' className='block max-w-[90%] text-md md:text-lg px-2 font-semibold text-emerald-950 truncate overflow-hidden min-w-0'>{nom}</a>
+          <a href='/plant/1' className='block max-w-[90%] text-md md:text-lg px-2 font-semibold text-emerald-950 truncate overflow-hidden min-w-0 hover:underline-offset-2 hover:underline hover:text-green-700'>{nom}</a>
 
           {reduction ? (
             <div className='flex gap-2 justify-end w-full px-2'>
-            <p className='text-gray-600 font-bold text-sm md:text-base line-through'>{prixInitial} € </p>
-            <p className='text-pink-700 font-bold text-xl md:text-2xl'>{prixReduit} € </p>
+              <p className='text-gray-600 font-bold text-sm md:text-base line-through'>{prixInitial} € </p>
+              <p className='text-pink-700 font-bold text-xl md:text-2xl'>{prixReduit} € </p>
 
-          </div>
+            </div>
           ) : (
             <div className='flex justify-end w-full px-2'>
               <p className='text-pink-700 font-bold text-2xl'>{prixInitial} € </p>
@@ -48,18 +48,18 @@ const ConteneurPlant = ({ taille, hauteur, id, primaryImage, secondaryImage, alt
         </div>
 
         <div className="w-full flex flex-col md:flex-row md:justify-between items-center gap-4 px-4">
-  <div className="flex items-center gap-2 w-full md:w-auto max-md:justify-center">
-    <img src="/icones/verifier.png" alt="Stock disponible" className="w-6 h-6" />
-    <span className="text-gray-700 text-sm md:text-base">{infoStock}</span>
-  </div>
-  
-  <button
-    className="max-md:w-full  rounded-3xl max-md:px-2 px-4 py-2 bg-emerald-800 text-white font-bold text-sm  transition-transform transform hover:scale-105 duration-300"
-    onClick={() => AjoutPanier(dispatch, id, nom, prixInitial, prixReduit, image)}
-  >
-    Ajouter au panier
-  </button>
-</div>
+          <div className="flex items-center gap-2 w-full md:w-auto max-md:justify-center">
+            <img src="/icones/verifier.png" alt="Stock disponible" className="w-6 h-6" />
+            <span className="text-gray-700 text-sm md:text-base">{infoStock}</span>
+          </div>
+
+          <button
+            className="max-md:w-full  rounded-3xl max-md:px-2 px-4 py-2 bg-emerald-800 text-white font-bold text-sm  transition-transform transform hover:scale-105 duration-300"
+            onClick={() => AjoutPanier(dispatch, id, nom, prixInitial, prixReduit, image, 1)}
+          >
+            Ajouter au panier
+          </button>
+        </div>
 
       </div>
     </div>

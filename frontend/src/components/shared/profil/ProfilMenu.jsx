@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, {  useState,useEffect } from 'react';
 import LogoutButton from './LogoutButton';
+
 const ProfilMenu = ({ setOngletActif, ongletActif, isMobile }) => {
 
+    const [time, setTime] = useState(new Date());
 
 
     const ButtonMenu = ({ image, titre, titreOngletActif }) => {
@@ -28,16 +30,24 @@ const ProfilMenu = ({ setOngletActif, ongletActif, isMobile }) => {
 
         )
     }
+    useEffect(() => {
+        const interval = setInterval(() => {
+          setTime(new Date());
+        }, 1000);
+        return () => clearInterval(interval);
+      }, []);
     return isMobile ?
-        <div className="flex flex-col items-center p-4 gap-4 w-full">
+        <div className="flex flex-col items-center p-4 gap-8 md:gap-4 w-full">
             {/* User Header */}
             <div className="flex flex-col items-center text-center gap-1">
                 <div className="bg-zinc-400 rounded-full p-3 text-white text-2xl">MJ</div>
                 <p className="text-lg font-semibold">Miossec Julien</p>
                 <div className="flex items-center gap-1 text-sm text-gray-600">
                     <img src="/icones/horloge.png" className="w-4 h-4" alt="Horloge" />
-                    <span>06:03:05 PM</span>
+                    <span>{time.toLocaleTimeString('fr-FR')}</span>
+
                 </div>
+                <LogoutButton isMobile={isMobile}/>
             </div>
 
             {/* Menu (horizontal scrollable) */}
@@ -63,15 +73,16 @@ const ProfilMenu = ({ setOngletActif, ongletActif, isMobile }) => {
         </div>
 
         :
-        <div className="w-[280px] rounded-3xl bg-white border shadow-lg flex flex-col gap-4 self-start">
+        <div className="w-[370px] rounded-3xl bg-white border shadow-lg flex flex-col gap-4 self-start">
             <div className="flex gap-6 items-center rounded-2xl border-b p-5 shadow-lg">
                 <p className="rounded-full bg-zinc-400 p-2 text-2xl">MJ</p>
                 <div className="flex flex-col">
                     <p className="text-xl">Miossec Julien</p>
-                    <div className="flex gap-2 items-center">
-                        <img src="/icones/horloge.png" alt="" className="w-5 h-5" />
-                        <p>06:03:05 PM</p>
-                    </div>
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <img src="/icones/horloge.png" className="w-4 h-4" alt="Horloge" />
+                    <span>{time.toLocaleTimeString('fr-FR')}</span>
+
+                </div>
                 </div>
             </div>
             <div className="flex flex-col gap-2 py-2 border-b">

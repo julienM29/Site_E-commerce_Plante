@@ -90,36 +90,40 @@ function HomePage() {
 
       <div className="bg-custom-light  py-6 min-h-screen flex flex-col items-center gap-6">
         <TitreSection texte="Jardinerie en ligne Kerisnel - Vente de plantes et graines à cultiver" textColor="text-zinc-700" taillePolice={isDesktop ? 'text-2xl' : 'text-md'} />
-        <div className='max-md:grid max-md:grid-cols-2 flex md:justify-center gap-2 md:gap-4 md:w-5/6'>
-            <BoutonNavigation
+        <div className="max-md:grid max-md:grid-cols-1 flex md:justify-center gap-2 md:gap-4 w-3/4  md:w-5/6">
+          <BoutonNavigation
             bgColor="bg-orange-500"
             textColor="text-white"
             label="Meilleures ventes"
-            icones='meilleur_vente.png'
-            linkId={'meilleures_ventes'}
+            icones="meilleur_vente.png"
+            linkId="meilleures_ventes"
             handleScrollToSection={handleScrollToSection}
-
+            className="py-4 px-6 text-lg md:text-base w-full"
           />
 
           <BoutonNavigation
             bgColor="bg-red-600"
             textColor="text-white"
             label="Promotions"
-            icones='promotions.jpg'
-            linkId={'promotion'}
+            icones="promotions.jpg"
+            linkId="promotion"
             handleScrollToSection={handleScrollToSection}
+            className="py-4 px-6 text-lg md:text-base w-full"
           />
+
           <BoutonNavigation
             bgColor="bg-teal-500"
             textColor="text-white"
             label="Nouveauté"
-            linkId={'nouveautés'}
-            icones='new_product.jpeg'
+            linkId="nouveautés"
+            icones="new_product.jpeg"
             handleScrollToSection={handleScrollToSection}
+            className="py-4 px-6 text-lg md:text-base w-full"
           />
-          </div>
+        </div>
+
         <div className='w-5/6 max-xl:grid xl:flex gap-4 font-semibold max-xl:grid-cols-2 flex justify-center'>
-          
+
         </div>
         <div className='w-11/12 flex flex-col items-center gap-8 py-8 promotion-section' id='promotion'>
           <div className='flex flex-col gap-2 text-center'>
@@ -131,7 +135,7 @@ function HomePage() {
               <img src="/icones/etiquette.png" alt="" className='w-8 md:w-16' /></div>
           </div>
           <div className='w-full flex justify-center'>
-            <SwiperPromotion nbSlides={isDesktop ? 4 : 2} products={dataPromotionsPlants} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
+            <SwiperPromotion nbSlides={isDesktop ? 4 : 1} products={dataPromotionsPlants} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
           </div>
           <Link
             to={`/search?p=true`}
@@ -169,7 +173,7 @@ function HomePage() {
             </div>
           </div>
           <div className='flex justify-center w-full'>
-            <SwiperPromotion nbSlides={isDesktop ? 4 : 2} products={dataSelectionPlants} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
+            <SwiperPromotion nbSlides={isDesktop ? 4 : 1} products={dataSelectionPlants} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
           </div>
         </div>
         <div className='flex flex-col items-center gap-4 justify-center w-full bg-emerald-900 py-8'>
@@ -193,7 +197,7 @@ function HomePage() {
             </div>
           </div>
           <div className='flex justify-center w-full'>
-            <SwiperPromotion nbSlides={isDesktop ? 4 : 2} products={dataNouveautesPlants} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
+            <SwiperPromotion nbSlides={isDesktop ? 4 : 1} products={dataNouveautesPlants} userID={userID} dataCookie={dataCookie}></SwiperPromotion>
           </div>
         </div>
       </div>

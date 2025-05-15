@@ -1,9 +1,12 @@
 function Feuillage({ setFilters, filters, isMobile }) {
-    const handleChange = () => {
-        setFilters((prevState) => ({
-            ...prevState,
-            persistant: !prevState.persistant, // Inverse directement la valeur
-        }));
+    const handleChange = (event) => {
+        // setFilters((prevState) => ({
+        //     ...prevState,
+        //     persistant: !prevState.persistant, // Inverse directement la valeur
+        // }));
+        setFilters({
+            persistant: event.target.checked, // Inverse directement la valeur
+        })
     };
 
     return isMobile ?

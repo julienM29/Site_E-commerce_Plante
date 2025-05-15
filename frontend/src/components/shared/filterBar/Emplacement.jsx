@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-function Emplacement({ setFilters, isMobile }) {
+function Emplacement({ setFilters, filters, isMobile }) {
     const [isOpen, setIsOpen] = useState(false);
     const [emplacement, setEmplacement] = useState({
         PotOuBac: false,
@@ -25,14 +25,22 @@ function Emplacement({ setFilters, isMobile }) {
         setIsOpen(!isOpen);
     };
 
+    // const handleEmplacementChange = (event) => {
+    //     const { name, checked } = event.target;
+    //     setEmplacement((prevState) => ({
+    //         ...prevState,
+    //         [name]: checked,
+    //     }));
+    // };
     const handleEmplacementChange = (event) => {
-        const { name, checked } = event.target;
-        setEmplacement((prevState) => ({
-            ...prevState,
-            [name]: checked,
-        }));
-    };
-
+        const { name, checked } = event.target;       
+        setFilters({
+            emplacement: {
+                ...filters.emplacement,
+                [name]: checked,
+            },
+        })
+        };
     // Utilisation de useEffect pour détecter les changements et mettre à jour les filtres après un délai
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -80,7 +88,7 @@ function Emplacement({ setFilters, isMobile }) {
                             id={`${type}-checkbox`}
                             type="checkbox"
                             name={type}
-                            checked={isChecked}
+                            checked={filters.emplacement?.[type] || false}
                             onChange={handleEmplacementChange}
                             className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-600 checked:bg-emerald-600 checked:border-emerald-600 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />

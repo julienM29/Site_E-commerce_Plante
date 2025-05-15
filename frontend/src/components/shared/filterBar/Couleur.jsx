@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-
 const ColorFilter = ({ setFilters, filters, isMobile }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const handleColorChange = (colorButton) => {
+    setFilters({
+      color: filters.color === colorButton ? null : colorButton
+  })
+  };
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
@@ -21,13 +24,12 @@ const ColorFilter = ({ setFilters, filters, isMobile }) => {
     ['Vert', 'bg-green-500'],
   ];
 
-  // Fonction pour changer la couleur sélectionnée
-  const handleColorChange = (colorButton) => {
-    setFilters((prevState) => ({
-      ...prevState,
-      color: prevState.color === colorButton ? null : colorButton,
-    }));
-  };
+  // const handleColorChange = (colorButton) => {
+  //   setFilters((prevState) => ({
+  //     ...prevState,
+  //     color: prevState.color === colorButton ? null : colorButton,
+  //   }));
+  // };
   return isMobile ?
       <div
         className={`grid grid-cols-6 gap-4 transition-all duration-500 ease-in-out overflow-hidden px-2  max-h-screen opacity-100 py-2 w-full`}

@@ -3,19 +3,43 @@ import BarreLivraisonGratuite from '../BarreLivraisonGratuite';
 import ConteneurProduitPanier from '../ConteneurProduitPanier';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduit, removeProduit, clearPanier } from '../../../mySlice';
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
     const { panier, total } = useSelector((state) => state.myState);
     const dispatch = useDispatch();
 
     const [prixTotalPanier, setPrixTotalPanier] = useState( total || 0);
 
-    const handleRemoveProduit = async (produit) => {
+    const handleRemoveProduit = async (produit, image) => {
         dispatch(removeProduit(produit)); // Supprimer le produit du panier
         await fetch(`http://localhost:3000/deleteDetailPanier/${produit.detail_id}`, {
             method: "POST",
             credentials: "include"
         });
+        toast.error(
+            <div className="flex items-center gap-3">
+              <img
+                src={`/images/${image}`}
+                alt={produit.nom}
+                className="w-10 h-10 object-cover rounded-full border border-gray-300"
+              />
+              <div>
+                <p className="text-sm font-semibold text-green-700">{produit.nom}</p>
+                <p className="text-xs text-gray-600">
+                    supprimé du panier
+                </p>
+              </div>
+            </div>,
+            {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            }
+          );
     };
     useEffect(() => {
         // Ne mettre à jour le prix total que si `total` a changé
@@ -25,10 +49,10 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
         }
     }, [total]);
     return (
-        <div ref={sidebarRef} className="fixed flex flex-col items-center justify-between top-0 right-0 w-1/5 bg-white h-screen border-l shadow-lg transform translate-x-full z-20">
+        <div ref={sidebarRef} className="fixed flex flex-col items-center justify-between top-0 right-0 w-[22%] bg-white h-screen border-l shadow-lg transform translate-x-full z-20">
             {/* En tête de la side barre */}
-            <div className="w-full flex items-center justify-around h-[10%] bg-custom-light px-4 py-2">
-                <div className="text-3xl font-semibold tracking-wide flex gap-2">
+            <div className="w-full flex items-center justify-around h-[11%] bg-custom-light px-6 py-2 shadow-md">
+                <div className="text-2xl font-semibold tracking-wide flex gap-2">
                     <p>Panier</p>
                     <p> - {panier.length} produits</p>
                 </div>
@@ -56,16 +80,14 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
                 </button>
 
             </div>
-            {/* Contenu */}
-            {/* {panier ? ( */}
-            <div className="w-11/12 h-3/4 flex flex-col gap-2 py-4 overflow-y-auto overflow-x-hidden scrollbar-none ">
+            <div className="w-full px-4 h-3/4 flex flex-col gap-6 py-4 overflow-y-auto overflow-x-hidden scrollbar-none ">
                 <BarreLivraisonGratuite prixPanier={prixTotalPanier}></BarreLivraisonGratuite>
 
                 <div>
                     {panier.map((produit, index) => (
                         <ConteneurProduitPanier
                             panierIndex={index}
-                            onDelete={() => handleRemoveProduit(produit)}
+                            onDelete={() => handleRemoveProduit(produit, produit.image)}
                             key={produit.id}
                             detail_panier_id={produit.detail_id}
                             imgProduit={produit.image}
@@ -81,7 +103,7 @@ const SideBarPanier2 = ({ sidebarRef, closeSidebar }) => {
             )} */}
 
 
-            <div className='h-[12%] bg-custom-light w-full flex flex-col gap-4 justify-center items-center'>
+            <div className='h-[14%] bg-custom-light w-full flex flex-col gap-4 justify-center items-center border-t-2'>
 
                 <a href="/panier"   className="flex justify-center items-center font-semibold bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 focus:ring-4 focus:ring-emerald-300 text-white rounded-full text-base px-6 py-3 shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
                 >Aller au panier - {total} euros</a>

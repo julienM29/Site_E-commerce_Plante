@@ -7,17 +7,25 @@ function Exposition({ setFilters, filters, isMobile }) {
         setIsOpen(!isOpen);
     };
 
+    // const handleExpositionChange = (event) => {
+    //     const { name, checked } = event.target;
+        // setFilters((prevState) => ({
+        //     ...prevState,
+        //     exposition: {
+        //         ...prevState.exposition,
+        //         [name]: checked,
+        //     },
+        // }));
+    // };
     const handleExpositionChange = (event) => {
-        const { name, checked } = event.target;
-        setFilters((prevState) => ({
-            ...prevState,
+        const { name, checked } = event.target;       
+        setFilters({
             exposition: {
-                ...prevState.exposition,
+                ...filters.exposition,
                 [name]: checked,
             },
-        }));
-    };
-
+        })
+        };
     return isMobile ?
     <div className='flex flex-col gap-2'>
         <span className="text-lg font-medium">Exposition</span>

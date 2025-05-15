@@ -274,7 +274,7 @@ fastify.post('/searchByText/:text', async (request, reply) => {
 });
 fastify.post('/searchByParams', async (request, reply) => {
   try {
-    // console.log('je suis dans le byparams du server.js , les params :', request.body)
+    console.log('je suis dans le byparams du server.js , les params :', request.body)
     const products = await searchByParams(request.body); // ✅ Passe le body à la fonction
 
     reply.status(200).send({ products });

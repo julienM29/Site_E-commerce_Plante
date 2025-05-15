@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { upQuantityInput } from '../../../../mySlice';
 import ConteneurWishListAndRecentlyViewed from '../../../ConteneurWishlistAndRecentlyViewed';
 
-const ListeEnvie = () => {
+const ListeEnvie = ({isMobile}) => {
     const [wishList, setWishList] = useState([]); // Initialisé à [] pour éviter les erreurs
     const [changeWishList, setChangeWishList] = useState(false); // Initialisé à [] pour éviter les erreurs
     const dispatch = useDispatch(); // ✅ Utiliser useDispatch dans un composant React
@@ -46,30 +46,39 @@ const ListeEnvie = () => {
     }, [changeWishList]);
 
     return (
-        <div> {/* ✅ Ajout d'un conteneur englobant */}
-            {wishList.length === 0 ? (
-                <div className="w-full gap-7 flex flex-col items-center px-6 py-8">
-                    <img src="./icones/panier_coeur.png" alt="" className="w-28 h-28" />
-                    <p>Votre liste d'envies est vide...</p>
-                    <p className="text-center font-semibold">
-                        Vous pouvez ajouter des articles dans votre liste d'envies et les commander plus tard !
-                    </p>
-                    <a href='/search'  className="rounded-lg bg-emerald-900 text-white text-center py-3 px-6 hover:bg-emerald-800 active:scale-95 transition transform">
-                        Voir les produits
-                    </a>
-
-                </div>
-            ) : (
-                <div className="w-full gap-5 flex flex-col items-center px-4 py-6 max-h-[65vh] overflow-y-auto ">
-                    <h2 className="text-xl font-semibold">Votre liste d'envies :</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {wishList.map((item) => (
-                        < ConteneurWishListAndRecentlyViewed key={item.id} item={item} addPanier={modifyWishList} deleteProductList={deleteProductWishList} />
-                        ))}
-                    </div>
-                </div>
-            )}
+        <div>
+    {wishList.length === 0 ? (
+        <div className={`w-full flex flex-col items-center ${isMobile ? 'gap-5 px-4 py-6' : 'gap-7 px-6 py-8'}`}>
+            <img src="./icones/panier_coeur.png" alt="" className={`${isMobile ? 'w-20 h-20' : 'w-28 h-28'}`} />
+            <p className={`${isMobile ? 'text-sm' : ''}`}>Votre liste d'envies est vide...</p>
+            <p className={`${isMobile ? 'text-center text-sm' : 'text-center font-semibold'}`}>
+                Vous pouvez ajouter des articles dans votre liste d'envies et les commander plus tard !
+            </p>
+            <a
+                href='/search'
+                className={`rounded-lg bg-emerald-900 text-white text-center ${isMobile ? 'py-2 px-4 text-sm' : 'py-3 px-6'} hover:bg-emerald-800 active:scale-95 transition transform`}
+            >
+                Voir les produits
+            </a>
         </div>
+    ) : (
+        <div className={`w-full flex flex-col items-center ${isMobile ? 'gap-4 px-3 py-4' : 'gap-5 px-4 py-6'} max-h-[80vh] overflow-y-auto`}>
+            <h2 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold`}>Votre liste d'envies :</h2>
+            <div className={`grid ${isMobile ? 'grid-cols-1 w-3/4' : 'sm:grid-cols-2 lg:grid-cols-3'} gap-5`}>
+                {wishList.map((item) => (
+                    <ConteneurWishListAndRecentlyViewed
+                        key={item.id}
+                        item={item}
+                        addPanier={modifyWishList}
+                        deleteProductList={deleteProductWishList}
+                        isMobile={isMobile} 
+                    />
+                ))}
+            </div>
+        </div>
+    )}
+</div>
+
     );
 };
 

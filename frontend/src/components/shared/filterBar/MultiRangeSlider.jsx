@@ -7,14 +7,21 @@ const MultiRangeSlider = ({ setFilters, filters }) => {
   const maxValue = filters.maxPrice ?? 100;
   const values = [minValue, maxValue];
 
+  // const handleSliderChange = (newValues) => {
+  //   setFilters(prevState => ({
+  //     ...prevState,
+  //     minPrice: newValues[0],
+  //     maxPrice: newValues[1],
+  //   }));
+  // };
   const handleSliderChange = (newValues) => {
-    setFilters(prevState => ({
-      ...prevState,
+    // On met à jour minPrice et maxPrice directement dans l'état global
+    setFilters({
       minPrice: newValues[0],
       maxPrice: newValues[1],
-    }));
+    });
   };
-
+  
   return (
     <div className="flex flex-col gap-2">
       <Slider

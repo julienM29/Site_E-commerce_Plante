@@ -10,8 +10,8 @@ module.exports = {
     extend: {
       colors: {
         'custom-light': '#FBF6E9',
-        'custom-pastel': '#E3F0AF',
-        'custom-green': '#5DB996',
+        'custom-header': '#118b50',
+        'custom-search': '#f3f3e5',
         'custom-dark-green': '#118B50',
       },
     },

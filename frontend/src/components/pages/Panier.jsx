@@ -7,6 +7,9 @@ import { getUserInfoAndWishList } from '../shared/UserUtils';
 import { searchSelection } from '../shared/loadProduct';
 import { clearPanier, addGarantie, removeGarantie } from '../../mySlice';
 import { useGsapPanier } from '../../useGsapPanier';
+import { useMediaQuery } from 'react-responsive';
+import PanierMobile from '../layout/PanierMobile';
+
 function Panier() {
     const { panier, total, panierId, garantie } = useSelector((state) => state.myState);
     const [dataSelectionPlants, setDataSelectionPlants] = useState([]);
@@ -14,6 +17,7 @@ function Panier() {
     const [dataCookie, setDataCookie] = useState();
     useGsapPanier(dataSelectionPlants)
     const dispatch = useDispatch();
+    const isMobile = useMediaQuery({ maxWidth: 767 });
 
     const validerAchat = async () => {
         if (!panierId) {
@@ -63,7 +67,8 @@ function Panier() {
         getUserInfoAndWishList(setUserID, setDataCookie);
     }, []);
 
-    return (
+    return isMobile ? 
+    <PanierMobile total={total} panier={panier} userID={userID} validerAchat={validerAchat} garantie={garantie} handleGarantie={handleGarantie} dataSelectionPlants={dataSelectionPlants} dataCookie={dataCookie} /> : 
         <>
             <div className="bg-custom-light py-16 min-h-screen w-full flex flex-col items-center gap-10">
                 {/* Panier + prix manquant pour livraison gratuite */}
@@ -223,7 +228,7 @@ function Panier() {
                                         <button
                                             type="submit"
                                             onClick={validerAchat}
-                                            className="w-3/4 flex justify-center bg-gradient-to-r from-emerald-600 to-emerald-300 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
+                                            className="w-3/4 flex justify-center bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out"
                                         >
                                             Commander
                                         </button>
@@ -273,7 +278,7 @@ function Panier() {
                             <button
                                 type="button"
                                 onClick={handleGarantie}
-                                className={`w-3/4 flex justify-center ${garantie ? 'bg-emerald-700 hover:bg-emerald-500' : 'bg-gradient-to-r from-emerald-600 to-emerald-300'} hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out`}
+                                className={`w-3/4 flex justify-center ${garantie ? 'bg-emerald-700 hover:bg-emerald-500' : 'bg-emerald-600'} hover:bg-emerald-700   focus:ring-4 focus:outline-none focus:ring-emerald-400 font-semibold text-white rounded-full text-md px-5 py-2.5 text-center shadow-md hover:shadow-lg transition-all duration-500 ease-in-out`}
                             >
                                 {garantie !== 0 ? "Retirer" : "Ajouter"}
                             </button>
@@ -288,7 +293,7 @@ function Panier() {
                 </div>
             </div>
         </>
-    )
+    
 }
 
 export default Panier;

@@ -1,9 +1,12 @@
 function Parfum({ setFilters, filters, isMobile }) {
-    const handleChange = () => {
-        setFilters((prevState) => ({
-            ...prevState,
-            parfum: !prevState.parfum, // Inverse directement la valeur
-        }));
+    const handleChange = (event) => {
+        // setFilters((prevState) => ({
+        //     ...prevState,
+        //     parfum: !prevState.parfum, // Inverse directement la valeur
+        // }));
+        setFilters({
+            parfum: event.target.checked, // Inverse directement la valeur
+        })
     };
 
     return isMobile ?

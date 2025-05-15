@@ -1,11 +1,14 @@
 function Promotion({ setFilters, filters, isMobile }) {
-    const handleChange = () => {
-        setFilters((prevState) => ({
-            ...prevState,
-            promotion: !prevState.promotion, // Inverse directement la valeur
-        }));
-    };
-
+    // const handleChange = () => {
+    //     setFilters((prevState) => ({
+    //         ...prevState,
+    //         promotion: !prevState.promotion, // Inverse directement la valeur
+    //     }));
+    // };
+    const handleChange = (event) => {
+        setFilters({
+            promotion: event.target.checked, // Inverse directement la valeur
+        })};
     return isMobile ?
         <div className='flex flex-col gap-2 w-2/5'>
             <span className="text-lg font-medium">Promotion</span>

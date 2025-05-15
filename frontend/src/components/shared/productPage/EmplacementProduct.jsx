@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 const EmplacementProduct = ({ exposition, typeClimat, typeSol, utilisation }) => {
 
     return (
-        <div className='caracteristique flex w-1/3 px-4 flex-col gap-4'>
+        <div className='caracteristique flex w-full md:w-1/3 px-4 flex-col gap-4'>
             <h2 className='uppercase text-rose-700 text-2xl font-semibold'>Emplacement</h2>
             <div className='flex flex-col gap-3'>
                 {exposition && (

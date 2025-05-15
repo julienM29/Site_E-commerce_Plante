@@ -1,9 +1,12 @@
 function Mellifere({ setFilters, filters, isMobile }) {
-    const handleChange = () => {
-        setFilters((prevState) => ({
-            ...prevState,
-            mellifere: !prevState.mellifere, // Inverse directement la valeur
-        }));
+    const handleChange = (event) => {
+        // setFilters((prevState) => ({
+        //     ...prevState,
+        //     mellifere: !prevState.mellifere, // Inverse directement la valeur
+        // }));
+        setFilters({
+            mellifere: event.target.checked, // Inverse directement la valeur
+        })
     };
 
     return isMobile ?

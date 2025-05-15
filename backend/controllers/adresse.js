@@ -89,6 +89,7 @@ export const modifyAdresse = async (id_user, adresse, defaultAdress) => {
     }
 };
 export const loadActivAdresse = async (id_user) => {
+    // console.log('je passe ici, l id est : ' , id_user)
     try {
         const requeteAdresseActive = `
             SELECT a.*

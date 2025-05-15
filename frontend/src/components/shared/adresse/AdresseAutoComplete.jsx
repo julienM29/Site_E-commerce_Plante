@@ -53,7 +53,7 @@ const AdresseAutocomplete = ({setAdresseUser }) => {
         }}
         onBlur={() => setTimeout(() => setSuggestions([]), 200)}
         placeholder="Entrez votre adresse..."
-        className="w-full px-4 py-2 border rounded-lg"
+        className="w-full px-4 h-[40px] border rounded-lg focus:border-emerald-600 focus:border-2 focus:outline-none"
       />
 
       {loading && <p className="text-sm text-gray-500 mt-1">Recherche...</p>}

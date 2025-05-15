@@ -9,15 +9,21 @@ function Arrosage({ setFilters, filters, isMobile }) {
 
     const handleArrosageChange = (event) => {
         const { name, checked } = event.target;
-        setFilters((prevState) => ({
-            ...prevState,
+        // setFilters((prevState) => ({
+        //     ...prevState,
+        //     arrosage: {
+        //         ...prevState.arrosage,
+        //         [name]: checked,  // Met à jour la propriété correspondante directement
+        //     },
+        // }));
+        setFilters({
             arrosage: {
-                ...prevState.arrosage,
-                [name]: checked,  // Met à jour la propriété correspondante directement
+                ...filters.arrosage,
+                [name]: checked,
             },
-        }));
+        })
     };
-
+    
     return isMobile ?
     <div className='flex flex-col gap-2'>
         <span className="text-lg font-medium">Arrosage</span>

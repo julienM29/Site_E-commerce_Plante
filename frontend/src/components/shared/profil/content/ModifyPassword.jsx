@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { checkUserConnect } from '../../CheckUserInformation';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import des icônes
-
-const ModifyMDP = () => {
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css"; // Import du CSS
+const ModifyMDP = ({ toggleModifyMdp, isMobile }) => {
     const [userInfo, setUserInfo] = useState({
         prenom: '',
         nom: '',
@@ -116,9 +117,23 @@ const ModifyMDP = () => {
 
 
     return (
-        <div className="w-full gap-7 flex flex-col items-center py-4">
-            <div className='w-1/2 flex flex-col items-center gap-2'>
-                <img src="./icones/profil_password.png" alt="" className='w-24 h-24' />
+        <div className="relative w-full gap-7 flex flex-col items-center py-4">
+            {isMobile && 
+            <button className="text-gray-600 hover:text-gray-900"
+                onClick={() => toggleModifyMdp()}
+
+            >
+                <img
+                    src="./icones/out_form_information.png"
+                    alt="Annuler les modifications"
+                    className="absolute top-5 right-5 w-7 h-7 cursor-pointer"
+                    data-tooltip-id="tooltip-stopModification"
+                    data-tooltip-content="Annuler les modifications"
+                />
+            </button>
+            }
+            <div className={`${isMobile ? "w-3/4" : "w-1/2"} flex flex-col items-center gap-2`}>
+                <img src="./icones/profil_password.png" alt="" className={`${isMobile ? "w-16 h-16" : "w-24 h-24"}`} />
                 <p className='text-lg'>Modifier le mot de passe de</p>
                 <p className='font-semibold text-xl'>{userInfo.email}</p>
             </div>
@@ -129,17 +144,17 @@ const ModifyMDP = () => {
                 onSubmit={submitChangeMDPForm}
             >
 
-                <div className="w-3/4 flex flex-col gap-4">
+                <div className={`${isMobile ? "w-5/6" : "w-3/4"} flex flex-col gap-4`}>
                     <div className="flex flex-col gap-2 ">
-                        <label htmlFor="ancienMDP">Ancien mot de passe</label>
+                        <label htmlFor="ancienMDP" className='font-semibold'>Ancien mot de passe</label>
                         <div className="relative flex items-center">
                             <input
                                 type={ancienMotDePasseVisible ? "text" : "password"}
                                 name="ancienMDP"
                                 id="ancienMDP"
-                                className={`h-10 mt-1 rounded px-4 w-full bg-gray-100 border 
+                                className={`h-10 mt-1 rounded px-4 py-1 w-full bg-gray-100 border 
                                     ${erreurMessageMotDePasse ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-green-500 focus:ring-green-500'} focus:outline-none focus:ring-1`}
-                                                                onChange={(e) => handleChangeMotDePasse(e)}
+                                onChange={(e) => handleChangeMotDePasse(e)}
                                 placeholder="Entrez l'ancien mot de passe"
                             />
                             <div
@@ -150,12 +165,12 @@ const ModifyMDP = () => {
                             </div>
                         </div>
                         {erreurMessageMotDePasse && (
-                        <p className="min-h-[20px] text-red-600 text-sm">{erreurMessageMotDePasse}</p>
-                         )} 
+                            <p className="min-h-[20px] text-red-600 text-sm">{erreurMessageMotDePasse}</p>
+                        )}
 
                     </div>
                     <div className="flex flex-col gap-2 ">
-                        <label htmlFor="newMDP">Nouveau mot de passe</label>
+                        <label htmlFor="newMDP"  className='font-semibold'>Nouveau mot de passe</label>
                         <div className="relative flex items-center">
                             <input
                                 type={newMotDePasseVisible ? "text" : "password"}
@@ -174,7 +189,7 @@ const ModifyMDP = () => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 ">
-                        <label htmlFor="confirmationMDP">Confirmez le nouveau mot de passe</label>
+                        <label htmlFor="confirmationMDP"  className='font-semibold'>Confirmez le nouveau mot de passe</label>
                         <div className="relative flex items-center">
                             <input
                                 type={confirmationMotDePasseVisible ? "text" : "password"}
@@ -182,8 +197,8 @@ const ModifyMDP = () => {
                                 id="confirmationMDP"
                                 className={`h-10 mt-1 rounded px-4 w-full bg-gray-100 border 
                                     ${verifNewMDP ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-green-500 focus:ring-green-500'} focus:outline-none focus:ring-1`}
-                                    onChange={(e) => confirmNewMDPChange(e.target.value)}
-                                    placeholder='Confirmez le nouveau mot de passe'
+                                onChange={(e) => confirmNewMDPChange(e.target.value)}
+                                placeholder='Confirmez le nouveau mot de passe'
                             />
                             <div
                                 className="absolute right-3 text-xl cursor-pointer"
@@ -203,7 +218,7 @@ const ModifyMDP = () => {
                     // className="mt-4 bg-blue-500 text-white p-2 rounded "
                     disabled={newMotDePasse !== confirmationMotDePasse}
                 >
-                    Mettre à jour
+                    Mettre à jour le mot de passe
                 </button>
 
             </form>
